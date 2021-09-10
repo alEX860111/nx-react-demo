@@ -1,11 +1,11 @@
-import styles from './app.module.scss';
-
-import { ReactComponent as Logo } from './logo.svg';
-import star from './star.svg';
+import { TodoWidget } from './todo-widget/todo-widget';
 
 export function App() {
   return (
-    <h1>Welcome to my-app!</h1>
+    <>
+      <h1>Welcome to my todo app!</h1>
+      <TodoWidget></TodoWidget>
+    </>
   );
 }
 

@@ -1,8 +1,7 @@
 import { render } from '@testing-library/react';
-
 import App from './app';
 
-describe('App', () => {
+describe(App, () => {
   it('should render successfully', () => {
     const { baseElement } = render(<App />);
 
@@ -12,6 +11,6 @@ describe('App', () => {
   it('should have a greeting as the title', () => {
     const { getByText } = render(<App />);
 
-    expect(getByText('Welcome to my-app!')).toBeTruthy();
+    expect(getByText('Welcome to my todo app!')).toBeTruthy();
   });
 });

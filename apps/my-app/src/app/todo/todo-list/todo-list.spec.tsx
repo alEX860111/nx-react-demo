@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { Todo } from '../todo/todo';
+import { Todo } from '../todo';
 import { TodoList } from './todo-list';
 
 jest.mock('../todo-list-item/todo-list-item', () => ({

@@ -1,16 +1,12 @@
 import React from 'react';
+import { Todo } from '../todo';
 import { TodoListItem } from '../todo-list-item/todo-list-item';
-import { Todo } from '../todo/todo';
 
 interface Props {
   todoList: Todo[];
 }
 
-export class TodoList extends React.Component<Props, {}> {
-  constructor(props: Props) {
-    super(props);
-  }
-
+export class TodoList extends React.Component<Props, unknown> {
   render() {
     return (
       <ul>

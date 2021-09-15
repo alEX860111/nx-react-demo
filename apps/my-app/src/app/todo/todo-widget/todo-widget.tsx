@@ -1,7 +1,8 @@
 import React from 'react';
+import { Todo } from '../todo';
 import { TodoInput } from '../todo-input/todo-input';
 import { TodoList } from '../todo-list/todo-list';
-import { Todo } from '../todo/todo';
+import { TodoService } from '../todo-service';
 
 interface Props {}
 
@@ -10,27 +11,26 @@ interface State {
 }
 
 export class TodoWidget extends React.Component<Props, State> {
+  private readonly todoService: TodoService;
+
   constructor(props: Props) {
     super(props);
-    this.state = {
-      todoList: [
-        { id: 1, content: 'foo' },
-        { id: 2, content: 'bar' },
-      ],
-    };
 
+    this.state = {
+      todoList: [],
+    };
     this.handleTodo = this.handleTodo.bind(this);
+
+    this.todoService = new TodoService();
   }
 
-  private handleTodo(todo: Todo) {
-    this.setState((previousState) => {
-      const newTodoList: Todo[] = previousState.todoList.map((todo: Todo) => ({
-        ...todo,
-      }));
-      newTodoList.push(todo);
+  componentDidMount() {
+    this.todoService.getTodos().then((todoList) => this.setState({ todoList }));
+  }
 
-      return { todoList: newTodoList };
-    });
+  private async handleTodo(todo: Todo) {
+    const newTodoList = await this.todoService.addTodo(todo);
+    this.setState(() => ({ todoList: newTodoList }));
   }
 
   render() {

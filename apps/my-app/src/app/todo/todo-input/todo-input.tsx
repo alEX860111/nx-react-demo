@@ -1,5 +1,5 @@
 import React from 'react';
-import { Todo } from '../todo/todo';
+import { Todo } from '../todo';
 
 interface Props {
   handleTodo: (todo: Todo) => void;
@@ -19,10 +19,16 @@ export class TodoInput extends React.Component<Props, State> {
   }
 
   private handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ value: event.target.value });
+    this.setState({ value: event.target.value.trim() });
   }
 
   private handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (this.state.value.length === 0) {
+      return;
+    }
+
     const todo: Todo = {
       content: this.state.value,
       id: Math.random(),
@@ -30,8 +36,6 @@ export class TodoInput extends React.Component<Props, State> {
     this.props.handleTodo(todo);
 
     this.setState({ value: '' });
-
-    event.preventDefault();
   }
 
   render() {
@@ -41,6 +45,7 @@ export class TodoInput extends React.Component<Props, State> {
           type="text"
           value={this.state.value}
           onChange={this.handleChange}
+          placeholder="enter todo"
         />
       </form>
     );

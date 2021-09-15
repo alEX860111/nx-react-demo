@@ -1,5 +1,5 @@
 import React from 'react';
-import { Todo } from '../todo/todo';
+import { Todo } from '../todo';
 
 interface Props {
   todo: Todo;

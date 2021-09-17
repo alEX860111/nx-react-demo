@@ -33,6 +33,9 @@
     "my-app-e2e": {
       "tags": [],
       "implicitDependencies": ["my-app"]
+    },
+    "todo-ui": {
+      "tags": []
     }
   }
 }

@@ -5,7 +5,10 @@ interface Props {
   todo: Todo;
 }
 
-export class TodoListItem extends React.Component<Props, unknown> {
+// eslint-disable-next-line
+interface State {}
+
+export class TodoListItem extends React.Component<Props, State> {
   render() {
     return <li>{this.props.todo.content}</li>;
   }

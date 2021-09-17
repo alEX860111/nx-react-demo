@@ -1,4 +1,4 @@
-import { TodoWidget } from './todo/todo-widget/todo-widget';
+import { TodoWidget } from '@nx-react-demo/todo-ui';
 
 export function App() {
   return (

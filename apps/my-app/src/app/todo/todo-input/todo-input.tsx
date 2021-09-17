@@ -1,5 +1,6 @@
 import React from 'react';
 import { Todo } from '../todo';
+import styles from './todo-input.module.scss';
 
 interface Props {
   handleTodo: (todo: Todo) => void;
@@ -40,14 +41,16 @@ export class TodoInput extends React.Component<Props, State> {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          value={this.state.value}
-          onChange={this.handleChange}
-          placeholder="enter todo"
-        />
-      </form>
+      <div className={styles.todoInput}>
+        <form onSubmit={this.handleSubmit}>
+          <input
+            type="text"
+            value={this.state.value}
+            onChange={this.handleChange}
+            placeholder="enter todo"
+          />
+        </form>
+      </div>
     );
   }
 }

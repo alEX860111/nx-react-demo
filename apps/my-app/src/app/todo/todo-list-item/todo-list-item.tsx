@@ -5,11 +5,7 @@ interface Props {
   todo: Todo;
 }
 
-export class TodoListItem extends React.Component<Props, {}> {
-  constructor(props: Props) {
-    super(props);
-  }
-
+export class TodoListItem extends React.Component<Props, unknown> {
   render() {
     return <li>{this.props.todo.content}</li>;
   }

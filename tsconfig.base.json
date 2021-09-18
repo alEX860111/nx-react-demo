@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nx-react-demo/todo-ui": ["libs/todo-ui/src/index.ts"]
+      "@nx-react-demo/feature-todo": ["libs/feature-todo/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

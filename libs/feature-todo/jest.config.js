@@ -1,9 +1,9 @@
 module.exports = {
-  displayName: 'todo-ui',
+  displayName: 'feature-todo',
   preset: '../../jest.preset.js',
   transform: {
     '^.+\\.[tj]sx?$': 'babel-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/todo-ui',
+  coverageDirectory: '../../coverage/libs/feature-todo',
 };

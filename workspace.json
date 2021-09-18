@@ -1,6 +1,27 @@
 {
   "version": 2,
   "projects": {
+    "feature-todo": {
+      "root": "libs/feature-todo",
+      "sourceRoot": "libs/feature-todo/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/feature-todo/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/feature-todo"],
+          "options": {
+            "jestConfig": "libs/feature-todo/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "my-app": {
       "root": "apps/my-app",
       "sourceRoot": "apps/my-app/src",
@@ -96,27 +117,6 @@
           "executor": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["apps/my-app-e2e/**/*.{js,ts}"]
-          }
-        }
-      }
-    },
-    "todo-ui": {
-      "root": "libs/todo-ui",
-      "sourceRoot": "libs/todo-ui/src",
-      "projectType": "library",
-      "targets": {
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": ["libs/todo-ui/**/*.{ts,tsx,js,jsx}"]
-          }
-        },
-        "test": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/todo-ui"],
-          "options": {
-            "jestConfig": "libs/todo-ui/jest.config.js",
-            "passWithNoTests": true
           }
         }
       }

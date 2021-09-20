@@ -2,6 +2,7 @@ import React from 'react';
 import { Todo } from '../todo';
 import { TodoInput } from '../todo-input/todo-input';
 import { TodoList } from '../todo-list/todo-list';
+import { TodoMockService } from '../todo-mock-service';
 import { TodoService } from '../todo-service';
 
 // eslint-disable-next-line
@@ -22,7 +23,7 @@ export class TodoWidget extends React.Component<Props, State> {
     };
     this.handleTodo = this.handleTodo.bind(this);
 
-    this.todoService = new TodoService();
+    this.todoService = new TodoMockService();
   }
 
   componentDidMount() {

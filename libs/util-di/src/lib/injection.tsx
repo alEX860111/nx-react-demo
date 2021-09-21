@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 import * as React from 'react';
-import { DIContext } from './DIContext';
+import { DIContext } from './di-context';
 
 interface DIResolutionConfig {
   [propName: string]: string;
@@ -10,7 +10,7 @@ type Without<T, K> = {
   [L in Exclude<keyof T, K>]: T[L];
 };
 
-export default function withInjection<T, K>(
+export function withInjection<T, K>(
   WrappedComponent: React.ComponentType<T>,
   diConfig: DIResolutionConfig
 ): React.ComponentType<Without<T, keyof K>> {

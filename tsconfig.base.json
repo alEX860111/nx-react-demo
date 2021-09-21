@@ -16,7 +16,8 @@
     "strictPropertyInitialization": false,
     "baseUrl": ".",
     "paths": {
-      "@nx-react-demo/feature-todo": ["libs/feature-todo/src/index.ts"]
+      "@nx-react-demo/feature-todo": ["libs/feature-todo/src/index.ts"],
+      "@nx-react-demo/util-di": ["libs/util-di/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

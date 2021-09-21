@@ -1,9 +1,9 @@
 import {
-  DIContext,
   TodoMockService,
   TodoService,
   TodoWidget,
 } from '@nx-react-demo/feature-todo';
+import { DIContext } from '@nx-react-demo/util-di';
 import { Container } from 'inversify';
 
 const myContainer = new Container();
@@ -14,7 +14,7 @@ export function App() {
     <DIContext.Provider value={myContainer}>
       <div className="container-fluid">
         <h1>Welcome to my todo app!</h1>
-        <TodoWidget></TodoWidget>
+        <TodoWidget label="My todos"></TodoWidget>
       </div>
     </DIContext.Provider>
   );

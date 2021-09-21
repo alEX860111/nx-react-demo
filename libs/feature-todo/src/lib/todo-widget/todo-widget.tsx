@@ -1,3 +1,4 @@
+import { withInjection } from '@nx-react-demo/util-di';
 import React from 'react';
 import { Todo } from '../todo';
 import { TodoInput } from '../todo-input/todo-input';
@@ -5,16 +6,17 @@ import { TodoList } from '../todo-list/todo-list';
 import { TodoService } from '../todo-service';
 
 // eslint-disable-next-line
-export interface TodoWidgetProps {
+interface Props {
   todoService: TodoService;
+  label: string;
 }
 
 interface State {
   todoList: Todo[];
 }
 
-export class TodoWidget extends React.Component<TodoWidgetProps, State> {
-  constructor(props: TodoWidgetProps) {
+class TodoWidgetComponent extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -37,9 +39,21 @@ export class TodoWidget extends React.Component<TodoWidgetProps, State> {
   render() {
     return (
       <>
+        <h2>{this.props.label}</h2>
         <TodoInput handleTodo={this.handleTodo}></TodoInput>
         <TodoList todoList={this.state.todoList}></TodoList>
       </>
     );
   }
 }
+
+interface InjectedProps {
+  todoService: TodoService;
+}
+
+export const TodoWidget = withInjection<Props, InjectedProps>(
+  TodoWidgetComponent,
+  {
+    todoService: 'foo',
+  }
+);

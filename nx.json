@@ -36,6 +36,9 @@
     "my-app-e2e": {
       "tags": [],
       "implicitDependencies": ["my-app"]
+    },
+    "util-di": {
+      "tags": []
     }
   }
 }

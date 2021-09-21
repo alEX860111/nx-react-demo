@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+import 'reflect-metadata';
 import App from './app';
 
 describe(App, () => {

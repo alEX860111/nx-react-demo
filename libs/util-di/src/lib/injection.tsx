@@ -1,5 +1,5 @@
-import { Container } from 'inversify';
 import * as React from 'react';
+import { container } from 'tsyringe';
 import { DIContext } from './di-context';
 
 interface DIResolutionConfig {
@@ -22,11 +22,11 @@ export function withInjection<T, K>(
     static WrappedComponent = WrappedComponent;
 
     render() {
-      const diContainer = this.context as Container;
+      const diContainer = this.context as typeof container;
       const diProps: any = {};
       Object.keys(diConfig).forEach((propName: string) => {
         const definitionName = diConfig[propName];
-        diProps[propName] = diContainer.get(definitionName);
+        diProps[propName] = container.resolve(definitionName);
       });
 
       const { ...restProps } = this.props;

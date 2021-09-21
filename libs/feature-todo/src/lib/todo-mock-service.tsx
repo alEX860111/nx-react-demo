@@ -1,8 +1,8 @@
-import { injectable } from 'inversify';
+import { singleton } from 'tsyringe';
 import { Todo } from './todo';
 import { TodoService } from './todo-service';
 
-@injectable()
+@singleton()
 export class TodoMockService implements TodoService {
   private todoList: Todo[] = [
     { id: 1, content: 'foo' },

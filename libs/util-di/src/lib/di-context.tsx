@@ -1,4 +1,4 @@
-import { Container } from 'inversify';
 import React from 'react';
+import { container } from 'tsyringe';
 
-export const DIContext = React.createContext<Container>(new Container());
+export const DIContext = React.createContext<typeof container>(container);

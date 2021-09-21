@@ -47,9 +47,7 @@ class TodoWidgetComponent extends React.Component<Props, State> {
   }
 }
 
-interface InjectedProps {
-  todoService: TodoService;
-}
+type InjectedProps = Pick<Props, 'todoService'>;
 
 export const TodoWidget = withInjection<Props, InjectedProps>(
   TodoWidgetComponent,

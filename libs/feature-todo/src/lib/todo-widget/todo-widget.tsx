@@ -2,36 +2,35 @@ import React from 'react';
 import { Todo } from '../todo';
 import { TodoInput } from '../todo-input/todo-input';
 import { TodoList } from '../todo-list/todo-list';
-import { TodoMockService } from '../todo-mock-service';
 import { TodoService } from '../todo-service';
 
 // eslint-disable-next-line
-interface Props {}
+export interface TodoWidgetProps {
+  todoService: TodoService;
+}
 
 interface State {
   todoList: Todo[];
 }
 
-export class TodoWidget extends React.Component<Props, State> {
-  private readonly todoService: TodoService;
-
-  constructor(props: Props) {
+export class TodoWidget extends React.Component<TodoWidgetProps, State> {
+  constructor(props: TodoWidgetProps) {
     super(props);
 
     this.state = {
       todoList: [],
     };
     this.handleTodo = this.handleTodo.bind(this);
-
-    this.todoService = new TodoMockService();
   }
 
   componentDidMount() {
-    this.todoService.getTodos().then((todoList) => this.setState({ todoList }));
+    this.props.todoService
+      .getTodos()
+      .then((todoList) => this.setState({ todoList }));
   }
 
   private async handleTodo(todo: Todo) {
-    const newTodoList = await this.todoService.addTodo(todo);
+    const newTodoList = await this.props.todoService.addTodo(todo);
     this.setState(() => ({ todoList: newTodoList }));
   }
 

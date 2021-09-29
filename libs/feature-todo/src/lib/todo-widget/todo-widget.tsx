@@ -3,7 +3,7 @@ import React from 'react';
 import { Todo } from '../todo';
 import { TodoInput } from '../todo-input/todo-input';
 import { TodoList } from '../todo-list/todo-list';
-import { TodoService } from '../todo-service';
+import { TodoService, TodoServiceDIToken } from '../todo-service';
 
 interface Props {
   todoService: TodoService;
@@ -51,6 +51,6 @@ type InjectedProps = Pick<Props, 'todoService'>;
 export const TodoWidget = withInjection<Props, InjectedProps>(
   TodoWidgetComponent,
   {
-    todoService: 'foo',
+    todoService: TodoServiceDIToken,
   }
 );

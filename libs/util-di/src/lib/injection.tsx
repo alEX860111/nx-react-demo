@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { container } from 'tsyringe';
+import { container, InjectionToken } from 'tsyringe';
 import { DIContext } from './di-context';
 
 type DIResolutionConfig<K> = {
-  [P in keyof K]: string;
+  [P in keyof K]: InjectionToken<K[P]>;
 };
 
 type Without<T, K> = {
@@ -27,8 +27,8 @@ export function withInjection<T, K>(
       const diProps: any = {};
 
       Object.keys(diConfig).forEach((propName: string) => {
-        const definitionName = diConfig[propName as keyof K];
-        diProps[propName] = diContainer.resolve(definitionName);
+        const token = diConfig[propName as keyof K];
+        diProps[propName] = diContainer.resolve(token);
       });
 
       const { ...restProps } = this.props;

@@ -2,9 +2,9 @@ import * as React from 'react';
 import { container } from 'tsyringe';
 import { DIContext } from './di-context';
 
-interface DIResolutionConfig {
-  [propName: string]: string;
-}
+type DIResolutionConfig<K> = {
+  [P in keyof K]: string;
+};
 
 type Without<T, K> = {
   [L in Exclude<keyof T, K>]: T[L];
@@ -12,7 +12,7 @@ type Without<T, K> = {
 
 export function withInjection<T, K>(
   WrappedComponent: React.ComponentType<T>,
-  diConfig: DIResolutionConfig
+  diConfig: DIResolutionConfig<K>
 ): React.ComponentType<Without<T, keyof K>> {
   const name = WrappedComponent.displayName || WrappedComponent.name;
 
@@ -23,10 +23,12 @@ export function withInjection<T, K>(
 
     render() {
       const diContainer = this.context as typeof container;
+
       const diProps: any = {};
+
       Object.keys(diConfig).forEach((propName: string) => {
-        const definitionName = diConfig[propName];
-        diProps[propName] = container.resolve(definitionName);
+        const definitionName = diConfig[propName as keyof K];
+        diProps[propName] = diContainer.resolve(definitionName);
       });
 
       const { ...restProps } = this.props;

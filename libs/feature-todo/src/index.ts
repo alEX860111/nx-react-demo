@@ -1,5 +1,2 @@
-export { TodoMockService } from './lib/todo-mock-service';
-export { TodoService } from './lib/todo-service';
+export { todoDIRegistrations } from './lib/todo-di-registrations';
 export { TodoWidget } from './lib/todo-widget/todo-widget';
-
-

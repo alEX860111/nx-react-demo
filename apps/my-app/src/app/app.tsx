@@ -1,8 +1,10 @@
-import { TodoMockService, TodoWidget } from '@nx-react-demo/feature-todo';
+import { todoDIRegistrations, TodoWidget } from '@nx-react-demo/feature-todo';
 import { DIContext } from '@nx-react-demo/util-di';
 import { container } from 'tsyringe';
 
-container.register('foo', { useClass: TodoMockService });
+todoDIRegistrations.forEach((diRegistration) =>
+  container.register(diRegistration.token, diRegistration.provider)
+);
 
 export function App() {
   return (

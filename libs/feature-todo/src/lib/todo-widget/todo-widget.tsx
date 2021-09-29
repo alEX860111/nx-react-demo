@@ -5,7 +5,6 @@ import { TodoInput } from '../todo-input/todo-input';
 import { TodoList } from '../todo-list/todo-list';
 import { TodoService } from '../todo-service';
 
-// eslint-disable-next-line
 interface Props {
   todoService: TodoService;
   label: string;

@@ -1,15 +1,8 @@
 import { todoDIRegistrations, TodoWidget } from '@nx-react-demo/feature-todo';
-import { DIContext } from '@nx-react-demo/util-di';
+import { configureDIContainer, DIContext } from '@nx-react-demo/util-di';
 import { container } from 'tsyringe';
 
-todoDIRegistrations.forEach((diRegistration) => {
-  if (container.isRegistered(diRegistration.token)) {
-    throw new Error(
-      `duplicate DI registration found: '${diRegistration.token.toString()}'`
-    );
-  }
-  container.register(diRegistration.token, diRegistration.provider);
-});
+configureDIContainer(todoDIRegistrations);
 
 export function App() {
   return (

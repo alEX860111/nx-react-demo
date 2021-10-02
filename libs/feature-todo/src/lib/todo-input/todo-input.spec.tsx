@@ -20,7 +20,7 @@ describe(TodoInput, () => {
       <TodoInput handleTodoCreationData={handleTodoCreationData} />
     );
 
-    const input = getByPlaceholderText('enter todo');
+    const input = getByPlaceholderText('What needs to be done?');
 
     const value = 'hello world';
     fireEvent.change(input, { target: { value } });
@@ -40,7 +40,7 @@ describe(TodoInput, () => {
       <TodoInput handleTodoCreationData={handleTodoCreationData} />
     );
 
-    const input = getByPlaceholderText('enter todo');
+    const input = getByPlaceholderText('What needs to be done?');
 
     const value = '';
     fireEvent.change(input, { target: { value } });

@@ -46,7 +46,7 @@ export class TodoInput extends React.Component<Props, State> {
             type="text"
             value={this.state.value}
             onChange={this.handleChange}
-            placeholder="enter todo"
+            placeholder="What needs to be done?"
           />
         </form>
       </div>

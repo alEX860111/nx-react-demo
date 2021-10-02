@@ -10,6 +10,6 @@ interface State {}
 
 export class TodoListItem extends React.Component<Props, State> {
   render() {
-    return <li>{this.props.todo.content}</li>;
+    return <li className="list-group-item">{this.props.todo.content}</li>;
   }
 }

@@ -40,16 +40,15 @@ export class TodoInput extends React.Component<Props, State> {
 
   render() {
     return (
-      <div className={styles.todoInput}>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            value={this.state.value}
-            onChange={this.handleChange}
-            placeholder="What needs to be done?"
-          />
-        </form>
-      </div>
+      <form onSubmit={this.handleSubmit}>
+        <input
+          type="text"
+          value={this.state.value}
+          onChange={this.handleChange}
+          placeholder="What needs to be done?"
+          className={styles.todoInput}
+        />
+      </form>
     );
   }
 }

@@ -12,7 +12,7 @@ interface State {}
 export class TodoList extends React.Component<Props, State> {
   render() {
     return (
-      <ul>
+      <ul className="list-group">
         {this.props.todoList.map((todo) => (
           <TodoListItem key={todo.id} todo={todo}></TodoListItem>
         ))}

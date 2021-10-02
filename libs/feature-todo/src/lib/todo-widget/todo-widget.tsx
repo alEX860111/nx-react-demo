@@ -23,7 +23,9 @@ class TodoWidgetComponent extends React.Component<Props, State> {
     this.state = {
       todoList: [],
     };
+
     this.handleTodoCreationData = this.handleTodoCreationData.bind(this);
+    this.handleDeleteTodo = this.handleDeleteTodo.bind(this);
   }
 
   componentDidMount() {
@@ -40,6 +42,10 @@ class TodoWidgetComponent extends React.Component<Props, State> {
       .then((todoList) => this.setState({ todoList }));
   }
 
+  private handleDeleteTodo(todo: Todo) {
+    console.log('deleting', todo);
+  }
+
   render() {
     return (
       <>
@@ -49,7 +55,10 @@ class TodoWidgetComponent extends React.Component<Props, State> {
             handleTodoCreationData={this.handleTodoCreationData}
           ></TodoInput>
         </div>
-        <TodoList todoList={this.state.todoList}></TodoList>
+        <TodoList
+          todoList={this.state.todoList}
+          handleDeleteTodo={this.handleDeleteTodo}
+        ></TodoList>
       </>
     );
   }

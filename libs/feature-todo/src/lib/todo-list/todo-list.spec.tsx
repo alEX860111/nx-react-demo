@@ -10,18 +10,26 @@ describe(TodoList, () => {
   let todoList: Todo[];
 
   beforeEach(() => {
-    const todo: Todo = { id: 1, content: 'hello world' };
+    const todo: Todo = { id: '1', content: 'hello world' };
     todoList = [todo];
   });
 
   it('should render successfully', () => {
-    const { baseElement } = render(<TodoList todoList={todoList} />);
+    const handleDeleteTodo = jest.fn();
+
+    const { baseElement } = render(
+      <TodoList todoList={todoList} handleDeleteTodo={handleDeleteTodo} />
+    );
 
     expect(baseElement).toBeTruthy();
   });
 
   it('should render the list items', () => {
-    const { getAllByTestId } = render(<TodoList todoList={todoList} />);
+    const handleDeleteTodo = jest.fn();
+
+    const { getAllByTestId } = render(
+      <TodoList todoList={todoList} handleDeleteTodo={handleDeleteTodo} />
+    );
 
     expect(getAllByTestId('todo-list-item').length).toEqual(1);
   });

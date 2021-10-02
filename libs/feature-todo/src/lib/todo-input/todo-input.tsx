@@ -1,9 +1,9 @@
 import React from 'react';
-import { Todo } from '../todo';
+import { TodoCreationData } from '../todo-creation-data';
 import styles from './todo-input.module.scss';
 
 interface Props {
-  handleTodo: (todo: Todo) => void;
+  handleTodoCreationData: (todoCreationData: TodoCreationData) => void;
 }
 
 interface State {
@@ -30,11 +30,10 @@ export class TodoInput extends React.Component<Props, State> {
       return;
     }
 
-    const todo: Todo = {
+    const todoCreationData: TodoCreationData = {
       content: this.state.value,
-      id: Math.random(),
     };
-    this.props.handleTodo(todo);
+    this.props.handleTodoCreationData(todoCreationData);
 
     this.setState({ value: '' });
   }

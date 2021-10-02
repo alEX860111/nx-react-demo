@@ -1,6 +1,7 @@
 import { withInjection } from '@nx-react-demo/util-di';
 import React from 'react';
 import { Todo } from '../todo';
+import { TodoCreationData } from '../todo-creation-data';
 import { TodoInput } from '../todo-input/todo-input';
 import { TodoList } from '../todo-list/todo-list';
 import { TodoService, TodoServiceDIToken } from '../todo-service';
@@ -21,7 +22,7 @@ class TodoWidgetComponent extends React.Component<Props, State> {
     this.state = {
       todoList: [],
     };
-    this.handleTodo = this.handleTodo.bind(this);
+    this.handleTodoCreationData = this.handleTodoCreationData.bind(this);
   }
 
   componentDidMount() {
@@ -30,16 +31,21 @@ class TodoWidgetComponent extends React.Component<Props, State> {
       .then((todoList) => this.setState({ todoList }));
   }
 
-  private async handleTodo(todo: Todo) {
-    const newTodoList = await this.props.todoService.addTodo(todo);
-    this.setState(() => ({ todoList: newTodoList }));
+  private async handleTodoCreationData(todoCreationData: TodoCreationData) {
+    await this.props.todoService.addTodo(todoCreationData);
+
+    this.props.todoService
+      .getTodos()
+      .then((todoList) => this.setState({ todoList }));
   }
 
   render() {
     return (
       <>
         <h2>{this.props.label}</h2>
-        <TodoInput handleTodo={this.handleTodo}></TodoInput>
+        <TodoInput
+          handleTodoCreationData={this.handleTodoCreationData}
+        ></TodoInput>
         <TodoList todoList={this.state.todoList}></TodoList>
       </>
     );

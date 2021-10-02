@@ -1,5 +1,6 @@
 import { singleton } from 'tsyringe';
 import { Todo } from './todo';
+import { TodoCreationData } from './todo-creation-data';
 import { TodoService } from './todo-service';
 
 @singleton()
@@ -13,13 +14,14 @@ export class TodoMockService implements TodoService {
     return Promise.resolve(this.todoList);
   }
 
-  addTodo(todo: Todo): Promise<Todo[]> {
-    const newTodoList: Todo[] = this.todoList.map((todo: Todo) => ({
-      ...todo,
-    }));
-    newTodoList.push(todo);
-    this.todoList = newTodoList;
+  addTodo(todoCreationData: TodoCreationData): Promise<number> {
+    const todo: Todo = {
+      ...todoCreationData,
+      id: Math.random(),
+    };
 
-    return this.getTodos();
+    this.todoList.push(todo);
+
+    return Promise.resolve(todo.id);
   }
 }

@@ -42,8 +42,12 @@ class TodoWidgetComponent extends React.Component<Props, State> {
       .then((todoList) => this.setState({ todoList }));
   }
 
-  private handleDeleteTodo(todo: Todo) {
-    console.log('deleting', todo);
+  private async handleDeleteTodo(todo: Todo) {
+    await this.props.todoService.deleteTodo(todo);
+
+    this.props.todoService
+      .getTodos()
+      .then((todoList) => this.setState({ todoList }));
   }
 
   render() {

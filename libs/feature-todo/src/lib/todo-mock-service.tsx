@@ -27,4 +27,14 @@ export class TodoMockService implements TodoService {
 
     return Promise.resolve(todo.id);
   }
+
+  deleteTodo(todo: Todo): Promise<void> {
+    const index = this.todoList.findIndex(
+      (existingTodo: Todo) => existingTodo.id === todo.id
+    );
+    if (index > -1) {
+      this.todoList.splice(index, 1);
+    }
+    return Promise.resolve();
+  }
 }

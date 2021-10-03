@@ -20,7 +20,7 @@ export class TodoInput extends React.Component<Props, State> {
   }
 
   private handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ value: event.target.value.trim() });
+    this.setState({ value: event.target.value });
   }
 
   private handleSubmit(event: React.FormEvent<HTMLFormElement>) {

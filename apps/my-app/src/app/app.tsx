@@ -2,6 +2,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { todoDIRegistrations, TodoWidget } from '@nx-react-demo/feature-todo';
 import { configureDIContainer, DIContext } from '@nx-react-demo/util-di';
 import { container } from 'tsyringe';
+import styles from './app.module.scss';
 
 configureDIContainer(todoDIRegistrations);
 
@@ -10,8 +11,10 @@ export function App() {
     <>
       <CssBaseline />
       <DIContext.Provider value={container}>
-        <h1>Welcome to my todo app!</h1>
-        <TodoWidget label="My todos"></TodoWidget>
+        <div className={styles.content}>
+          <h1>Welcome to my todo app!</h1>
+          <TodoWidget label="My todos"></TodoWidget>
+        </div>
       </DIContext.Provider>
     </>
   );

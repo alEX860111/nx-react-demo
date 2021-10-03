@@ -1,6 +1,6 @@
+import TextField from '@material-ui/core/TextField';
 import React from 'react';
 import { TodoCreationData } from '../todo-creation-data';
-import styles from './todo-input.module.scss';
 
 interface Props {
   handleTodoCreationData: (todoCreationData: TodoCreationData) => void;
@@ -41,12 +41,13 @@ export class TodoInput extends React.Component<Props, State> {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <input
-          type="text"
+        <TextField
+          data-testid="textfield"
+          fullWidth
+          autoFocus
+          label="What needs to be done?"
           value={this.state.value}
           onChange={this.handleChange}
-          placeholder="What needs to be done?"
-          className={styles.todoInput}
         />
       </form>
     );

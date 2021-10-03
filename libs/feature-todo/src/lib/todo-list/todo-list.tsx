@@ -1,3 +1,4 @@
+import List from '@material-ui/core/List';
 import React from 'react';
 import { Todo } from '../todo';
 import { TodoListItem } from '../todo-list-item/todo-list-item';
@@ -13,7 +14,7 @@ interface State {}
 export class TodoList extends React.Component<Props, State> {
   render() {
     return (
-      <ul className="list-group">
+      <List>
         {this.props.todoList.map((todo) => (
           <TodoListItem
             key={todo.id}
@@ -21,7 +22,7 @@ export class TodoList extends React.Component<Props, State> {
             handleDeleteTodo={this.props.handleDeleteTodo}
           ></TodoListItem>
         ))}
-      </ul>
+      </List>
     );
   }
 }

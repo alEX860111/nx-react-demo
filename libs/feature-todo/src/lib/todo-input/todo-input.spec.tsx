@@ -13,14 +13,18 @@ describe(TodoInput, () => {
     expect(baseElement).toBeTruthy();
   });
 
-  it('should generate a new todo on submit if input is not empty', () => {
+  it('should generate todo creation data on submit if input is not empty', () => {
     const handleTodoCreationData = jest.fn();
 
-    const { getByPlaceholderText } = render(
+    const { getByTestId } = render(
       <TodoInput handleTodoCreationData={handleTodoCreationData} />
     );
 
-    const input = getByPlaceholderText('What needs to be done?');
+    const input = getByTestId('textfield').querySelector('input');
+
+    if (input === null) {
+      fail('input not found');
+    }
 
     const value = 'hello world';
     fireEvent.change(input, { target: { value } });
@@ -33,15 +37,18 @@ describe(TodoInput, () => {
     expect(todoCreationData.content).toEqual(value);
   });
 
-  it('should not generate a new todo on submit if input is empty', () => {
+  it('should not generate todo creation data on submit if input is empty', () => {
     const handleTodoCreationData = jest.fn();
 
-    const { getByPlaceholderText } = render(
+    const { getByTestId } = render(
       <TodoInput handleTodoCreationData={handleTodoCreationData} />
     );
 
-    const input = getByPlaceholderText('What needs to be done?');
+    const input = getByTestId('textfield').querySelector('input');
 
+    if (input === null) {
+      fail('input not found');
+    }
     const value = '';
     fireEvent.change(input, { target: { value } });
     fireEvent.submit(input);

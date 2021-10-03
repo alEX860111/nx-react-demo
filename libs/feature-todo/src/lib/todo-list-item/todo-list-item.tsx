@@ -1,3 +1,8 @@
+import IconButton from '@material-ui/core/IconButton';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import DeleteIcon from '@material-ui/icons/Delete';
 import React from 'react';
 import { Todo } from '../todo';
 
@@ -22,18 +27,14 @@ export class TodoListItem extends React.Component<Props, State> {
 
   render() {
     return (
-      <li className="list-group-item">
-        <div className="d-flex justify-content-between align-items-center">
-          <span>{this.props.todo.content}</span>
-          <button
-            type="button"
-            className="btn btn-danger btn-sm"
-            onClick={this.handleClick}
-          >
-            X
-          </button>
-        </div>
-      </li>
+      <ListItem>
+        <ListItemText primary={this.props.todo.content} />
+        <ListItemSecondaryAction>
+          <IconButton edge="end" onClick={this.handleClick}>
+            <DeleteIcon />
+          </IconButton>
+        </ListItemSecondaryAction>
+      </ListItem>
     );
   }
 }

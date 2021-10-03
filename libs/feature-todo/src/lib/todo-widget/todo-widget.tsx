@@ -5,7 +5,6 @@ import { TodoCreationData } from '../todo-creation-data';
 import { TodoInput } from '../todo-input/todo-input';
 import { TodoList } from '../todo-list/todo-list';
 import { TodoService, TodoServiceDIToken } from '../todo-service';
-import styles from './todo-widget.module.scss';
 
 interface Props {
   todoService: TodoService;
@@ -54,11 +53,9 @@ class TodoWidgetComponent extends React.Component<Props, State> {
     return (
       <>
         <h2>{this.props.label}</h2>
-        <div className={styles.todoInput}>
-          <TodoInput
-            handleTodoCreationData={this.handleTodoCreationData}
-          ></TodoInput>
-        </div>
+        <TodoInput
+          handleTodoCreationData={this.handleTodoCreationData}
+        ></TodoInput>
         <TodoList
           todoList={this.state.todoList}
           handleDeleteTodo={this.handleDeleteTodo}

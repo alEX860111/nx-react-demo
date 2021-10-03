@@ -1,4 +1,4 @@
-import CssBaseline from '@material-ui/core/CssBaseline';
+import CssBaseline from '@mui/material/CssBaseline';
 import { todoDIRegistrations, TodoWidget } from '@nx-react-demo/feature-todo';
 import { configureDIContainer, DIContext } from '@nx-react-demo/util-di';
 import { container } from 'tsyringe';

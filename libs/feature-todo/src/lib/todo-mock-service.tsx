@@ -13,8 +13,14 @@ export class TodoMockService implements TodoService {
     this.addTodo({ content: 'bar' });
   }
 
+  private createPromise<T>(data: T): Promise<T> {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(data), 1000);
+    });
+  }
+
   getTodos(): Promise<Todo[]> {
-    return Promise.resolve(this.todoList);
+    return this.createPromise(this.todoList);
   }
 
   addTodo(todoCreationData: TodoCreationData): Promise<string> {
@@ -23,18 +29,15 @@ export class TodoMockService implements TodoService {
       id: nanoid(),
     };
 
-    this.todoList.push(todo);
+    this.todoList = [...this.todoList, todo];
 
-    return Promise.resolve(todo.id);
+    return this.createPromise(todo.id);
   }
 
-  deleteTodo(todo: Todo): Promise<void> {
-    const index = this.todoList.findIndex(
-      (existingTodo: Todo) => existingTodo.id === todo.id
+  deleteTodo(todo: Todo): Promise<boolean> {
+    this.todoList = this.todoList.filter(
+      (existingTodo) => existingTodo.id !== todo.id
     );
-    if (index > -1) {
-      this.todoList.splice(index, 1);
-    }
-    return Promise.resolve();
+    return this.createPromise(true);
   }
 }

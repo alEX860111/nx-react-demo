@@ -1,4 +1,4 @@
-import List from '@material-ui/core/List';
+import List from '@mui/material/List';
 import React from 'react';
 import { Todo } from '../todo';
 import { TodoListItem } from '../todo-list-item/todo-list-item';

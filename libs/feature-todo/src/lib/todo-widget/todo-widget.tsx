@@ -1,3 +1,4 @@
+import Skeleton from '@mui/material/Skeleton';
 import { withInjection } from '@nx-react-demo/util-di';
 import React from 'react';
 import { Todo } from '../todo';
@@ -13,6 +14,7 @@ interface Props {
 
 interface State {
   todoList: Todo[];
+  loading: boolean;
 }
 
 class TodoWidgetComponent extends React.Component<Props, State> {
@@ -21,6 +23,7 @@ class TodoWidgetComponent extends React.Component<Props, State> {
 
     this.state = {
       todoList: [],
+      loading: false,
     };
 
     this.handleTodoCreationData = this.handleTodoCreationData.bind(this);
@@ -28,25 +31,28 @@ class TodoWidgetComponent extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.props.todoService
-      .getTodos()
-      .then((todoList) => this.setState({ todoList }));
+    this.setState({ loading: true });
+    this.loadTodos();
   }
 
-  private async handleTodoCreationData(todoCreationData: TodoCreationData) {
+  private async handleTodoCreationData(
+    todoCreationData: TodoCreationData
+  ): Promise<void> {
+    this.setState({ loading: true });
     await this.props.todoService.addTodo(todoCreationData);
-
-    this.props.todoService
-      .getTodos()
-      .then((todoList) => this.setState({ todoList }));
+    await this.loadTodos();
   }
 
-  private async handleDeleteTodo(todo: Todo) {
+  private async handleDeleteTodo(todo: Todo): Promise<void> {
+    this.setState({ loading: true });
     await this.props.todoService.deleteTodo(todo);
+    await this.loadTodos();
+  }
 
-    this.props.todoService
+  private async loadTodos(): Promise<void> {
+    return this.props.todoService
       .getTodos()
-      .then((todoList) => this.setState({ todoList }));
+      .then((todoList) => this.setState({ todoList, loading: false }));
   }
 
   render() {
@@ -56,10 +62,14 @@ class TodoWidgetComponent extends React.Component<Props, State> {
         <TodoInput
           handleTodoCreationData={this.handleTodoCreationData}
         ></TodoInput>
-        <TodoList
-          todoList={this.state.todoList}
-          handleDeleteTodo={this.handleDeleteTodo}
-        ></TodoList>
+        {this.state.loading ? (
+          <Skeleton variant="text" width={210} height={118} />
+        ) : (
+          <TodoList
+            todoList={this.state.todoList}
+            handleDeleteTodo={this.handleDeleteTodo}
+          ></TodoList>
+        )}
       </>
     );
   }

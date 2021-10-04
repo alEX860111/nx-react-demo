@@ -1,4 +1,3 @@
-import Skeleton from '@mui/material/Skeleton';
 import { withInjection } from '@nx-react-demo/util-di';
 import React from 'react';
 import { Todo } from '../todo';
@@ -62,14 +61,11 @@ class TodoWidgetComponent extends React.Component<Props, State> {
         <TodoInput
           handleTodoCreationData={this.handleTodoCreationData}
         ></TodoInput>
-        {this.state.loading ? (
-          <Skeleton variant="text" width={210} height={118} />
-        ) : (
-          <TodoList
-            todoList={this.state.todoList}
-            handleDeleteTodo={this.handleDeleteTodo}
-          ></TodoList>
-        )}
+        <TodoList
+          todoList={this.state.todoList}
+          loading={this.state.loading}
+          handleDeleteTodo={this.handleDeleteTodo}
+        ></TodoList>
       </>
     );
   }

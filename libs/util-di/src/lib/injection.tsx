@@ -24,12 +24,14 @@ export function withInjection<T, K>(
     render() {
       const diContainer = this.context as DependencyContainer;
 
-      const diProps: any = {};
-
-      Object.keys(diConfig).forEach((propName: string) => {
-        const token = diConfig[propName as keyof K];
-        diProps[propName] = diContainer.resolve(token);
-      });
+      const diProps = Object.fromEntries(
+        Object.entries<InjectionToken>(diConfig).map(
+          ([propertyName, injectionToken]) => [
+            propertyName,
+            diContainer.resolve(injectionToken),
+          ]
+        )
+      );
 
       const { ...restProps } = this.props;
       return <WrappedComponent {...diProps} {...(restProps as T)} />;

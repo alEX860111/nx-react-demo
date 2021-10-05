@@ -1,2 +1,2 @@
-export { todoDIRegistrations } from './lib/todo-di-registrations';
+import './lib/todo-di-registry';
 export { TodoWidget } from './lib/todo-widget/todo-widget';

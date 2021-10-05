@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { container, InjectionToken } from 'tsyringe';
+import { DependencyContainer, InjectionToken } from 'tsyringe';
 import { DIContext } from './di-context';
 
 type DIResolutionConfig<K> = {
@@ -22,7 +22,7 @@ export function withInjection<T, K>(
     static WrappedComponent = WrappedComponent;
 
     render() {
-      const diContainer = this.context as typeof container;
+      const diContainer = this.context as DependencyContainer;
 
       const diProps: any = {};
 

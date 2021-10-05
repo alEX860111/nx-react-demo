@@ -1,4 +1,4 @@
 import React from 'react';
-import { container } from 'tsyringe';
+import { container, DependencyContainer } from 'tsyringe';
 
-export const DIContext = React.createContext<typeof container>(container);
+export const DIContext = React.createContext<DependencyContainer>(container);

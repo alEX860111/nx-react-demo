@@ -10,7 +10,7 @@ interface Props {
   handleDeleteTodo: (todo: Todo) => void;
 }
 
-// eslint-disable-next-line
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface State {}
 
 export class TodoList extends React.Component<Props, State> {

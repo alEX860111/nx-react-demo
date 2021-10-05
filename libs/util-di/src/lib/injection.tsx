@@ -16,6 +16,7 @@ export function withInjection<T, K>(
 ): React.ComponentType<Without<T, keyof K>> {
   const name = WrappedComponent.displayName || WrappedComponent.name;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   class InjectionWrapper extends React.Component<any, any> {
     static contextType = DIContext;
     static displayName = `withInjection(${name})`;

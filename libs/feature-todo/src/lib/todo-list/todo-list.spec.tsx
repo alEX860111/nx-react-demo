@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+import { Page } from '../page';
 import { Todo } from '../todo';
 import { TodoList } from './todo-list';
 
@@ -7,18 +8,31 @@ jest.mock('../todo-list-item/todo-list-item', () => ({
 }));
 
 describe(TodoList, () => {
-  let todoList: Todo[];
+  let todoPage: Page<Todo>;
 
   beforeEach(() => {
     const todo: Todo = { id: '1', content: 'hello world' };
-    todoList = [todo];
+
+    todoPage = {
+      index: 0,
+      size: 10,
+      items: [todo],
+      totalItems: 1,
+      totalPages: 1,
+    };
   });
 
   it('should render successfully', () => {
     const handleDeleteTodo = jest.fn();
+    const handlePageChange = jest.fn();
 
     const { baseElement } = render(
-      <TodoList todoList={todoList} handleDeleteTodo={handleDeleteTodo} />
+      <TodoList
+        todoPage={todoPage}
+        loading={false}
+        onDeleteTodo={handleDeleteTodo}
+        onPageChange={handlePageChange}
+      />
     );
 
     expect(baseElement).toBeTruthy();
@@ -26,9 +40,15 @@ describe(TodoList, () => {
 
   it('should render the list items', () => {
     const handleDeleteTodo = jest.fn();
+    const handlePageChange = jest.fn();
 
     const { getAllByTestId } = render(
-      <TodoList todoList={todoList} handleDeleteTodo={handleDeleteTodo} />
+      <TodoList
+        todoPage={todoPage}
+        loading={false}
+        onDeleteTodo={handleDeleteTodo}
+        onPageChange={handlePageChange}
+      />
     );
 
     expect(getAllByTestId('todo-list-item').length).toEqual(1);

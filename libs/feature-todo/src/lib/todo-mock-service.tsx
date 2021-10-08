@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
 import { singleton } from 'tsyringe';
+import { Page } from './page';
 import { Todo } from './todo';
 import { TodoCreationData } from './todo-creation-data';
 import { TodoService } from './todo-service';
@@ -9,8 +10,12 @@ export class TodoMockService implements TodoService {
   private todoList: Todo[] = [];
 
   constructor() {
-    this.addTodo({ content: 'foo' });
-    this.addTodo({ content: 'bar' });
+    this.addTodo({ content: 'wash car' });
+    this.addTodo({ content: 'clean up room' });
+    this.addTodo({ content: 'play videogames' });
+    this.addTodo({ content: 'go shopping' });
+    this.addTodo({ content: 'go to the doctor' });
+    this.addTodo({ content: 'meet friends' });
   }
 
   private createPromise<T>(data: T): Promise<T> {
@@ -19,8 +24,18 @@ export class TodoMockService implements TodoService {
     });
   }
 
-  getTodos(): Promise<Todo[]> {
-    return this.createPromise(this.todoList);
+  getTodos(pageIndex: number, pageSize: number): Promise<Page<Todo>> {
+    const startIndex = pageIndex * pageSize;
+    const endIndex = startIndex + pageSize;
+
+    const page: Page<Todo> = {
+      index: pageIndex,
+      size: pageSize,
+      items: this.todoList.slice(startIndex, endIndex),
+      totalItems: this.todoList.length,
+      totalPages: Math.ceil(this.todoList.length / pageSize),
+    };
+    return this.createPromise(page);
   }
 
   addTodo(todoCreationData: TodoCreationData): Promise<string> {
@@ -29,7 +44,7 @@ export class TodoMockService implements TodoService {
       id: nanoid(),
     };
 
-    this.todoList = [...this.todoList, todo];
+    this.todoList = [todo, ...this.todoList];
 
     return this.createPromise(todo.id);
   }

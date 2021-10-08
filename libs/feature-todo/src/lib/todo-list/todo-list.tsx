@@ -5,6 +5,7 @@ import React from 'react';
 import { Page } from '../page';
 import { Todo } from '../todo';
 import { TodoListItem } from '../todo-list-item/todo-list-item';
+import styles from './todo-list.module.scss';
 
 interface Props {
   todoPage: Page<Todo>;
@@ -27,7 +28,14 @@ export class TodoList extends React.Component<Props, State> {
     return (
       <div>
         {indices.map((index) => (
-          <Skeleton key={index} variant="text" height={48} />
+          <div key={index} className={styles.skeletonContainer}>
+            <Skeleton
+              variant="text"
+              height={48}
+              className={styles.skeletonContent}
+            />
+            <Skeleton variant="circular" width={30} height={30} />
+          </div>
         ))}
       </div>
     );

@@ -1,6 +1,27 @@
 {
   "version": 2,
   "projects": {
+    "data-access-todo": {
+      "root": "libs/data-access-todo",
+      "sourceRoot": "libs/data-access-todo/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/data-access-todo/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/data-access-todo"],
+          "options": {
+            "jestConfig": "libs/data-access-todo/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "feature-todo": {
       "root": "libs/feature-todo",
       "sourceRoot": "libs/feature-todo/src",

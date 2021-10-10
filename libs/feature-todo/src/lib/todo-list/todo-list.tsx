@@ -4,9 +4,8 @@ import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemText from '@mui/material/ListItemText';
 import Pagination from '@mui/material/Pagination';
 import Skeleton from '@mui/material/Skeleton';
+import { Page, Todo } from '@nx-react-demo/data-access-todo';
 import React from 'react';
-import { Page } from '../page';
-import { Todo } from '../todo';
 import { TodoListItem } from '../todo-list-item/todo-list-item';
 
 interface Props {

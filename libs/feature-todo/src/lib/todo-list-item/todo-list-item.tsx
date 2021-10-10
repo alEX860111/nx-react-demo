@@ -3,8 +3,8 @@ import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemText from '@mui/material/ListItemText';
+import { Todo } from '@nx-react-demo/data-access-todo';
 import React from 'react';
-import { Todo } from '../todo';
 
 interface Props {
   todo: Todo;

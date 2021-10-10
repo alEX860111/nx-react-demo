@@ -27,6 +27,9 @@
     ]
   },
   "projects": {
+    "data-access-todo": {
+      "tags": []
+    },
     "feature-todo": {
       "tags": []
     },

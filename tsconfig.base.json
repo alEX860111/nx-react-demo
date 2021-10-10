@@ -16,6 +16,7 @@
     "strictPropertyInitialization": false,
     "baseUrl": ".",
     "paths": {
+      "@nx-react-demo/data-access-todo": ["libs/data-access-todo/src/index.ts"],
       "@nx-react-demo/feature-todo": ["libs/feature-todo/src/index.ts"],
       "@nx-react-demo/util-di": ["libs/util-di/src/index.ts"]
     }

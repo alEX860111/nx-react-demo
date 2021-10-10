@@ -1,5 +1,5 @@
+import { TodoCreationData } from '@nx-react-demo/data-access-todo';
 import { fireEvent, render } from '@testing-library/react';
-import { TodoCreationData } from '../todo-creation-data';
 import { TodoInput } from './todo-input';
 
 describe(TodoInput, () => {

@@ -1,11 +1,14 @@
+import {
+  Page,
+  Todo,
+  TodoCreationData,
+  TodoService,
+  TodoServiceDIToken,
+} from '@nx-react-demo/data-access-todo';
 import { withInjection } from '@nx-react-demo/util-di';
 import React from 'react';
-import { Page } from '../page';
-import { Todo } from '../todo';
-import { TodoCreationData } from '../todo-creation-data';
 import { TodoInput } from '../todo-input/todo-input';
 import { TodoList } from '../todo-list/todo-list';
-import { TodoService, TodoServiceDIToken } from '../todo-service';
 
 interface Props {
   todoService: TodoService;

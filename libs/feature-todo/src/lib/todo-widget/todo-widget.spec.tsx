@@ -1,8 +1,11 @@
+import {
+  Page,
+  Todo,
+  TodoService,
+  TodoServiceDIToken,
+} from '@nx-react-demo/data-access-todo';
 import { render } from '@testing-library/react';
 import { container } from 'tsyringe';
-import { Page } from '../page';
-import { Todo } from '../todo';
-import { TodoService, TodoServiceDIToken } from '../todo-service';
 import { TodoWidget } from './todo-widget';
 
 describe(TodoWidget, () => {

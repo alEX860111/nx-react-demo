@@ -1,6 +1,5 @@
+import { Page, Todo } from '@nx-react-demo/data-access-todo';
 import { render } from '@testing-library/react';
-import { Page } from '../page';
-import { Todo } from '../todo';
 import { TodoList } from './todo-list';
 
 jest.mock('../todo-list-item/todo-list-item', () => ({

@@ -1,6 +1,6 @@
 import TextField from '@mui/material/TextField';
+import { TodoCreationData } from '@nx-react-demo/data-access-todo';
 import React from 'react';
-import { TodoCreationData } from '../todo-creation-data';
 
 interface Props {
   handleTodoCreationData: (todoCreationData: TodoCreationData) => void;

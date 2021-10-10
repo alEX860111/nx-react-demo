@@ -28,20 +28,20 @@
   },
   "projects": {
     "data-access-todo": {
-      "tags": []
+      "tags": ["type:data-access"]
     },
     "feature-todo": {
-      "tags": []
+      "tags": ["type:feature"]
     },
     "my-app": {
-      "tags": []
+      "tags": ["type:app"]
     },
     "my-app-e2e": {
       "tags": [],
       "implicitDependencies": ["my-app"]
     },
     "util-di": {
-      "tags": []
+      "tags": ["type:util"]
     }
   }
 }

@@ -1,11 +1,13 @@
 import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import ListItemText from '@mui/material/ListItemText';
 import Pagination from '@mui/material/Pagination';
 import Skeleton from '@mui/material/Skeleton';
 import React from 'react';
 import { Page } from '../page';
 import { Todo } from '../todo';
 import { TodoListItem } from '../todo-list-item/todo-list-item';
-import styles from './todo-list.module.scss';
 
 interface Props {
   todoPage: Page<Todo>;
@@ -20,24 +22,23 @@ interface State {}
 export class TodoList extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
+
     this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   private getSkeletons() {
     const indices = [...Array(this.props.todoPage.size).keys()];
     return (
-      <div>
+      <List>
         {indices.map((index) => (
-          <div key={index} className={styles.skeletonContainer}>
-            <Skeleton
-              variant="text"
-              height={48}
-              className={styles.skeletonContent}
-            />
-            <Skeleton variant="circular" width={30} height={30} />
-          </div>
+          <ListItem key={index}>
+            <ListItemText primary={<Skeleton variant="text" />} />
+            <ListItemSecondaryAction>
+              <Skeleton variant="circular" width={25} height={25} />
+            </ListItemSecondaryAction>
+          </ListItem>
         ))}
-      </div>
+      </List>
     );
   }
 

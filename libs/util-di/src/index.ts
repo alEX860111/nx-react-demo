@@ -1,3 +1,2 @@
-export { DIContext } from './lib/di-context';
-export { withInjection } from './lib/injection';
-
+export * from './lib/di-context';
+export * from './lib/injection';

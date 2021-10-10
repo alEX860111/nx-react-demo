@@ -1,6 +1,6 @@
 import './lib/todo-di-registry';
 
-export { Page } from './lib/page';
-export { Todo } from './lib/todo';
-export { TodoCreationData } from './lib/todo-creation-data';
-export { TodoService, TodoServiceDIToken } from './lib/todo-service';
+export * from './lib/page';
+export * from './lib/todo';
+export * from './lib/todo-creation-data';
+export * from './lib/todo-service';

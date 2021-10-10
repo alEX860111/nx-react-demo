@@ -1,1 +1,1 @@
-export { TodoWidget } from './lib/todo-widget/todo-widget';
+export * from './lib/todo-widget/todo-widget';

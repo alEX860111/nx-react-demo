@@ -21,7 +21,7 @@ export class TodoList extends React.Component<Props, State> {
     super(props);
 
     this.handlePageChange = this.handlePageChange.bind(this);
-    this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
+    this.handleRowsPerPageChange = this.handleRowsPerPageChange.bind(this);
   }
 
   private getSkeletons() {
@@ -38,13 +38,13 @@ export class TodoList extends React.Component<Props, State> {
   private handlePageChange(
     _event: React.MouseEvent<HTMLButtonElement> | null,
     page: number
-  ) {
+  ): void {
     this.props.onPageIndexChange(page);
   }
 
-  private handleChangeRowsPerPage(
+  private handleRowsPerPageChange(
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
+  ): void {
     this.props.onPageSizeChange(parseInt(event.target.value, 10));
   }
 
@@ -70,7 +70,7 @@ export class TodoList extends React.Component<Props, State> {
           page={this.props.todoPage.index}
           onPageChange={this.handlePageChange}
           rowsPerPage={this.props.todoPage.size}
-          onRowsPerPageChange={this.handleChangeRowsPerPage}
+          onRowsPerPageChange={this.handleRowsPerPageChange}
           rowsPerPageOptions={[2, 5, 10]}
           labelRowsPerPage="todos per page"
         />

@@ -61,12 +61,18 @@ class TodoWidgetComponent extends React.Component<Props, State> {
   }
 
   private handlePageIndexChange(pageIndex: number) {
-    this.setState({ loading: true });
+    this.setState((state) => ({
+      loading: true,
+      todoPage: { ...state.todoPage, index: pageIndex },
+    }));
     this.loadTodos(pageIndex, this.state.todoPage.size);
   }
 
   private handlePageSizeChange(pageSize: number) {
-    this.setState({ loading: true });
+    this.setState((state) => ({
+      loading: true,
+      todoPage: { ...state.todoPage, size: pageSize },
+    }));
     this.loadTodos(this.state.todoPage.index, pageSize);
   }
 

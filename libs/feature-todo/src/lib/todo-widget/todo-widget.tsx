@@ -27,7 +27,7 @@ class TodoWidgetComponent extends React.Component<Props, State> {
     this.state = {
       todoPage: {
         index: 0,
-        size: 10,
+        size: 5,
         items: [],
         totalItems: 0,
         totalPages: 0,

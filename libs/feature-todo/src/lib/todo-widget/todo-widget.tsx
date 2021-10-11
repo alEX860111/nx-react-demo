@@ -21,15 +21,13 @@ interface State {
 }
 
 class TodoWidgetComponent extends React.Component<Props, State> {
-  private readonly pageSize = 2;
-
   constructor(props: Props) {
     super(props);
 
     this.state = {
       todoPage: {
         index: 0,
-        size: this.pageSize,
+        size: 10,
         items: [],
         totalItems: 0,
         totalPages: 0,
@@ -39,12 +37,13 @@ class TodoWidgetComponent extends React.Component<Props, State> {
 
     this.handleTodoCreationData = this.handleTodoCreationData.bind(this);
     this.handleDeleteTodo = this.handleDeleteTodo.bind(this);
-    this.handlePageChange = this.handlePageChange.bind(this);
+    this.handlePageIndexChange = this.handlePageIndexChange.bind(this);
+    this.handlePageSizeChange = this.handlePageSizeChange.bind(this);
   }
 
   componentDidMount() {
     this.setState({ loading: true });
-    this.loadTodos(0, this.pageSize);
+    this.loadTodos(this.state.todoPage.index, this.state.todoPage.size);
   }
 
   private async handleTodoCreationData(
@@ -52,13 +51,13 @@ class TodoWidgetComponent extends React.Component<Props, State> {
   ): Promise<void> {
     this.setState({ loading: true });
     await this.props.todoService.addTodo(todoCreationData);
-    await this.loadTodos(0, this.pageSize);
+    await this.loadTodos(0, this.state.todoPage.size);
   }
 
   private async handleDeleteTodo(todo: Todo): Promise<void> {
     this.setState({ loading: true });
     await this.props.todoService.deleteTodo(todo);
-    await this.loadTodos(this.state.todoPage.index, this.pageSize);
+    await this.loadTodos(this.state.todoPage.index, this.state.todoPage.size);
   }
 
   private async loadTodos(pageIndex: number, pageSize: number): Promise<void> {
@@ -67,9 +66,14 @@ class TodoWidgetComponent extends React.Component<Props, State> {
       .then((todoPage) => this.setState({ todoPage, loading: false }));
   }
 
-  private handlePageChange(pageIndex: number) {
+  private handlePageIndexChange(pageIndex: number) {
     this.setState({ loading: true });
-    this.loadTodos(pageIndex, this.pageSize);
+    this.loadTodos(pageIndex, this.state.todoPage.size);
+  }
+
+  private handlePageSizeChange(pageSize: number) {
+    this.setState({ loading: true });
+    this.loadTodos(this.state.todoPage.index, pageSize);
   }
 
   render() {
@@ -83,7 +87,8 @@ class TodoWidgetComponent extends React.Component<Props, State> {
           todoPage={this.state.todoPage}
           loading={this.state.loading}
           onDeleteTodo={this.handleDeleteTodo}
-          onPageChange={this.handlePageChange}
+          onPageIndexChange={this.handlePageIndexChange}
+          onPageSizeChange={this.handlePageSizeChange}
         ></TodoList>
       </>
     );

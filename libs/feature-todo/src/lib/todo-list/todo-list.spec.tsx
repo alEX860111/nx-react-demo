@@ -23,14 +23,16 @@ describe(TodoList, () => {
 
   it('should render successfully', () => {
     const handleDeleteTodo = jest.fn();
-    const handlePageChange = jest.fn();
+    const handlePageIndexChange = jest.fn();
+    const handlePageSizeChange = jest.fn();
 
     const { baseElement } = render(
       <TodoList
         todoPage={todoPage}
         loading={false}
         onDeleteTodo={handleDeleteTodo}
-        onPageChange={handlePageChange}
+        onPageIndexChange={handlePageIndexChange}
+        onPageSizeChange={handlePageSizeChange}
       />
     );
 
@@ -39,14 +41,16 @@ describe(TodoList, () => {
 
   it('should render the list items', () => {
     const handleDeleteTodo = jest.fn();
-    const handlePageChange = jest.fn();
+    const handlePageIndexChange = jest.fn();
+    const handlePageSizeChange = jest.fn();
 
     const { getAllByTestId } = render(
       <TodoList
         todoPage={todoPage}
         loading={false}
         onDeleteTodo={handleDeleteTodo}
-        onPageChange={handlePageChange}
+        onPageIndexChange={handlePageIndexChange}
+        onPageSizeChange={handlePageSizeChange}
       />
     );
 

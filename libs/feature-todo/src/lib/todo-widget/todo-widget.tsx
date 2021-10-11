@@ -60,12 +60,6 @@ class TodoWidgetComponent extends React.Component<Props, State> {
     await this.loadTodos(this.state.todoPage.index, this.state.todoPage.size);
   }
 
-  private async loadTodos(pageIndex: number, pageSize: number): Promise<void> {
-    return this.props.todoService
-      .getTodos(pageIndex, pageSize)
-      .then((todoPage) => this.setState({ todoPage, loading: false }));
-  }
-
   private handlePageIndexChange(pageIndex: number) {
     this.setState({ loading: true });
     this.loadTodos(pageIndex, this.state.todoPage.size);
@@ -74,6 +68,12 @@ class TodoWidgetComponent extends React.Component<Props, State> {
   private handlePageSizeChange(pageSize: number) {
     this.setState({ loading: true });
     this.loadTodos(this.state.todoPage.index, pageSize);
+  }
+
+  private async loadTodos(pageIndex: number, pageSize: number): Promise<void> {
+    return this.props.todoService
+      .getTodos(pageIndex, pageSize)
+      .then((todoPage) => this.setState({ todoPage, loading: false }));
   }
 
   render() {

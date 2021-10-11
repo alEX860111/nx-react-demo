@@ -1,11 +1,8 @@
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
-import ListItemText from '@mui/material/ListItemText';
 import Pagination from '@mui/material/Pagination';
-import Skeleton from '@mui/material/Skeleton';
 import { Page, Todo } from '@nx-react-demo/data-access-todo';
 import React from 'react';
+import { SkeletonTodoListItem } from '../skeleton-todo-list-item/skeleton-todo-list-item';
 import { TodoListItem } from '../todo-list-item/todo-list-item';
 
 interface Props {
@@ -30,12 +27,7 @@ export class TodoList extends React.Component<Props, State> {
     return (
       <List>
         {indices.map((index) => (
-          <ListItem key={index}>
-            <ListItemText primary={<Skeleton variant="text" />} />
-            <ListItemSecondaryAction>
-              <Skeleton variant="circular" width={25} height={25} />
-            </ListItemSecondaryAction>
-          </ListItem>
+          <SkeletonTodoListItem key={index} />
         ))}
       </List>
     );
@@ -57,7 +49,7 @@ export class TodoList extends React.Component<Props, State> {
                 key={todo.id}
                 todo={todo}
                 handleDeleteTodo={this.props.onDeleteTodo}
-              ></TodoListItem>
+              />
             ))}
           </List>
         )}

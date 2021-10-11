@@ -72,6 +72,7 @@ export class TodoList extends React.Component<Props, State> {
           rowsPerPage={this.props.todoPage.size}
           onRowsPerPageChange={this.handleChangeRowsPerPage}
           rowsPerPageOptions={[2, 5, 10]}
+          labelRowsPerPage="todos per page"
         />
       </>
     );

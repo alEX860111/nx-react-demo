@@ -6,7 +6,7 @@ jest.mock('../todo-list-item/todo-list-item', () => ({
   TodoListItem: () => <li data-testid="todo-list-item"></li>,
 }));
 
-describe(TodoList, () => {
+describe('TodoList', () => {
   let todoPage: Page<Todo>;
 
   beforeEach(() => {

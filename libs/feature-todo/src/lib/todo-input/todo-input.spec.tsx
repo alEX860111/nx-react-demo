@@ -2,7 +2,7 @@ import { TodoCreationData } from '@nx-react-demo/data-access-todo';
 import { fireEvent, render } from '@testing-library/react';
 import { TodoInput } from './todo-input';
 
-describe(TodoInput, () => {
+describe('TodoInput', () => {
   it('should render successfully', () => {
     const handleCreateTodo = jest.fn();
 

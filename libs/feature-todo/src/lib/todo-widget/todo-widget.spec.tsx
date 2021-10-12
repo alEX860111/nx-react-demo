@@ -5,10 +5,11 @@ import {
   TodoServiceDIToken,
 } from '@nx-react-demo/data-access-todo';
 import { render } from '@testing-library/react';
+import { SnackbarProvider } from 'notistack';
 import { container } from 'tsyringe';
 import { TodoWidget } from './todo-widget';
 
-describe(TodoWidget, () => {
+describe('TodoWidget', () => {
   it('should render successfully', () => {
     const todo: Todo = { id: '1', content: 'hello world' };
 
@@ -27,7 +28,11 @@ describe(TodoWidget, () => {
 
     container.registerInstance(TodoServiceDIToken, todoServiceMock);
 
-    const { baseElement } = render(<TodoWidget label="My todos" />);
+    const { baseElement } = render(
+      <SnackbarProvider maxSnack={3}>
+        <TodoWidget label="My todos" />
+      </SnackbarProvider>
+    );
 
     expect(baseElement).toBeTruthy();
   });

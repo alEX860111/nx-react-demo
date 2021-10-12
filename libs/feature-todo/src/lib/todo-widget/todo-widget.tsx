@@ -6,11 +6,12 @@ import {
   TodoServiceDIToken,
 } from '@nx-react-demo/data-access-todo';
 import { withInjection } from '@nx-react-demo/util-di';
+import { withSnackbar, WithSnackbarProps } from 'notistack';
 import React from 'react';
 import { TodoInput } from '../todo-input/todo-input';
 import { TodoList } from '../todo-list/todo-list';
 
-interface Props {
+interface Props extends WithSnackbarProps {
   todoService: TodoService;
   label: string;
 }
@@ -54,6 +55,9 @@ class TodoWidgetComponent extends React.Component<Props, State> {
       async () => {
         await this.props.todoService.addTodo(todoCreationData);
         await this.loadTodos();
+        this.props.enqueueSnackbar('Successfully created todo.', {
+          variant: 'success',
+        });
       }
     );
   }
@@ -86,6 +90,9 @@ class TodoWidgetComponent extends React.Component<Props, State> {
         },
         async () => {
           await this.loadTodos();
+          this.props.enqueueSnackbar('Successfully deleted todo.', {
+            variant: 'success',
+          });
         }
       );
     });
@@ -140,9 +147,8 @@ class TodoWidgetComponent extends React.Component<Props, State> {
 
 type InjectedProps = Pick<Props, 'todoService'>;
 
-export const TodoWidget = withInjection<Props, InjectedProps>(
-  TodoWidgetComponent,
-  {
+export const TodoWidget = withSnackbar(
+  withInjection<Props, InjectedProps>(TodoWidgetComponent, {
     todoService: TodoServiceDIToken,
-  }
+  })
 );

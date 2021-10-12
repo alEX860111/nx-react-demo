@@ -2,7 +2,7 @@ import { Todo } from '@nx-react-demo/data-access-todo';
 import { render } from '@testing-library/react';
 import { TodoListItem } from './todo-list-item';
 
-describe(TodoListItem, () => {
+describe('TodoListItem', () => {
   let todo: Todo;
 
   beforeEach(() => {

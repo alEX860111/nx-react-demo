@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import 'reflect-metadata';
 import App from './app';
 
-describe(App, () => {
+describe('App', () => {
   it('should render successfully', () => {
     const { baseElement } = render(<App />);
 

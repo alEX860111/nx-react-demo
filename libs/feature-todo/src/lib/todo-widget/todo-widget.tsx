@@ -42,48 +42,82 @@ class TodoWidgetComponent extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.setState({ loading: true });
-    this.loadTodos(this.state.todoPage.index, this.state.todoPage.size);
+    this.setState({ loading: true }, this.loadTodos);
   }
 
-  private async handleCreateTodo(
-    todoCreationData: TodoCreationData
-  ): Promise<void> {
-    const pageIndex = 0;
-    this.setState((state) => ({
-      loading: true,
-      todoPage: { ...state.todoPage, index: pageIndex },
-    }));
-    await this.props.todoService.addTodo(todoCreationData);
-    await this.loadTodos(pageIndex, this.state.todoPage.size);
+  private handleCreateTodo(todoCreationData: TodoCreationData) {
+    this.setState(
+      (state) => ({
+        loading: true,
+        todoPage: { ...state.todoPage, index: 0 },
+      }),
+      async () => {
+        await this.props.todoService.addTodo(todoCreationData);
+        await this.loadTodos();
+      }
+    );
   }
 
-  private async handleDeleteTodo(todo: Todo): Promise<void> {
-    this.setState({ loading: true });
-    await this.props.todoService.deleteTodo(todo);
-    await this.loadTodos(this.state.todoPage.index, this.state.todoPage.size);
+  private handleDeleteTodo(todo: Todo) {
+    this.setState({ loading: true }, async () => {
+      await this.props.todoService.deleteTodo(todo);
+      this.setState(
+        (state) => {
+          const multiplePagesExist = state.todoPage.totalPages > 1;
+          const lastPageIsViewed =
+            state.todoPage.index === state.todoPage.totalPages - 1;
+          const oneItemOnPage = this.state.todoPage.items.length === 1;
+          const goBackOnPage =
+            multiplePagesExist && lastPageIsViewed && oneItemOnPage;
+
+          return {
+            loading: true,
+            todoPage: {
+              ...state.todoPage,
+              index: goBackOnPage
+                ? state.todoPage.index - 1
+                : state.todoPage.index,
+              totalItems: state.todoPage.totalItems - 1,
+              totalPages: goBackOnPage
+                ? state.todoPage.totalPages - 1
+                : state.todoPage.totalPages,
+            },
+          };
+        },
+        async () => {
+          await this.loadTodos();
+        }
+      );
+    });
   }
 
   private handlePageIndexChange(pageIndex: number) {
-    this.setState((state) => ({
-      loading: true,
-      todoPage: { ...state.todoPage, index: pageIndex },
-    }));
-    this.loadTodos(pageIndex, this.state.todoPage.size);
+    this.setState(
+      (state) => ({
+        loading: true,
+        todoPage: { ...state.todoPage, index: pageIndex },
+      }),
+      async () => {
+        await this.loadTodos();
+      }
+    );
   }
 
   private handlePageSizeChange(pageSize: number) {
-    const pageIndex = 0;
-    this.setState((state) => ({
-      loading: true,
-      todoPage: { ...state.todoPage, index: pageIndex, size: pageSize },
-    }));
-    this.loadTodos(pageIndex, pageSize);
+    this.setState(
+      (state) => ({
+        loading: true,
+        todoPage: { ...state.todoPage, index: 0, size: pageSize },
+      }),
+      async () => {
+        await this.loadTodos();
+      }
+    );
   }
 
-  private async loadTodos(pageIndex: number, pageSize: number): Promise<void> {
+  private async loadTodos(): Promise<void> {
     return this.props.todoService
-      .getTodos(pageIndex, pageSize)
+      .getTodos(this.state.todoPage.index, this.state.todoPage.size)
       .then((todoPage) => this.setState({ todoPage, loading: false }));
   }
 

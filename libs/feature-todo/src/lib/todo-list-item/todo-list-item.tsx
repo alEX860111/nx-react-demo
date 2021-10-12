@@ -8,7 +8,7 @@ import React from 'react';
 
 interface Props {
   todo: Todo;
-  handleDeleteTodo: (todo: Todo) => void;
+  onDeleteTodo: (todo: Todo) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -22,7 +22,7 @@ export class TodoListItem extends React.Component<Props, State> {
   }
 
   private handleClick() {
-    this.props.handleDeleteTodo(this.props.todo);
+    this.props.onDeleteTodo(this.props.todo);
   }
 
   render() {

@@ -59,7 +59,7 @@ export class TodoList extends React.Component<Props, State> {
               <TodoListItem
                 key={todo.id}
                 todo={todo}
-                handleDeleteTodo={this.props.onDeleteTodo}
+                onDeleteTodo={this.props.onDeleteTodo}
               />
             ))}
           </List>

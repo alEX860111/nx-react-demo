@@ -13,7 +13,7 @@ describe(TodoListItem, () => {
     const handleDeleteTodo = jest.fn();
 
     const { baseElement } = render(
-      <TodoListItem todo={todo} handleDeleteTodo={handleDeleteTodo} />
+      <TodoListItem todo={todo} onDeleteTodo={handleDeleteTodo} />
     );
 
     expect(baseElement).toBeTruthy();
@@ -23,7 +23,7 @@ describe(TodoListItem, () => {
     const handleDeleteTodo = jest.fn();
 
     const { getByText } = render(
-      <TodoListItem todo={todo} handleDeleteTodo={handleDeleteTodo} />
+      <TodoListItem todo={todo} onDeleteTodo={handleDeleteTodo} />
     );
 
     expect(getByText(todo.content)).toBeTruthy();

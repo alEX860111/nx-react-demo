@@ -49,9 +49,13 @@ class TodoWidgetComponent extends React.Component<Props, State> {
   private async handleTodoCreationData(
     todoCreationData: TodoCreationData
   ): Promise<void> {
-    this.setState({ loading: true });
+    const pageIndex = 0;
+    this.setState((state) => ({
+      loading: true,
+      todoPage: { ...state.todoPage, index: pageIndex },
+    }));
     await this.props.todoService.addTodo(todoCreationData);
-    await this.loadTodos(0, this.state.todoPage.size);
+    await this.loadTodos(pageIndex, this.state.todoPage.size);
   }
 
   private async handleDeleteTodo(todo: Todo): Promise<void> {
@@ -69,11 +73,12 @@ class TodoWidgetComponent extends React.Component<Props, State> {
   }
 
   private handlePageSizeChange(pageSize: number) {
+    const pageIndex = 0;
     this.setState((state) => ({
       loading: true,
-      todoPage: { ...state.todoPage, size: pageSize },
+      todoPage: { ...state.todoPage, index: pageIndex, size: pageSize },
     }));
-    this.loadTodos(this.state.todoPage.index, pageSize);
+    this.loadTodos(pageIndex, pageSize);
   }
 
   private async loadTodos(pageIndex: number, pageSize: number): Promise<void> {

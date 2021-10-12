@@ -3,7 +3,7 @@ import { TodoCreationData } from '@nx-react-demo/data-access-todo';
 import React from 'react';
 
 interface Props {
-  handleTodoCreationData: (todoCreationData: TodoCreationData) => void;
+  onCreateTodo: (todoCreationData: TodoCreationData) => void;
 }
 
 interface State {
@@ -33,7 +33,7 @@ export class TodoInput extends React.Component<Props, State> {
     const todoCreationData: TodoCreationData = {
       content: this.state.value,
     };
-    this.props.handleTodoCreationData(todoCreationData);
+    this.props.onCreateTodo(todoCreationData);
 
     this.setState({ value: '' });
   }

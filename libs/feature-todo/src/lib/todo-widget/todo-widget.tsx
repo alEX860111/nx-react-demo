@@ -35,7 +35,7 @@ class TodoWidgetComponent extends React.Component<Props, State> {
       loading: false,
     };
 
-    this.handleTodoCreationData = this.handleTodoCreationData.bind(this);
+    this.handleCreateTodo = this.handleCreateTodo.bind(this);
     this.handleDeleteTodo = this.handleDeleteTodo.bind(this);
     this.handlePageIndexChange = this.handlePageIndexChange.bind(this);
     this.handlePageSizeChange = this.handlePageSizeChange.bind(this);
@@ -46,7 +46,7 @@ class TodoWidgetComponent extends React.Component<Props, State> {
     this.loadTodos(this.state.todoPage.index, this.state.todoPage.size);
   }
 
-  private async handleTodoCreationData(
+  private async handleCreateTodo(
     todoCreationData: TodoCreationData
   ): Promise<void> {
     const pageIndex = 0;
@@ -91,9 +91,7 @@ class TodoWidgetComponent extends React.Component<Props, State> {
     return (
       <>
         <h2>{this.props.label}</h2>
-        <TodoInput
-          handleTodoCreationData={this.handleTodoCreationData}
-        ></TodoInput>
+        <TodoInput onCreateTodo={this.handleCreateTodo}></TodoInput>
         <TodoList
           todoPage={this.state.todoPage}
           loading={this.state.loading}

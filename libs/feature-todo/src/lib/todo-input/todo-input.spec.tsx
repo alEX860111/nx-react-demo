@@ -4,20 +4,20 @@ import { TodoInput } from './todo-input';
 
 describe(TodoInput, () => {
   it('should render successfully', () => {
-    const handleTodoCreationData = jest.fn();
+    const handleCreateTodo = jest.fn();
 
     const { baseElement } = render(
-      <TodoInput handleTodoCreationData={handleTodoCreationData} />
+      <TodoInput onCreateTodo={handleCreateTodo} />
     );
 
     expect(baseElement).toBeTruthy();
   });
 
   it('should generate todo creation data on submit if input is not empty', () => {
-    const handleTodoCreationData = jest.fn();
+    const handleCreateTodo = jest.fn();
 
     const { getByTestId } = render(
-      <TodoInput handleTodoCreationData={handleTodoCreationData} />
+      <TodoInput onCreateTodo={handleCreateTodo} />
     );
 
     const input = getByTestId('textfield').querySelector('input');
@@ -30,18 +30,18 @@ describe(TodoInput, () => {
     fireEvent.change(input, { target: { value } });
     fireEvent.submit(input);
 
-    expect(handleTodoCreationData).toHaveBeenCalled();
+    expect(handleCreateTodo).toHaveBeenCalled();
 
     const todoCreationData: TodoCreationData =
-      handleTodoCreationData.mock.calls[0][0];
+      handleCreateTodo.mock.calls[0][0];
     expect(todoCreationData.content).toEqual(value);
   });
 
   it('should not generate todo creation data on submit if input is empty', () => {
-    const handleTodoCreationData = jest.fn();
+    const handleCreateTodo = jest.fn();
 
     const { getByTestId } = render(
-      <TodoInput handleTodoCreationData={handleTodoCreationData} />
+      <TodoInput onCreateTodo={handleCreateTodo} />
     );
 
     const input = getByTestId('textfield').querySelector('input');
@@ -53,6 +53,6 @@ describe(TodoInput, () => {
     fireEvent.change(input, { target: { value } });
     fireEvent.submit(input);
 
-    expect(handleTodoCreationData).not.toHaveBeenCalled();
+    expect(handleCreateTodo).not.toHaveBeenCalled();
   });
 });

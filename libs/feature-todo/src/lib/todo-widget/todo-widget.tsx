@@ -66,7 +66,7 @@ class TodoWidgetComponent extends React.Component<Props, State> {
           const multiplePagesExist = state.todoPage.totalPages > 1;
           const lastPageIsViewed =
             state.todoPage.index === state.todoPage.totalPages - 1;
-          const oneItemOnPage = this.state.todoPage.items.length === 1;
+          const oneItemOnPage = state.todoPage.items.length === 1;
           const goBackOnPage =
             multiplePagesExist && lastPageIsViewed && oneItemOnPage;
 

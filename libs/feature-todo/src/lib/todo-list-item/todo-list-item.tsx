@@ -11,30 +11,19 @@ interface Props {
   onDeleteTodo: (todo: Todo) => void;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface State {}
+export function TodoListItem(props: Props) {
+  const handleClick = () => {
+    props.onDeleteTodo(props.todo);
+  };
 
-export class TodoListItem extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  private handleClick() {
-    this.props.onDeleteTodo(this.props.todo);
-  }
-
-  render() {
-    return (
-      <ListItem>
-        <ListItemText primary={this.props.todo.content} />
-        <ListItemSecondaryAction>
-          <IconButton edge="end" onClick={this.handleClick}>
-            <DeleteIcon />
-          </IconButton>
-        </ListItemSecondaryAction>
-      </ListItem>
-    );
-  }
+  return (
+    <ListItem>
+      <ListItemText primary={props.todo.content} />
+      <ListItemSecondaryAction>
+        <IconButton edge="end" onClick={handleClick}>
+          <DeleteIcon />
+        </IconButton>
+      </ListItemSecondaryAction>
+    </ListItem>
+  );
 }

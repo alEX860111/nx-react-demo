@@ -30,7 +30,13 @@
     "data-access-todo": {
       "tags": ["type:data-access"]
     },
+    "data-access-user": {
+      "tags": ["type:data-access"]
+    },
     "feature-todo": {
+      "tags": ["type:feature"]
+    },
+    "feature-user": {
       "tags": ["type:feature"]
     },
     "my-app": {

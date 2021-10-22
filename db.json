@@ -1,0 +1,10 @@
+{
+  "todos": [
+    { "id": 1, "content": "wash car" },
+    { "id": 2, "content": "clean up room" },
+    { "id": 3, "content": "play videogames" },
+    { "id": 4, "content": "go shopping" },
+    { "id": 5, "content": "go to the doctor" },
+    { "id": 6, "content": "meet friends" }
+  ]
+}

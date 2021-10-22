@@ -184,22 +184,22 @@
         }
       }
     },
-    "util-di": {
-      "root": "libs/util-di",
-      "sourceRoot": "libs/util-di/src",
+    "util-data-access": {
+      "root": "libs/util-data-access",
+      "sourceRoot": "libs/util-data-access/src",
       "projectType": "library",
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/util-di/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": ["libs/util-data-access/**/*.{ts,tsx,js,jsx}"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/util-di"],
+          "outputs": ["coverage/libs/util-data-access"],
           "options": {
-            "jestConfig": "libs/util-di/jest.config.js",
+            "jestConfig": "libs/util-data-access/jest.config.js",
             "passWithNoTests": true
           }
         }

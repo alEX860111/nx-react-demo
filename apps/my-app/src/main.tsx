@@ -1,7 +1,6 @@
 import { SnackbarProvider } from 'notistack';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom';
-import 'reflect-metadata';
 import App from './app/app';
 
 ReactDOM.render(

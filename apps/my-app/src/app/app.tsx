@@ -3,45 +3,41 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import { TodoWidget } from '@nx-react-demo/feature-todo';
 import { FeatureUser } from '@nx-react-demo/feature-user';
-import { DIContext } from '@nx-react-demo/util-di';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
-import { container } from 'tsyringe';
 import styles from './app.module.scss';
 
 export function App() {
   return (
     <>
       <CssBaseline />
-      <DIContext.Provider value={container}>
-        <Router>
-          <AppBar position="static">
-            <Toolbar>
-              <Link className={styles.navItem} to="/">
-                Home
-              </Link>
-              <Link className={styles.navItem} to="/users">
-                Users
-              </Link>
-              <Link className={styles.navItem} to="/todos">
-                Todos
-              </Link>
-            </Toolbar>
-          </AppBar>
-          <div className={styles.content}>
-            <Switch>
-              <Route path="/users">
-                <FeatureUser />
-              </Route>
-              <Route path="/todos">
-                <TodoWidget label="My todos"></TodoWidget>
-              </Route>
-              <Route path="/">
-                <Home />
-              </Route>
-            </Switch>
-          </div>
-        </Router>
-      </DIContext.Provider>
+      <Router>
+        <AppBar position="static">
+          <Toolbar>
+            <Link className={styles.navItem} to="/">
+              Home
+            </Link>
+            <Link className={styles.navItem} to="/users">
+              Users
+            </Link>
+            <Link className={styles.navItem} to="/todos">
+              Todos
+            </Link>
+          </Toolbar>
+        </AppBar>
+        <div className={styles.content}>
+          <Switch>
+            <Route path="/users">
+              <FeatureUser />
+            </Route>
+            <Route path="/todos">
+              <TodoWidget label="My todos"></TodoWidget>
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     </>
   );
 }

@@ -1,5 +1,4 @@
 import { render } from '@testing-library/react';
-import 'reflect-metadata';
 import App from './app';
 
 describe('App', () => {
@@ -7,11 +6,5 @@ describe('App', () => {
     const { baseElement } = render(<App />);
 
     expect(baseElement).toBeTruthy();
-  });
-
-  it('should have a greeting as the title', () => {
-    const { getByText } = render(<App />);
-
-    expect(getByText('Welcome to my todo app!')).toBeTruthy();
   });
 });

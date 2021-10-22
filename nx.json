@@ -46,7 +46,7 @@
       "tags": [],
       "implicitDependencies": ["my-app"]
     },
-    "util-di": {
+    "util-data-access": {
       "tags": ["type:util"]
     }
   }

@@ -6,5 +6,4 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/libs/feature-todo',
-  setupFilesAfterEnv: ['../../jest-setup.ts'],
 };

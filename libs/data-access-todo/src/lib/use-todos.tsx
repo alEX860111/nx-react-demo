@@ -1,53 +1,23 @@
 import {
-  isLoadErrorAction,
-  isLoadInitAction,
-  isLoadSuccessAction,
   Loadable,
-  LoadAction,
-  LoadErrorAction,
-  LoadInitAction,
-  LoadSuccessAction
+  loadableReducer,
+  Page,
 } from '@nx-react-demo/util-data-access';
-import React, { Reducer, useEffect, useReducer, useState } from 'react';
-import { Page } from './page';
+import { useEffect, useReducer } from 'react';
 import { Todo } from './todo';
 
-const dataFetchReducer: Reducer<Loadable<Page<Todo>>, LoadAction> = (
-  state: Loadable<Page<Todo>>,
-  action: LoadAction
-) => {
-  if (isLoadInitAction(action)) {
-    return { ...state, isLoading: true, error: false };
-  } else if (isLoadSuccessAction<Page<Todo>>(action)) {
-    return {
-      ...state,
-      isLoading: false,
-      error: false,
-      data: action.data,
-    };
-  } else if (isLoadErrorAction(action)) {
-    return {
-      ...state,
-      isLoading: false,
-      error: action.error,
-    };
-  }
-  throw new Error();
-};
+const dataFetchReducer = loadableReducer<Todo>();
 
 export const useTodos = (): [
   Loadable<Page<Todo>>,
-  React.Dispatch<React.SetStateAction<number>>,
-  React.Dispatch<React.SetStateAction<number>>
+  (pageIndex: number) => void,
+  (pageSize: number) => void
 ] => {
-  const [pageIndex, setPageIndex] = useState(0);
-  const [pageSize, setPageSize] = useState(2);
-
   const initalState: Loadable<Page<Todo>> = {
     isLoading: false,
     data: {
       index: 0,
-      size: 10,
+      size: 2,
       items: [],
       totalItems: 0,
       totalPages: 0,
@@ -56,48 +26,42 @@ export const useTodos = (): [
 
   const [state, dispatch] = useReducer(dataFetchReducer, initalState);
 
+  const setPageIndex = (pageIndex: number) =>
+    dispatch({ type: 'PAGE_INDEX_CHANGE', pageIndex });
+
+  const setPageSize = (pageSize: number) =>
+    dispatch({ type: 'PAGE_SIZE_CHANGE', pageSize });
+
   useEffect(() => {
     let didCancel = false;
 
     const fetchData = async () => {
-      const action: LoadInitAction = {
-        type: 'LOAD_INIT',
-      };
-      dispatch(action);
+      dispatch({ type: 'LOAD_INIT' });
 
       try {
         const result = await fetch(
-          `http://localhost:3000/todos?_page=${
-            pageIndex + 1
-          }&_limit=${pageSize}`
+          `http://localhost:3000/todos?_page=${state.data.index + 1}&_limit=${
+            state.data.size
+          }`
         );
 
         const totalItems = Number(result.headers.get('X-Total-Count'));
-        console.log(totalItems);
 
         const todos: Todo[] = await result.json();
         const page: Page<Todo> = {
-          index: pageIndex,
-          size: pageSize,
+          index: state.data.index,
+          size: state.data.size,
           items: todos,
           totalItems: totalItems,
-          totalPages: Math.ceil(totalItems / pageSize),
+          totalPages: Math.ceil(totalItems / state.data.size),
         };
 
         if (!didCancel) {
-          const action: LoadSuccessAction<Page<Todo>> = {
-            type: 'LOAD_SUCCESS',
-            data: page,
-          };
-          dispatch(action);
+          dispatch({ type: 'LOAD_SUCCESS', data: page });
         }
       } catch (error) {
         if (!didCancel) {
-          const action: LoadErrorAction = {
-            type: 'LOAD_ERROR',
-            error,
-          };
-          dispatch(action);
+          dispatch({ type: 'LOAD_ERROR', error });
         }
       }
     };
@@ -107,7 +71,7 @@ export const useTodos = (): [
     return () => {
       didCancel = true;
     };
-  }, [pageIndex, pageSize]);
+  }, [state.data.index, state.data.size]);
 
   return [state, setPageIndex, setPageSize];
 };

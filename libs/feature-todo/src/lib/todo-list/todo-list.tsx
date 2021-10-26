@@ -1,6 +1,7 @@
 import List from '@mui/material/List';
 import TablePagination from '@mui/material/TablePagination';
-import { Page, Todo } from '@nx-react-demo/data-access-todo';
+import { Todo } from '@nx-react-demo/data-access-todo';
+import { Page } from '@nx-react-demo/util-data-access';
 import React from 'react';
 import { SkeletonTodoListItem } from '../skeleton-todo-list-item/skeleton-todo-list-item';
 import { TodoListItem } from '../todo-list-item/todo-list-item';

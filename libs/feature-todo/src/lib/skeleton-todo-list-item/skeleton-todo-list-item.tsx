@@ -2,7 +2,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemText from '@mui/material/ListItemText';
 import Skeleton from '@mui/material/Skeleton';
-import React from 'react';
 
 export function SkeletonTodoListItem() {
   return (

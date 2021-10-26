@@ -1,33 +1,32 @@
-export interface LoadAction {
-  type: 'LOAD_INIT' | 'LOAD_SUCCESS' | 'LOAD_ERROR';
+import { Page } from './page';
+
+export type LoadAction<T> =
+  | LoadInitAction
+  | LoadSuccessAction<T>
+  | LoadErrorAction
+  | PageIndexChangeAction
+  | PageSizeChangeAction;
+
+export interface LoadInitAction {
+  readonly type: 'LOAD_INIT';
 }
 
-export class LoadInitAction implements LoadAction {
-  type: 'LOAD_INIT';
+export interface LoadSuccessAction<T> {
+  readonly type: 'LOAD_SUCCESS';
+  readonly data: Page<T>;
 }
 
-export function isLoadInitAction(action: LoadAction): action is LoadInitAction {
-  return action.type === 'LOAD_INIT';
+export interface LoadErrorAction {
+  readonly type: 'LOAD_ERROR';
+  readonly error: any;
 }
 
-export class LoadSuccessAction<T> implements LoadAction {
-  type: 'LOAD_SUCCESS';
-  data: T;
+export interface PageIndexChangeAction {
+  readonly type: 'PAGE_INDEX_CHANGE';
+  readonly pageIndex: number;
 }
 
-export function isLoadSuccessAction<T>(
-  action: LoadAction
-): action is LoadSuccessAction<T> {
-  return action.type === 'LOAD_SUCCESS';
-}
-
-export class LoadErrorAction implements LoadAction {
-  type: 'LOAD_ERROR';
-  error: any;
-}
-
-export function isLoadErrorAction(
-  action: LoadAction
-): action is LoadErrorAction {
-  return action.type === 'LOAD_ERROR';
+export interface PageSizeChangeAction {
+  readonly type: 'PAGE_SIZE_CHANGE';
+  readonly pageSize: number;
 }

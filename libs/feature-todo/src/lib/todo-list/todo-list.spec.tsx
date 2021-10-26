@@ -1,4 +1,5 @@
-import { Page, Todo } from '@nx-react-demo/data-access-todo';
+import { Todo } from '@nx-react-demo/data-access-todo';
+import { Page } from '@nx-react-demo/util-data-access';
 import { render } from '@testing-library/react';
 import { TodoList } from './todo-list';
 

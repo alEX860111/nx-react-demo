@@ -3,7 +3,6 @@ import {
   TodoCreationData,
   useTodos,
 } from '@nx-react-demo/data-access-todo';
-import React from 'react';
 import { TodoInput } from '../todo-input/todo-input';
 import { TodoList } from '../todo-list/todo-list';
 

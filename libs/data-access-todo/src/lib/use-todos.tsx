@@ -1,59 +1,90 @@
 import {
+  CrudContainer,
   Loadable,
   loadableReducer,
   Page,
 } from '@nx-react-demo/util-data-access';
-import { useEffect, useReducer } from 'react';
+import { useSnackbar } from 'notistack';
+import React, { useEffect, useReducer } from 'react';
+import { TodoCreationData } from '..';
 import { Todo } from './todo';
 
-const dataFetchReducer = loadableReducer<Todo>();
+const dataFetchReducer = loadableReducer<Todo, TodoCreationData>();
 
 export const useTodos = (): [
   Loadable<Page<Todo>>,
-  (pageIndex: number) => void,
-  (pageSize: number) => void
+  React.Dispatch<number>,
+  React.Dispatch<number>,
+  React.Dispatch<TodoCreationData>
 ] => {
-  const initalState: Loadable<Page<Todo>> = {
-    isLoading: false,
-    data: {
-      index: 0,
-      size: 2,
-      items: [],
-      totalItems: 0,
-      totalPages: 0,
+  const { enqueueSnackbar } = useSnackbar();
+
+  const initalState: CrudContainer<Todo, TodoCreationData> = {
+    loadablePage: {
+      isLoading: false,
+      data: {
+        index: 0,
+        size: 5,
+        items: [],
+        totalItems: 0,
+        totalPages: 0,
+      },
     },
   };
 
   const [state, dispatch] = useReducer(dataFetchReducer, initalState);
 
-  const setPageIndex = (pageIndex: number) =>
-    dispatch({ type: 'PAGE_INDEX_CHANGE', pageIndex });
+  useEffect(() => {
+    let didCancel = false;
+    const callBackend = async () => {
+      if (!state.itemCreationData) return;
+      try {
+        const result = await fetch('http://localhost:3000/todos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(state.itemCreationData),
+        });
+        const todo: Todo = await result.json();
+        if (!didCancel) {
+          enqueueSnackbar('Successfully created todo.', {
+            variant: 'success',
+          });
+          dispatch({ type: 'CREATE_SUCCESS', data: todo });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    callBackend();
 
-  const setPageSize = (pageSize: number) =>
-    dispatch({ type: 'PAGE_SIZE_CHANGE', pageSize });
+    return () => {
+      didCancel = true;
+    };
+  }, [state.itemCreationData, enqueueSnackbar]);
 
   useEffect(() => {
     let didCancel = false;
-
-    const fetchData = async () => {
+    const callBackend = async () => {
       dispatch({ type: 'LOAD_INIT' });
 
       try {
         const result = await fetch(
-          `http://localhost:3000/todos?_page=${state.data.index + 1}&_limit=${
-            state.data.size
-          }`
+          `http://localhost:3000/todos?_page=${
+            state.loadablePage.data.index + 1
+          }&_limit=${state.loadablePage.data.size}&_sort=id&_order=desc`
         );
 
         const totalItems = Number(result.headers.get('X-Total-Count'));
 
         const todos: Todo[] = await result.json();
         const page: Page<Todo> = {
-          index: state.data.index,
-          size: state.data.size,
+          index: state.loadablePage.data.index,
+          size: state.loadablePage.data.size,
           items: todos,
           totalItems: totalItems,
-          totalPages: Math.ceil(totalItems / state.data.size),
+          totalPages: Math.ceil(totalItems / state.loadablePage.data.size),
         };
 
         if (!didCancel) {
@@ -66,12 +97,25 @@ export const useTodos = (): [
       }
     };
 
-    fetchData();
+    callBackend();
 
     return () => {
       didCancel = true;
     };
-  }, [state.data.index, state.data.size]);
+  }, [
+    state.loadablePage.data.index,
+    state.loadablePage.data.size,
+    state.createdItem,
+  ]);
 
-  return [state, setPageIndex, setPageSize];
+  const setPageIndex = (pageIndex: number) =>
+    dispatch({ type: 'PAGE_INDEX_CHANGE', pageIndex });
+
+  const setPageSize = (pageSize: number) =>
+    dispatch({ type: 'PAGE_SIZE_CHANGE', pageSize });
+
+  const setTodoCreationData = (todoCreationData: TodoCreationData) => {
+    dispatch({ type: 'CREATE_INIT', data: todoCreationData });
+  };
+  return [state.loadablePage, setPageIndex, setPageSize, setTodoCreationData];
 };

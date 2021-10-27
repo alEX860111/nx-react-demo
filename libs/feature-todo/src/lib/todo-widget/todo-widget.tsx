@@ -1,8 +1,4 @@
-import {
-  Todo,
-  TodoCreationData,
-  useTodos,
-} from '@nx-react-demo/data-access-todo';
+import { Todo, useTodos } from '@nx-react-demo/data-access-todo';
 import { TodoInput } from '../todo-input/todo-input';
 import { TodoList } from '../todo-list/todo-list';
 
@@ -11,23 +7,7 @@ interface Props {
 }
 
 export function TodoWidget(props: Props) {
-  const [loadable, setPageIndex, setPageSize] = useTodos();
-
-  const handleCreateTodo = (todoCreationData: TodoCreationData) => {
-    // this.setState(
-    //   (state) => ({
-    //     loading: true,
-    //     todoPage: { ...state.todoPage, index: 0 },
-    //   }),
-    //   async () => {
-    //     await this.props.todoService.addTodo(todoCreationData);
-    //     await this.loadTodos();
-    //     this.props.enqueueSnackbar('Successfully created todo.', {
-    //       variant: 'success',
-    //     });
-    //   }
-    // );
-  };
+  const [loadable, setPageIndex, setPageSize, handleCreateTodo] = useTodos();
 
   const handleDeleteTodo = (todo: Todo) => {
     //   this.setState({ loading: true }, async () => {

@@ -1,11 +1,13 @@
 import { Page } from './page';
 
-export type LoadAction<T> =
+export type LoadAction<T, C> =
   | LoadInitAction
   | LoadSuccessAction<T>
   | LoadErrorAction
   | PageIndexChangeAction
-  | PageSizeChangeAction;
+  | PageSizeChangeAction
+  | CreateInitAction<C>
+  | CreateSuccessAction<T>;
 
 export interface LoadInitAction {
   readonly type: 'LOAD_INIT';
@@ -29,4 +31,14 @@ export interface PageIndexChangeAction {
 export interface PageSizeChangeAction {
   readonly type: 'PAGE_SIZE_CHANGE';
   readonly pageSize: number;
+}
+
+export interface CreateInitAction<C> {
+  readonly type: 'CREATE_INIT';
+  readonly data: C;
+}
+
+export interface CreateSuccessAction<T> {
+  readonly type: 'CREATE_SUCCESS';
+  readonly data: T;
 }

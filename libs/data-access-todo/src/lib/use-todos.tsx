@@ -1,7 +1,7 @@
 import {
   CrudContainer,
+  crudContainerReducer,
   Loadable,
-  loadableReducer,
   Page,
 } from '@nx-react-demo/util-data-access';
 import { useSnackbar } from 'notistack';
@@ -9,7 +9,7 @@ import React, { useEffect, useReducer } from 'react';
 import { TodoCreationData } from '..';
 import { Todo } from './todo';
 
-const dataFetchReducer = loadableReducer<Todo, TodoCreationData>();
+const reducer = crudContainerReducer<Todo, TodoCreationData>();
 
 export const useTodos = (): [
   Loadable<Page<Todo>>,
@@ -32,7 +32,7 @@ export const useTodos = (): [
     },
   };
 
-  const [state, dispatch] = useReducer(dataFetchReducer, initalState);
+  const [state, dispatch] = useReducer(reducer, initalState);
 
   useEffect(() => {
     let didCancel = false;
@@ -51,7 +51,7 @@ export const useTodos = (): [
           enqueueSnackbar('Successfully created todo.', {
             variant: 'success',
           });
-          dispatch({ type: 'CREATE_SUCCESS', data: todo });
+          dispatch({ type: 'ITEM_CREATION_SUCCESS', item: todo });
         }
       } catch (error) {
         console.error(error);
@@ -67,7 +67,7 @@ export const useTodos = (): [
   useEffect(() => {
     let didCancel = false;
     const callBackend = async () => {
-      dispatch({ type: 'LOAD_INIT' });
+      dispatch({ type: 'PAGE_LOAD_INIT' });
 
       try {
         const result = await fetch(
@@ -88,11 +88,14 @@ export const useTodos = (): [
         };
 
         if (!didCancel) {
-          dispatch({ type: 'LOAD_SUCCESS', data: page });
+          dispatch({ type: 'PAGE_LOAD_SUCCESS', page: page });
         }
       } catch (error) {
         if (!didCancel) {
-          dispatch({ type: 'LOAD_ERROR', error });
+          dispatch({
+            type: 'PAGE_LOAD_ERROR',
+            error: 'failed to load todos',
+          });
         }
       }
     };
@@ -115,7 +118,10 @@ export const useTodos = (): [
     dispatch({ type: 'PAGE_SIZE_CHANGE', pageSize });
 
   const setTodoCreationData = (todoCreationData: TodoCreationData) => {
-    dispatch({ type: 'CREATE_INIT', data: todoCreationData });
+    dispatch({
+      type: 'ITEM_CREATION_INIT',
+      itemCreationData: todoCreationData,
+    });
   };
   return [state.loadablePage, setPageIndex, setPageSize, setTodoCreationData];
 };

@@ -1,35 +1,35 @@
 import { Reducer } from 'react';
 import { CrudContainer } from './crud-container';
-import { LoadAction } from './load-action';
+import { CrudContainerAction } from './crud-container-action';
 
-export function loadableReducer<T, C>(): Reducer<
+export function crudContainerReducer<T, C>(): Reducer<
   CrudContainer<T, C>,
-  LoadAction<T, C>
+  CrudContainerAction<T, C>
 > {
   return (
     state: CrudContainer<T, C>,
-    action: LoadAction<T, C>
+    action: CrudContainerAction<T, C>
   ): CrudContainer<T, C> => {
     switch (action.type) {
-      case 'LOAD_INIT':
+      case 'PAGE_LOAD_INIT':
         return {
           ...state,
           loadablePage: {
             ...state.loadablePage,
             isLoading: true,
-            error: false,
+            error: undefined,
           },
         };
-      case 'LOAD_SUCCESS':
+      case 'PAGE_LOAD_SUCCESS':
         return {
           ...state,
           loadablePage: {
             isLoading: false,
-            error: false,
-            data: action.data,
+            error: undefined,
+            data: action.page,
           },
         };
-      case 'LOAD_ERROR':
+      case 'PAGE_LOAD_ERROR':
         return {
           ...state,
           loadablePage: {
@@ -61,26 +61,34 @@ export function loadableReducer<T, C>(): Reducer<
             },
           },
         };
-      case 'CREATE_INIT':
+      case 'ITEM_CREATION_INIT':
         return {
           ...state,
-          itemCreationData: action.data,
+          itemCreationData: action.itemCreationData,
           loadablePage: {
             ...state.loadablePage,
             isLoading: true,
-            error: false,
+            error: undefined,
           },
         };
-      case 'CREATE_SUCCESS':
+      case 'ITEM_CREATION_SUCCESS':
         return {
           ...state,
-          createdItem: action.data,
+          createdItem: action.item,
           loadablePage: {
             ...state.loadablePage,
             data: {
               ...state.loadablePage.data,
               index: 0,
             },
+          },
+        };
+      case 'ITEM_CREATION_ERROR':
+        return {
+          ...state,
+          loadablePage: {
+            ...state.loadablePage,
+            isLoading: false,
           },
         };
       default:

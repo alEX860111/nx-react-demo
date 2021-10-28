@@ -6,7 +6,7 @@ describe('TodoWidget', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
       <SnackbarProvider maxSnack={3}>
-        <TodoWidget label="My todos" />
+        <TodoWidget />
       </SnackbarProvider>
     );
 

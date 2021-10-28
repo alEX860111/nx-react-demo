@@ -2,11 +2,7 @@ import { Todo, useTodos } from '@nx-react-demo/data-access-todo';
 import { TodoInput } from '../todo-input/todo-input';
 import { TodoList } from '../todo-list/todo-list';
 
-interface Props {
-  label: string;
-}
-
-export function TodoWidget(props: Props) {
+export function TodoWidget() {
   const [loadable, setPageIndex, setPageSize, handleCreateTodo] = useTodos();
 
   const handleDeleteTodo = (todo: Todo) => {
@@ -46,7 +42,7 @@ export function TodoWidget(props: Props) {
 
   return (
     <>
-      <h2>{props.label}</h2>
+      <h2>Todos</h2>
       <TodoInput onCreateTodo={handleCreateTodo}></TodoInput>
       <TodoList
         todoPage={loadable.data}

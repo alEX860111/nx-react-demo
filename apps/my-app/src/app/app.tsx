@@ -1,10 +1,12 @@
 import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import { TodoWidget } from '@nx-react-demo/feature-todo';
 import { FeatureUser } from '@nx-react-demo/feature-user';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import styles from './app.module.scss';
+import { Home } from './home';
 
 export function App() {
   return (
@@ -13,15 +15,30 @@ export function App() {
       <Router>
         <AppBar position="static">
           <Toolbar>
-            <Link className={styles.navItem} to="/">
+            <Button
+              className={styles.navItem}
+              color="inherit"
+              component={Link}
+              to={'/'}
+            >
               Home
-            </Link>
-            <Link className={styles.navItem} to="/users">
+            </Button>
+            <Button
+              className={styles.navItem}
+              color="inherit"
+              component={Link}
+              to={'/users'}
+            >
               Users
-            </Link>
-            <Link className={styles.navItem} to="/todos">
+            </Button>
+            <Button
+              className={styles.navItem}
+              color="inherit"
+              component={Link}
+              to={'/todos'}
+            >
               Todos
-            </Link>
+            </Button>
           </Toolbar>
         </AppBar>
         <div className={styles.content}>
@@ -30,7 +47,7 @@ export function App() {
               <FeatureUser />
             </Route>
             <Route path="/todos">
-              <TodoWidget label="My todos"></TodoWidget>
+              <TodoWidget />
             </Route>
             <Route path="/">
               <Home />
@@ -43,7 +60,3 @@ export function App() {
 }
 
 export default App;
-
-function Home() {
-  return <h2>Home</h2>;
-}

@@ -1,5 +1,5 @@
 export interface Loadable<T> {
-  error?: any;
+  error?: string;
   isLoading: boolean;
   data: T;
 }

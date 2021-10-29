@@ -1,9 +1,13 @@
-import { Todo, useTodos } from '@nx-react-demo/data-access-todo';
+import { Todo, useGetTodoPage } from '@nx-react-demo/data-access-todo';
+import { useCallback } from 'react';
 import { TodoInput } from '../todo-input/todo-input';
 import { TodoList } from '../todo-list/todo-list';
 
 export function TodoWidget() {
-  const [loadable, setPageIndex, setPageSize, handleCreateTodo] = useTodos();
+  const [loadablePage, pageParams, setPageIndex, setPageSize] =
+    useGetTodoPage();
+
+  const handleTodoCreated = useCallback(() => setPageIndex(0), [setPageIndex]);
 
   const handleDeleteTodo = (todo: Todo) => {
     //   this.setState({ loading: true }, async () => {
@@ -43,10 +47,10 @@ export function TodoWidget() {
   return (
     <>
       <h2>Todos</h2>
-      <TodoInput onCreateTodo={handleCreateTodo}></TodoInput>
+      <TodoInput onTodoCreated={handleTodoCreated}></TodoInput>
       <TodoList
-        todoPage={loadable.data}
-        loading={loadable.isLoading}
+        loadablePage={loadablePage}
+        pageParams={pageParams}
         onDeleteTodo={handleDeleteTodo}
         onPageIndexChange={setPageIndex}
         onPageSizeChange={setPageSize}

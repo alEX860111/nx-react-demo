@@ -27,6 +27,22 @@
     {
       "content": "do the homework",
       "id": 7
+    },
+    {
+      "content": "learn react",
+      "id": 8
+    },
+    {
+      "content": "go for a run",
+      "id": 9
+    },
+    {
+      "content": "buy christmas presents",
+      "id": 10
+    },
+    {
+      "content": "plan vacation",
+      "id": 11
     }
   ]
 }

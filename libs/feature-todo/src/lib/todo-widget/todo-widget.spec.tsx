@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { SnackbarProvider } from 'notistack';
 import { TodoWidget } from './todo-widget';
 
-describe('TodoWidget', () => {
+describe(TodoWidget, () => {
   it('should render successfully', () => {
     const { baseElement } = render(
       <SnackbarProvider maxSnack={3}>

@@ -9,7 +9,7 @@ import { TodoListItem } from '../todo-list-item/todo-list-item';
 interface Props {
   loadablePage: Loadable<Page<Todo>>;
   pageParams: PageParams;
-  onDeleteTodo: (todo: Todo) => void;
+  onTodoDeleted: (todo: Todo) => void;
   onPageIndexChange: (pageIndex: number) => void;
   onPageSizeChange: (pageSize: number) => void;
 }
@@ -49,7 +49,7 @@ export function TodoList(props: Props) {
             <TodoListItem
               key={todo.id}
               todo={todo}
-              onDeleteTodo={props.onDeleteTodo}
+              onTodoDeleted={props.onTodoDeleted}
             />
           ))}
         </List>

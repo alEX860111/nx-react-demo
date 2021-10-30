@@ -1,5 +1,6 @@
 import { Todo } from '@nx-react-demo/data-access-todo';
 import { render } from '@testing-library/react';
+import { SnackbarProvider } from 'notistack';
 import { TodoListItem } from './todo-list-item';
 
 describe(TodoListItem, () => {
@@ -10,20 +11,24 @@ describe(TodoListItem, () => {
   });
 
   it('should render successfully', () => {
-    const handleDeleteTodo = jest.fn();
+    const handleTodoDeleted = jest.fn();
 
     const { baseElement } = render(
-      <TodoListItem todo={todo} onDeleteTodo={handleDeleteTodo} />
+      <SnackbarProvider maxSnack={3}>
+        <TodoListItem todo={todo} onTodoDeleted={handleTodoDeleted} />
+      </SnackbarProvider>
     );
 
     expect(baseElement).toBeTruthy();
   });
 
   it('should render the todo content', () => {
-    const handleDeleteTodo = jest.fn();
+    const handleTodoDeleted = jest.fn();
 
     const { getByText } = render(
-      <TodoListItem todo={todo} onDeleteTodo={handleDeleteTodo} />
+      <SnackbarProvider maxSnack={3}>
+        <TodoListItem todo={todo} onTodoDeleted={handleTodoDeleted} />
+      </SnackbarProvider>
     );
 
     expect(getByText(todo.content)).toBeTruthy();

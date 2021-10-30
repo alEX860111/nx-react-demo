@@ -14,13 +14,12 @@ export function TodoInput(props: Props) {
   const [value, setValue] = useState('');
   const [createdTodo, createTodo] = useCreateTodo();
 
-  const { onTodoCreated } = props;
-
   useEffect(() => {
     if (!createdTodo.isLoading && createdTodo.data) {
-      onTodoCreated(createdTodo.data);
+      props.onTodoCreated(createdTodo.data);
     }
-  }, [createdTodo, onTodoCreated]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [createdTodo]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

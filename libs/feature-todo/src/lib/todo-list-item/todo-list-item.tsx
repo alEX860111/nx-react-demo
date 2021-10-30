@@ -3,16 +3,26 @@ import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemText from '@mui/material/ListItemText';
-import { Todo } from '@nx-react-demo/data-access-todo';
+import { Todo, useDeleteTodo } from '@nx-react-demo/data-access-todo';
+import { useEffect } from 'react';
 
 interface Props {
   todo: Todo;
-  onDeleteTodo: (todo: Todo) => void;
+  onTodoDeleted: (todo: Todo) => void;
 }
 
 export function TodoListItem(props: Props) {
+  const [deletedTodo, deleteTodo] = useDeleteTodo();
+
+  useEffect(() => {
+    if (!deletedTodo.isLoading && deletedTodo.data) {
+      props.onTodoDeleted(deletedTodo.data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deletedTodo]);
+
   const handleClick = () => {
-    props.onDeleteTodo(props.todo);
+    deleteTodo(props.todo);
   };
 
   return (

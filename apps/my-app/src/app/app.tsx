@@ -4,7 +4,12 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import { TodoWidget } from '@nx-react-demo/feature-todo';
 import { FeatureUser } from '@nx-react-demo/feature-user';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  NavLink,
+  Route,
+  Switch,
+} from 'react-router-dom';
 import styles from './app.module.scss';
 import { Home } from './home';
 
@@ -18,7 +23,9 @@ export function App() {
             <Button
               className={styles.navItem}
               color="inherit"
-              component={Link}
+              component={NavLink}
+              activeClassName={styles.active}
+              exact
               to={'/'}
             >
               Home
@@ -26,7 +33,9 @@ export function App() {
             <Button
               className={styles.navItem}
               color="inherit"
-              component={Link}
+              component={NavLink}
+              activeClassName={styles.active}
+              exact
               to={'/users'}
             >
               Users
@@ -34,7 +43,9 @@ export function App() {
             <Button
               className={styles.navItem}
               color="inherit"
-              component={Link}
+              component={NavLink}
+              activeClassName={styles.active}
+              exact
               to={'/todos'}
             >
               Todos

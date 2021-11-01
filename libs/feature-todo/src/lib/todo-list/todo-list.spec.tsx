@@ -27,7 +27,7 @@ describe(TodoList, () => {
   });
 
   it('should render successfully', () => {
-    const handleDeleteTodo = jest.fn();
+    const handleTodoDeleted = jest.fn();
     const handlePageIndexChange = jest.fn();
     const handlePageSizeChange = jest.fn();
 
@@ -35,7 +35,7 @@ describe(TodoList, () => {
       <TodoList
         loadablePage={loadablePage}
         pageParams={pageParams}
-        onDeleteTodo={handleDeleteTodo}
+        onTodoDeleted={handleTodoDeleted}
         onPageIndexChange={handlePageIndexChange}
         onPageSizeChange={handlePageSizeChange}
       />
@@ -45,7 +45,7 @@ describe(TodoList, () => {
   });
 
   it('should render the list items', () => {
-    const handleDeleteTodo = jest.fn();
+    const handleTodoDeleted = jest.fn();
     const handlePageIndexChange = jest.fn();
     const handlePageSizeChange = jest.fn();
 
@@ -53,7 +53,7 @@ describe(TodoList, () => {
       <TodoList
         loadablePage={loadablePage}
         pageParams={pageParams}
-        onDeleteTodo={handleDeleteTodo}
+        onTodoDeleted={handleTodoDeleted}
         onPageIndexChange={handlePageIndexChange}
         onPageSizeChange={handlePageSizeChange}
       />

@@ -1,22 +1,21 @@
 import List from '@mui/material/List';
 import TablePagination from '@mui/material/TablePagination';
 import { Todo } from '@nx-react-demo/data-access-todo';
-import { Loadable, Page, PageParams } from '@nx-react-demo/util-data-access';
+import { PageState } from '@nx-react-demo/util-data-access';
 import React from 'react';
 import { SkeletonTodoListItem } from '../skeleton-todo-list-item/skeleton-todo-list-item';
 import { TodoListItem } from '../todo-list-item/todo-list-item';
 
 interface Props {
-  loadablePage: Loadable<Page<Todo>>;
-  pageParams: PageParams;
-  onTodoDeleted: (todo: Todo) => void;
+  pageState: PageState<Todo>;
+  onTodoDeleteRequested: (todo: Todo) => void;
   onPageIndexChange: (pageIndex: number) => void;
   onPageSizeChange: (pageSize: number) => void;
 }
 
 export function TodoList(props: Props) {
   const getSkeletons = () => {
-    const indices = [...Array(props.pageParams.size).keys()];
+    const indices = [...Array(props.pageState.pageParams.size).keys()];
     return (
       <List>
         {indices.map((index) => (
@@ -41,25 +40,25 @@ export function TodoList(props: Props) {
 
   return (
     <>
-      {props.loadablePage.isLoading ? (
+      {props.pageState.loadablePage.isLoading ? (
         getSkeletons()
       ) : (
         <List>
-          {props.loadablePage.data.items.map((todo) => (
+          {props.pageState.loadablePage.data.items.map((todo) => (
             <TodoListItem
               key={todo.id}
               todo={todo}
-              onTodoDeleted={props.onTodoDeleted}
+              onTodoDeleteRequested={props.onTodoDeleteRequested}
             />
           ))}
         </List>
       )}
       <TablePagination
         component="div"
-        count={props.loadablePage.data.totalItems}
-        page={props.pageParams.index}
+        count={props.pageState.loadablePage.data.totalItems}
+        page={props.pageState.pageParams.index}
         onPageChange={handlePageChange}
-        rowsPerPage={props.pageParams.size}
+        rowsPerPage={props.pageState.pageParams.size}
         onRowsPerPageChange={handleRowsPerPageChange}
         rowsPerPageOptions={[2, 5, 10]}
         labelRowsPerPage="todos per page"

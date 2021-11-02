@@ -1,25 +1,13 @@
 import TextField from '@mui/material/TextField';
-import {
-  Todo,
-  TodoCreationData,
-  useCreateTodo,
-} from '@nx-react-demo/data-access-todo';
-import React, { useEffect, useState } from 'react';
+import { TodoCreationData } from '@nx-react-demo/data-access-todo';
+import React, { useState } from 'react';
 
 interface Props {
-  onTodoCreated: (todo: Todo) => void;
+  onTodoCreationRequested: (todoCreationData: TodoCreationData) => void;
 }
 
 export function TodoInput(props: Props) {
   const [value, setValue] = useState('');
-  const [createdTodo, createTodo] = useCreateTodo();
-
-  useEffect(() => {
-    if (!createdTodo.isLoading && createdTodo.data) {
-      props.onTodoCreated(createdTodo.data);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [createdTodo]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,7 +19,7 @@ export function TodoInput(props: Props) {
     const todoCreationData: TodoCreationData = {
       content: value,
     };
-    createTodo(todoCreationData);
+    props.onTodoCreationRequested(todoCreationData);
 
     setValue('');
   };

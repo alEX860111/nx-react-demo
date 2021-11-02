@@ -1,5 +1,5 @@
 import { Todo } from '@nx-react-demo/data-access-todo';
-import { Loadable, Page, PageParams } from '@nx-react-demo/util-data-access';
+import { PageState } from '@nx-react-demo/util-data-access';
 import { render } from '@testing-library/react';
 import { TodoList } from './todo-list';
 
@@ -8,34 +8,36 @@ jest.mock('../todo-list-item/todo-list-item', () => ({
 }));
 
 describe(TodoList, () => {
-  let loadablePage: Loadable<Page<Todo>>;
-  let pageParams: PageParams;
+  let pageState: PageState<Todo>;
 
   beforeEach(() => {
-    pageParams = { index: 0, size: 10 };
-
     const todo: Todo = { id: '1', content: 'hello world' };
 
-    loadablePage = {
-      isLoading: false,
-      data: {
-        items: [todo],
-        totalItems: 1,
-        totalPages: 1,
+    pageState = {
+      loadablePage: {
+        isLoading: false,
+        data: {
+          items: [todo],
+          totalItems: 1,
+          totalPages: 1,
+        },
+      },
+      pageParams: {
+        index: 0,
+        size: 10,
       },
     };
   });
 
   it('should render successfully', () => {
-    const handleTodoDeleted = jest.fn();
+    const handleTodoDeleteRequested = jest.fn();
     const handlePageIndexChange = jest.fn();
     const handlePageSizeChange = jest.fn();
 
     const { baseElement } = render(
       <TodoList
-        loadablePage={loadablePage}
-        pageParams={pageParams}
-        onTodoDeleted={handleTodoDeleted}
+        pageState={pageState}
+        onTodoDeleteRequested={handleTodoDeleteRequested}
         onPageIndexChange={handlePageIndexChange}
         onPageSizeChange={handlePageSizeChange}
       />
@@ -45,15 +47,14 @@ describe(TodoList, () => {
   });
 
   it('should render the list items', () => {
-    const handleTodoDeleted = jest.fn();
+    const handleTodoDeleteRequested = jest.fn();
     const handlePageIndexChange = jest.fn();
     const handlePageSizeChange = jest.fn();
 
     const { getAllByTestId } = render(
       <TodoList
-        loadablePage={loadablePage}
-        pageParams={pageParams}
-        onTodoDeleted={handleTodoDeleted}
+        pageState={pageState}
+        onTodoDeleteRequested={handleTodoDeleteRequested}
         onPageIndexChange={handlePageIndexChange}
         onPageSizeChange={handlePageSizeChange}
       />

@@ -1,6 +1,6 @@
 import { OptionalLoadable } from '@nx-react-demo/util-data-access';
 import { useSnackbar } from 'notistack';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Todo } from './todo';
 import { TodoCreationData } from './todo-creation-data';
 
@@ -9,7 +9,7 @@ export const useCreateTodo = (): [
   React.Dispatch<TodoCreationData>
 ] => {
   const [todoCreationData, setTodoCreationData] = useState<TodoCreationData>();
-  const [todo, setTodo] = useState<OptionalLoadable<Todo>>({
+  const [createdTodo, setCreatedTodo] = useState<OptionalLoadable<Todo>>({
     isLoading: false,
   });
   const { enqueueSnackbar } = useSnackbar();
@@ -18,7 +18,7 @@ export const useCreateTodo = (): [
     let didCancel = false;
     const callBackend = async () => {
       if (!todoCreationData) return;
-      setTodo({ isLoading: true });
+      setCreatedTodo({ isLoading: true });
 
       try {
         const result = await fetch('http://localhost:3000/todos', {
@@ -33,14 +33,14 @@ export const useCreateTodo = (): [
           enqueueSnackbar('Successfully created todo.', {
             variant: 'success',
           });
-          setTodo({ isLoading: false, data: todo });
+          setCreatedTodo({ isLoading: false, data: todo });
         }
       } catch (error) {
         const errorMessage = 'Failed to create todo';
         enqueueSnackbar(errorMessage, {
           variant: 'error',
         });
-        setTodo({ isLoading: false, error: errorMessage });
+        setCreatedTodo({ isLoading: false, error: errorMessage });
       }
     };
     callBackend();
@@ -50,5 +50,9 @@ export const useCreateTodo = (): [
     };
   }, [todoCreationData, enqueueSnackbar]);
 
-  return [todo, setTodoCreationData];
+  const createTodo = useCallback((todoCreationData: TodoCreationData) => {
+    setTodoCreationData(todoCreationData);
+  }, []);
+
+  return [createdTodo, createTodo];
 };

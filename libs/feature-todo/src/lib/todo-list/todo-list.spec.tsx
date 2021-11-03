@@ -1,5 +1,5 @@
 import { Todo } from '@nx-react-demo/data-access-todo';
-import { PageState } from '@nx-react-demo/util-data-access';
+import { Loadable, Page, PageParams } from '@nx-react-demo/util-data-access';
 import { render } from '@testing-library/react';
 import { TodoList } from './todo-list';
 
@@ -8,36 +8,38 @@ jest.mock('../todo-list-item/todo-list-item', () => ({
 }));
 
 describe(TodoList, () => {
-  let pageState: PageState<Todo>;
+  let loadablePage: Loadable<Page<Todo>>;
+
+  let pageParams: PageParams;
 
   beforeEach(() => {
-    const todo: Todo = { id: '1', content: 'hello world' };
+    const todo: Todo = { id: '1', content: 'hello world', completed: false };
 
-    pageState = {
-      loadablePage: {
-        isLoading: false,
-        data: {
-          items: [todo],
-          totalItems: 1,
-          totalPages: 1,
-        },
+    loadablePage = {
+      isLoading: false,
+      data: {
+        items: [todo],
+        totalItems: 1,
+        totalPages: 1,
       },
-      pageParams: {
-        index: 0,
-        size: 10,
-      },
+    };
+
+    pageParams = {
+      index: 0,
+      size: 10,
     };
   });
 
   it('should render successfully', () => {
-    const handleTodoDeleteRequested = jest.fn();
+    const handleTodoDeletionRequested = jest.fn();
     const handlePageIndexChange = jest.fn();
     const handlePageSizeChange = jest.fn();
 
     const { baseElement } = render(
       <TodoList
-        pageState={pageState}
-        onTodoDeleteRequested={handleTodoDeleteRequested}
+        loadablePage={loadablePage}
+        pageParams={pageParams}
+        onTodoDeletionRequested={handleTodoDeletionRequested}
         onPageIndexChange={handlePageIndexChange}
         onPageSizeChange={handlePageSizeChange}
       />
@@ -47,14 +49,15 @@ describe(TodoList, () => {
   });
 
   it('should render the list items', () => {
-    const handleTodoDeleteRequested = jest.fn();
+    const handleTodoDeletionRequested = jest.fn();
     const handlePageIndexChange = jest.fn();
     const handlePageSizeChange = jest.fn();
 
     const { getAllByTestId } = render(
       <TodoList
-        pageState={pageState}
-        onTodoDeleteRequested={handleTodoDeleteRequested}
+        loadablePage={loadablePage}
+        pageParams={pageParams}
+        onTodoDeletionRequested={handleTodoDeletionRequested}
         onPageIndexChange={handlePageIndexChange}
         onPageSizeChange={handlePageSizeChange}
       />

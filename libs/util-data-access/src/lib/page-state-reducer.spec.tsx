@@ -5,12 +5,12 @@ import { pageStateReducer } from './page-state-reducer';
 
 describe(pageStateReducer, () => {
   const reducer: Reducer<
-    PageState<string>,
-    PageStateAction<string>
+    PageState<string, string, string>,
+    PageStateAction<string, string, string>
   > = pageStateReducer;
 
   it('should erase the error and activate the loading state on LOAD_INIT action', () => {
-    const state: PageState<string> = {
+    const state: PageState<string, string, string> = {
       loadablePage: {
         error: 'oops',
         isLoading: false,
@@ -20,9 +20,11 @@ describe(pageStateReducer, () => {
         index: 0,
         size: 10,
       },
+      numberOfCreatedItems: 0,
+      numberOfDeletedItems: 0,
     };
     const result = reducer(state, { type: 'LOAD_INIT' });
-    const expectedState: PageState<string> = {
+    const expectedState: PageState<string, string, string> = {
       loadablePage: {
         error: undefined,
         isLoading: true,
@@ -32,12 +34,14 @@ describe(pageStateReducer, () => {
         index: 0,
         size: 10,
       },
+      numberOfCreatedItems: 0,
+      numberOfDeletedItems: 0,
     };
     expect(result).toEqual(expectedState);
   });
 
   it('should erase the error, deactivate the loading state and set the page on LOAD_SUCCESS action', () => {
-    const state: PageState<string> = {
+    const state: PageState<string, string, string> = {
       loadablePage: {
         error: 'oops',
         isLoading: true,
@@ -47,12 +51,14 @@ describe(pageStateReducer, () => {
         index: 0,
         size: 10,
       },
+      numberOfCreatedItems: 0,
+      numberOfDeletedItems: 0,
     };
     const result = reducer(state, {
       type: 'LOAD_SUCCESS',
       page: { items: ['foo'], totalItems: 1, totalPages: 1 },
     });
-    const expectedState: PageState<string> = {
+    const expectedState: PageState<string, string, string> = {
       loadablePage: {
         error: undefined,
         isLoading: false,
@@ -62,12 +68,14 @@ describe(pageStateReducer, () => {
         index: 0,
         size: 10,
       },
+      numberOfCreatedItems: 0,
+      numberOfDeletedItems: 0,
     };
     expect(result).toEqual(expectedState);
   });
 
   it('should set the error and deactivate the loading state on LOAD_ERROR action', () => {
-    const state: PageState<string> = {
+    const state: PageState<string, string, string> = {
       loadablePage: {
         isLoading: true,
         data: { items: [], totalItems: 0, totalPages: 0 },
@@ -76,9 +84,11 @@ describe(pageStateReducer, () => {
         index: 0,
         size: 10,
       },
+      numberOfCreatedItems: 0,
+      numberOfDeletedItems: 0,
     };
     const result = reducer(state, { type: 'LOAD_ERROR', error: 'oops' });
-    const expectedState: PageState<string> = {
+    const expectedState: PageState<string, string, string> = {
       loadablePage: {
         error: 'oops',
         isLoading: false,
@@ -88,12 +98,14 @@ describe(pageStateReducer, () => {
         index: 0,
         size: 10,
       },
+      numberOfCreatedItems: 0,
+      numberOfDeletedItems: 0,
     };
     expect(result).toEqual(expectedState);
   });
 
   it('should set the page index on PAGE_INDEX_CHANGE action', () => {
-    const state: PageState<string> = {
+    const state: PageState<string, string, string> = {
       loadablePage: {
         isLoading: false,
         data: { items: [], totalItems: 0, totalPages: 0 },
@@ -102,9 +114,11 @@ describe(pageStateReducer, () => {
         index: 0,
         size: 10,
       },
+      numberOfCreatedItems: 0,
+      numberOfDeletedItems: 0,
     };
     const result = reducer(state, { type: 'PAGE_INDEX_CHANGE', pageIndex: 1 });
-    const expectedState: PageState<string> = {
+    const expectedState: PageState<string, string, string> = {
       loadablePage: {
         isLoading: false,
         data: { items: [], totalItems: 0, totalPages: 0 },
@@ -113,12 +127,14 @@ describe(pageStateReducer, () => {
         index: 1,
         size: 10,
       },
+      numberOfCreatedItems: 0,
+      numberOfDeletedItems: 0,
     };
     expect(result).toEqual(expectedState);
   });
 
   it('should set the page size and reset the page index on PAGE_SIZE_CHANGE action', () => {
-    const state: PageState<string> = {
+    const state: PageState<string, string, string> = {
       loadablePage: {
         isLoading: false,
         data: { items: [], totalItems: 0, totalPages: 0 },
@@ -127,9 +143,11 @@ describe(pageStateReducer, () => {
         index: 1,
         size: 10,
       },
+      numberOfCreatedItems: 0,
+      numberOfDeletedItems: 0,
     };
     const result = reducer(state, { type: 'PAGE_SIZE_CHANGE', pageSize: 20 });
-    const expectedState: PageState<string> = {
+    const expectedState: PageState<string, string, string> = {
       loadablePage: {
         isLoading: false,
         data: { items: [], totalItems: 0, totalPages: 0 },
@@ -138,6 +156,8 @@ describe(pageStateReducer, () => {
         index: 0,
         size: 20,
       },
+      numberOfCreatedItems: 0,
+      numberOfDeletedItems: 0,
     };
     expect(result).toEqual(expectedState);
   });

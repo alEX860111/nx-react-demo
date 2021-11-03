@@ -1,20 +1,33 @@
 import {
+  Loadable,
   Page,
+  PageParams,
   PageState,
   PageStateAction,
   pageStateReducer,
 } from '@nx-react-demo/util-data-access';
-import React, { Reducer, useCallback, useEffect, useReducer } from 'react';
+import { useSnackbar } from 'notistack';
+import React, { Reducer, useEffect, useReducer } from 'react';
 import { Todo } from './todo';
+import { TodoCreationData } from './todo-creation-data';
+import { TodoDeletionData } from './todo-deletion-data';
 
-export const useGetTodoPage = (): [
-  PageState<Todo>,
+type TodoPageState = PageState<TodoCreationData, Todo, TodoDeletionData>;
+type TodoPageStateAction = PageStateAction<
+  TodoCreationData,
+  Todo,
+  TodoDeletionData
+>;
+
+export function useGetTodoPage(): [
+  Loadable<Page<Todo>>,
+  PageParams,
   React.Dispatch<number>,
   React.Dispatch<number>,
-  React.Dispatch<void>,
-  React.Dispatch<void>
-] => {
-  const initialState: PageState<Todo> = {
+  React.Dispatch<TodoCreationData>,
+  React.Dispatch<TodoDeletionData>
+] {
+  const initialState: TodoPageState = {
     loadablePage: {
       isLoading: false,
       data: {
@@ -27,15 +40,56 @@ export const useGetTodoPage = (): [
       index: 0,
       size: 5,
     },
+    numberOfCreatedItems: 0,
+    numberOfDeletedItems: 0,
   };
 
   const [state, dispatch] = useReducer(
-    pageStateReducer as Reducer<PageState<Todo>, PageStateAction<Todo>>,
+    pageStateReducer as Reducer<TodoPageState, TodoPageStateAction>,
     initialState
   );
 
+  const { enqueueSnackbar } = useSnackbar();
+
   useEffect(() => {
     let didCancel = false;
+
+    const callBackend = async () => {
+      if (!state.itemCreationData) return;
+
+      try {
+        const result = await fetch('http://localhost:3000/todos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(state.itemCreationData),
+        });
+
+        if (result.status !== 201) throw new Error();
+
+        if (!didCancel) {
+          enqueueSnackbar('Successfully created todo.', {
+            variant: 'success',
+          });
+          dispatch({ type: 'ITEM_CREATION_SUCCESS' });
+        }
+      } catch (error) {
+        const errorMessage = 'Failed to create todo';
+        enqueueSnackbar(errorMessage, {
+          variant: 'error',
+        });
+      }
+    };
+
+    callBackend();
+
+    return () => {
+      didCancel = true;
+    };
+  }, [state.itemCreationData, enqueueSnackbar]);
+
+  useEffect(() => {
+    let didCancel = false;
+
     const callBackend = async () => {
       dispatch({ type: 'LOAD_INIT' });
 
@@ -45,6 +99,8 @@ export const useGetTodoPage = (): [
             state.pageParams.index + 1
           }&_limit=${state.pageParams.size}&_sort=id&_order=desc`
         );
+
+        if (result.status !== 200) throw new Error();
 
         const totalItems = Number(result.headers.get('X-Total-Count'));
 
@@ -64,6 +120,10 @@ export const useGetTodoPage = (): [
             type: 'LOAD_ERROR',
             error: 'failed to load todos',
           });
+          const errorMessage = 'Failed to load todos';
+          enqueueSnackbar(errorMessage, {
+            variant: 'error',
+          });
         }
       }
     };
@@ -73,33 +133,75 @@ export const useGetTodoPage = (): [
     return () => {
       didCancel = true;
     };
-  }, [state.pageParams]);
+  }, [
+    state.pageParams.index,
+    state.pageParams.size,
+    state.numberOfCreatedItems,
+    state.numberOfDeletedItems,
+    enqueueSnackbar,
+  ]);
 
-  const setPageIndex = useCallback(
-    (pageIndex: number) => dispatch({ type: 'PAGE_INDEX_CHANGE', pageIndex }),
-    []
-  );
+  useEffect(() => {
+    let didCancel = false;
 
-  const setPageSize = useCallback(
-    (pageSize: number) => dispatch({ type: 'PAGE_SIZE_CHANGE', pageSize }),
-    []
-  );
+    const callBackend = async () => {
+      if (!state.itemDeletiondata) return;
 
-  const handleTodoCreated = useCallback(
-    () => dispatch({ type: 'ITEM_CREATED' }),
-    []
-  );
+      try {
+        const result = await fetch(
+          `http://localhost:3000/todos/${state.itemDeletiondata.id}`,
+          { method: 'DELETE' }
+        );
 
-  const handleTodoDeleted = useCallback(
-    () => dispatch({ type: 'ITEM_DELETED' }),
-    []
-  );
+        if (result.status !== 200) throw new Error();
+
+        if (!didCancel) {
+          enqueueSnackbar('Successfully deleted todo.', {
+            variant: 'success',
+          });
+          dispatch({
+            type: 'ITEM_DELETION_SUCCESS',
+          });
+        }
+      } catch (error) {
+        const errorMessage = 'Failed to delete todo';
+        enqueueSnackbar(errorMessage, {
+          variant: 'error',
+        });
+      }
+    };
+
+    callBackend();
+
+    return () => {
+      didCancel = true;
+    };
+  }, [state.itemDeletiondata, enqueueSnackbar]);
+
+  const setPageIndex = (pageIndex: number) =>
+    dispatch({ type: 'PAGE_INDEX_CHANGE', pageIndex });
+
+  const setPageSize = (pageSize: number) =>
+    dispatch({ type: 'PAGE_SIZE_CHANGE', pageSize });
+
+  const createTodo = (todoCreationData: TodoCreationData) =>
+    dispatch({
+      type: 'ITEM_CREATION_REQUESTED',
+      itemCreationData: todoCreationData,
+    });
+
+  const deleteTodo = (todoDeletionData: TodoDeletionData) =>
+    dispatch({
+      type: 'ITEM_DELETION_REQUESTED',
+      itemDeletiondata: todoDeletionData,
+    });
 
   return [
-    state,
+    state.loadablePage,
+    state.pageParams,
     setPageIndex,
     setPageSize,
-    handleTodoCreated,
-    handleTodoDeleted,
+    createTodo,
+    deleteTodo,
   ];
-};
+}

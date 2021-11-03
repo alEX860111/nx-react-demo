@@ -6,16 +6,16 @@ describe(TodoListItem, () => {
   let todo: Todo;
 
   beforeEach(() => {
-    todo = { id: '1', content: 'hello world' };
+    todo = { id: '1', content: 'hello world', completed: false };
   });
 
   it('should render successfully', () => {
-    const handleTodoDeleteRequested = jest.fn();
+    const handleTodoDeletionRequested = jest.fn();
 
     const { baseElement } = render(
       <TodoListItem
         todo={todo}
-        onTodoDeleteRequested={handleTodoDeleteRequested}
+        onTodoDeletionRequested={handleTodoDeletionRequested}
       />
     );
 
@@ -23,12 +23,12 @@ describe(TodoListItem, () => {
   });
 
   it('should render the todo content', () => {
-    const handleTodoDeleteRequested = jest.fn();
+    const handleTodoDeletionRequested = jest.fn();
 
     const { getByText } = render(
       <TodoListItem
         todo={todo}
-        onTodoDeleteRequested={handleTodoDeleteRequested}
+        onTodoDeletionRequested={handleTodoDeletionRequested}
       />
     );
 

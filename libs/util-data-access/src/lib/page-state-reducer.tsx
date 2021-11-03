@@ -1,10 +1,10 @@
 import { PageState } from './page-state';
 import { PageStateAction } from './page-state-action';
 
-export function pageStateReducer<T>(
-  state: PageState<T>,
-  action: PageStateAction<T>
-): PageState<T> {
+export function pageStateReducer<C, R, D>(
+  state: PageState<C, R, D>,
+  action: PageStateAction<C, R, D>
+): PageState<C, R, D> {
   switch (action.type) {
     case 'LOAD_INIT':
       return {
@@ -50,15 +50,26 @@ export function pageStateReducer<T>(
           index: 0,
         },
       };
-    case 'ITEM_CREATED':
+    case 'ITEM_CREATION_REQUESTED':
+      return {
+        ...state,
+        itemCreationData: action.itemCreationData,
+      };
+    case 'ITEM_CREATION_SUCCESS':
       return {
         ...state,
         pageParams: {
           ...state.pageParams,
           index: 0,
         },
+        numberOfCreatedItems: state.numberOfCreatedItems + 1,
       };
-    case 'ITEM_DELETED':
+    case 'ITEM_DELETION_REQUESTED':
+      return {
+        ...state,
+        itemDeletiondata: action.itemDeletiondata,
+      };
+    case 'ITEM_DELETION_SUCCESS':
       return {
         ...state,
         pageParams: {
@@ -69,6 +80,7 @@ export function pageStateReducer<T>(
               ? state.pageParams.index - 1
               : state.pageParams.index,
         },
+        numberOfDeletedItems: state.numberOfDeletedItems + 1,
       };
     default:
       throw new Error();

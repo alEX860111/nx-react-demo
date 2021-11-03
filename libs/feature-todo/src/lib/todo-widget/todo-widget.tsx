@@ -1,46 +1,27 @@
-import {
-  useCreateTodo,
-  useDeleteTodo,
-  useGetTodoPage,
-} from '@nx-react-demo/data-access-todo';
-import { useEffect } from 'react';
+import { useGetTodoPage } from '@nx-react-demo/data-access-todo';
 import { TodoInput } from '../todo-input/todo-input';
 import { TodoList } from '../todo-list/todo-list';
 
 export function TodoWidget() {
   const [
-    pageState,
+    loadablePage,
+    pageParams,
     setPageIndex,
     setPageSize,
-    handleTodoCreated,
-    handleTodoDeleted,
+    createTodo,
+    deleteTodo,
   ] = useGetTodoPage();
-
-  const [createdTodo, createTodo] = useCreateTodo();
-
-  useEffect(() => {
-    if (!createdTodo.isLoading && createdTodo.data) {
-      handleTodoCreated();
-    }
-  }, [createdTodo, handleTodoCreated]);
-
-  const [deletedTodo, deleteTodo] = useDeleteTodo();
-
-  useEffect(() => {
-    if (!deletedTodo.isLoading && deletedTodo.data) {
-      handleTodoDeleted();
-    }
-  }, [deletedTodo, handleTodoDeleted]);
 
   return (
     <>
       <h2>Todos</h2>
       <TodoInput onTodoCreationRequested={createTodo}></TodoInput>
       <TodoList
-        pageState={pageState}
+        loadablePage={loadablePage}
+        pageParams={pageParams}
         onPageIndexChange={setPageIndex}
         onPageSizeChange={setPageSize}
-        onTodoDeleteRequested={deleteTodo}
+        onTodoDeletionRequested={deleteTodo}
       ></TodoList>
     </>
   );

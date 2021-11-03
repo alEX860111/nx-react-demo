@@ -2,47 +2,58 @@
   "todos": [
     {
       "id": 1,
-      "content": "wash car"
+      "content": "wash car",
+      "completed": false
     },
     {
       "id": 2,
-      "content": "clean up room"
+      "content": "clean up room",
+      "completed": false
     },
     {
       "id": 3,
-      "content": "play videogames"
+      "content": "play videogames",
+      "completed": true
     },
     {
       "id": 4,
-      "content": "go shopping"
+      "content": "go shopping",
+      "completed": false
     },
     {
       "id": 5,
-      "content": "go to the doctor"
+      "content": "go to the doctor",
+      "completed": false
     },
     {
       "id": 6,
-      "content": "meet friends"
+      "content": "meet friends",
+      "completed": true
     },
     {
       "content": "do the homework",
-      "id": 7
+      "id": 7,
+      "completed": true
     },
     {
       "content": "learn react",
-      "id": 8
+      "id": 8,
+      "completed": false
     },
     {
       "content": "go for a run",
-      "id": 9
+      "id": 9,
+      "completed": true
     },
     {
       "content": "buy christmas presents",
-      "id": 10
+      "id": 10,
+      "completed": false
     },
     {
       "content": "plan vacation",
-      "id": 11
+      "id": 11,
+      "completed": true
     }
   ]
 }

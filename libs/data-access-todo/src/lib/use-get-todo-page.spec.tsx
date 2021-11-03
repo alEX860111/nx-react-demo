@@ -1,5 +1,7 @@
-import { PageState } from '@nx-react-demo/util-data-access';
+import { Loadable, Page, PageParams } from '@nx-react-demo/util-data-access';
 import { act, renderHook } from '@testing-library/react-hooks';
+import { SnackbarProvider } from 'notistack';
+import React, { ReactChildren } from 'react';
 import { Todo } from './todo';
 import { useGetTodoPage } from './use-get-todo-page';
 
@@ -7,6 +9,10 @@ describe(useGetTodoPage, () => {
   let fetchRef: typeof global.fetch;
 
   let fetchMock: jest.Mock;
+
+  const wrapper = (props: { children: ReactChildren }) => (
+    <SnackbarProvider maxSnack={3}>{props.children}</SnackbarProvider>
+  );
 
   beforeEach(() => {
     fetchRef = global.fetch;
@@ -24,34 +30,39 @@ describe(useGetTodoPage, () => {
     beforeEach(() => {
       const headers = new Headers();
       headers.set('X-Total-Count', '10');
-      const response: Response = { headers } as jest.Mocked<Response>;
+      const response: Response = {
+        headers,
+        status: 200,
+      } as jest.Mocked<Response>;
 
-      todos = [{ id: '1', content: 'foo' }];
+      todos = [{ id: '1', content: 'foo', completed: false }];
       response.json = jest.fn().mockResolvedValue(todos);
 
       fetchMock.mockResolvedValue(response);
     });
 
     it('should provide page and page params in loading state', async () => {
-      const { result, waitForNextUpdate } = renderHook(() => useGetTodoPage());
+      const { result, waitForNextUpdate } = renderHook(() => useGetTodoPage(), {
+        wrapper,
+      });
 
-      const [state] = result.current;
+      const [loadablePage, pageParams] = result.current;
 
-      const expectedState: PageState<Todo> = {
-        loadablePage: {
-          isLoading: true,
-          data: {
-            items: [],
-            totalItems: 0,
-            totalPages: 0,
-          },
-        },
-        pageParams: {
-          index: 0,
-          size: 5,
+      const expectedLoadablePage: Loadable<Page<Todo>> = {
+        isLoading: true,
+        data: {
+          items: [],
+          totalItems: 0,
+          totalPages: 0,
         },
       };
-      expect(state).toEqual(expectedState);
+      expect(loadablePage).toEqual(expectedLoadablePage);
+
+      const expectedPageParams: PageParams = {
+        index: 0,
+        size: 5,
+      };
+      expect(pageParams).toEqual(expectedPageParams);
 
       await waitForNextUpdate();
 
@@ -59,33 +70,37 @@ describe(useGetTodoPage, () => {
     });
 
     it('should provide page and page params in loaded state', async () => {
-      const { result, waitForNextUpdate } = renderHook(() => useGetTodoPage());
+      const { result, waitForNextUpdate } = renderHook(() => useGetTodoPage(), {
+        wrapper,
+      });
 
       await waitForNextUpdate();
 
-      const [state] = result.current;
-      const expectedState: PageState<Todo> = {
-        loadablePage: {
-          isLoading: false,
-          data: {
-            items: todos,
-            totalItems: 10,
-            totalPages: 2,
-          },
-        },
-        pageParams: {
-          index: 0,
-          size: 5,
+      const [loadablePage, pageParams] = result.current;
+      const expectedLoadablePage: Loadable<Page<Todo>> = {
+        isLoading: false,
+        data: {
+          items: todos,
+          totalItems: 10,
+          totalPages: 2,
         },
       };
-      expect(state).toEqual(expectedState);
+      expect(loadablePage).toEqual(expectedLoadablePage);
+
+      const expectedPageParams: PageParams = {
+        index: 0,
+        size: 5,
+      };
+      expect(pageParams).toEqual(expectedPageParams);
 
       expect(fetchMock).toHaveBeenCalledTimes(1);
     });
 
     it('should fetch the data on page index change', async () => {
-      const { result, waitForNextUpdate } = renderHook(() => useGetTodoPage());
-      const [_state, setPageIndex] = result.current;
+      const { result, waitForNextUpdate } = renderHook(() => useGetTodoPage(), {
+        wrapper,
+      });
+      const [_loadablePage, _pageParams, setPageIndex] = result.current;
 
       act(() => {
         setPageIndex(1);
@@ -96,8 +111,11 @@ describe(useGetTodoPage, () => {
     });
 
     it('should fetch the data on page size change', async () => {
-      const { result, waitForNextUpdate } = renderHook(() => useGetTodoPage());
-      const [_state, _setPageIndex, setPageSize] = result.current;
+      const { result, waitForNextUpdate } = renderHook(() => useGetTodoPage(), {
+        wrapper,
+      });
+      const [_loadablePage, _pageParams, _setPageIndex, setPageSize] =
+        result.current;
 
       act(() => {
         setPageSize(10);

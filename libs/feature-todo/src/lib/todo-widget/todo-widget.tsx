@@ -10,6 +10,7 @@ export function TodoWidget() {
     setPageSize,
     createTodo,
     deleteTodo,
+    updateTodo,
   ] = useGetTodoPage();
 
   return (
@@ -22,6 +23,7 @@ export function TodoWidget() {
         onPageIndexChange={setPageIndex}
         onPageSizeChange={setPageSize}
         onTodoDeletionRequested={deleteTodo}
+        onTodoUpdateRequested={updateTodo}
       ></TodoList>
     </>
   );

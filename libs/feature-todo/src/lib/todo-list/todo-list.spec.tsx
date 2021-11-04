@@ -34,12 +34,14 @@ describe(TodoList, () => {
     const handleTodoDeletionRequested = jest.fn();
     const handlePageIndexChange = jest.fn();
     const handlePageSizeChange = jest.fn();
+    const handleTodoUpdateRequested = jest.fn();
 
     const { baseElement } = render(
       <TodoList
         loadablePage={loadablePage}
         pageParams={pageParams}
         onTodoDeletionRequested={handleTodoDeletionRequested}
+        onTodoUpdateRequested={handleTodoUpdateRequested}
         onPageIndexChange={handlePageIndexChange}
         onPageSizeChange={handlePageSizeChange}
       />
@@ -52,12 +54,14 @@ describe(TodoList, () => {
     const handleTodoDeletionRequested = jest.fn();
     const handlePageIndexChange = jest.fn();
     const handlePageSizeChange = jest.fn();
+    const handleTodoUpdateRequested = jest.fn();
 
     const { getAllByTestId } = render(
       <TodoList
         loadablePage={loadablePage}
         pageParams={pageParams}
         onTodoDeletionRequested={handleTodoDeletionRequested}
+        onTodoUpdateRequested={handleTodoUpdateRequested}
         onPageIndexChange={handlePageIndexChange}
         onPageSizeChange={handlePageSizeChange}
       />

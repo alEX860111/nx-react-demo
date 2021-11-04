@@ -20,8 +20,7 @@ describe(pageStateReducer, () => {
         index: 0,
         size: 10,
       },
-      numberOfCreatedItems: 0,
-      numberOfDeletedItems: 0,
+      refreshPage: 0,
     };
     const result = reducer(state, { type: 'LOAD_INIT' });
     const expectedState: PageState<string, string, string> = {
@@ -34,8 +33,7 @@ describe(pageStateReducer, () => {
         index: 0,
         size: 10,
       },
-      numberOfCreatedItems: 0,
-      numberOfDeletedItems: 0,
+      refreshPage: 0,
     };
     expect(result).toEqual(expectedState);
   });
@@ -51,8 +49,7 @@ describe(pageStateReducer, () => {
         index: 0,
         size: 10,
       },
-      numberOfCreatedItems: 0,
-      numberOfDeletedItems: 0,
+      refreshPage: 0,
     };
     const result = reducer(state, {
       type: 'LOAD_SUCCESS',
@@ -68,8 +65,7 @@ describe(pageStateReducer, () => {
         index: 0,
         size: 10,
       },
-      numberOfCreatedItems: 0,
-      numberOfDeletedItems: 0,
+      refreshPage: 0,
     };
     expect(result).toEqual(expectedState);
   });
@@ -84,8 +80,7 @@ describe(pageStateReducer, () => {
         index: 0,
         size: 10,
       },
-      numberOfCreatedItems: 0,
-      numberOfDeletedItems: 0,
+      refreshPage: 0,
     };
     const result = reducer(state, { type: 'LOAD_ERROR', error: 'oops' });
     const expectedState: PageState<string, string, string> = {
@@ -98,8 +93,7 @@ describe(pageStateReducer, () => {
         index: 0,
         size: 10,
       },
-      numberOfCreatedItems: 0,
-      numberOfDeletedItems: 0,
+      refreshPage: 0,
     };
     expect(result).toEqual(expectedState);
   });
@@ -114,8 +108,7 @@ describe(pageStateReducer, () => {
         index: 0,
         size: 10,
       },
-      numberOfCreatedItems: 0,
-      numberOfDeletedItems: 0,
+      refreshPage: 0,
     };
     const result = reducer(state, { type: 'PAGE_INDEX_CHANGE', pageIndex: 1 });
     const expectedState: PageState<string, string, string> = {
@@ -127,8 +120,7 @@ describe(pageStateReducer, () => {
         index: 1,
         size: 10,
       },
-      numberOfCreatedItems: 0,
-      numberOfDeletedItems: 0,
+      refreshPage: 0,
     };
     expect(result).toEqual(expectedState);
   });
@@ -143,8 +135,7 @@ describe(pageStateReducer, () => {
         index: 1,
         size: 10,
       },
-      numberOfCreatedItems: 0,
-      numberOfDeletedItems: 0,
+      refreshPage: 0,
     };
     const result = reducer(state, { type: 'PAGE_SIZE_CHANGE', pageSize: 20 });
     const expectedState: PageState<string, string, string> = {
@@ -156,8 +147,7 @@ describe(pageStateReducer, () => {
         index: 0,
         size: 20,
       },
-      numberOfCreatedItems: 0,
-      numberOfDeletedItems: 0,
+      refreshPage: 0,
     };
     expect(result).toEqual(expectedState);
   });

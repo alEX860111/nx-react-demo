@@ -9,7 +9,9 @@ export type PageStateAction<C, R, D> =
   | ItemCreationRequestedAction<C>
   | ItemCreationSuccessAction
   | ItemDeletionRequestedAction<D>
-  | ItemDeletionSuccessAction;
+  | ItemDeletionSuccessAction
+  | ItemUpdateRequestedAction<R>
+  | RefreshPageAction;
 
 export interface LoadInitAction {
   readonly type: 'LOAD_INIT';
@@ -51,4 +53,13 @@ export interface ItemDeletionRequestedAction<D> {
 
 export interface ItemDeletionSuccessAction {
   readonly type: 'ITEM_DELETION_SUCCESS';
+}
+
+export interface ItemUpdateRequestedAction<R> {
+  readonly type: 'ITEM_UPDATE_REQUESTED';
+  readonly itemUpdateData: R;
+}
+
+export interface RefreshPageAction {
+  readonly type: 'REFRESH_PAGE';
 }

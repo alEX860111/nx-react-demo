@@ -10,6 +10,7 @@ interface Props {
   loadablePage: Loadable<Page<Todo>>;
   pageParams: PageParams;
   onTodoDeletionRequested: (todoDeletionData: TodoDeletionData) => void;
+  onTodoUpdateRequested: (todo: Todo) => void;
   onPageIndexChange: (pageIndex: number) => void;
   onPageSizeChange: (pageSize: number) => void;
 }
@@ -50,6 +51,7 @@ export function TodoList(props: Props) {
               key={todo.id}
               todo={todo}
               onTodoDeletionRequested={props.onTodoDeletionRequested}
+              onTodoUpdateRequested={props.onTodoUpdateRequested}
             />
           ))}
         </List>

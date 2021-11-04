@@ -1,14 +1,14 @@
 {
   "todos": [
     {
-      "id": 1,
       "content": "wash car",
-      "completed": false
+      "completed": false,
+      "id": 1
     },
     {
       "id": 2,
       "content": "clean up room",
-      "completed": false
+      "completed": true
     },
     {
       "id": 3,
@@ -18,7 +18,7 @@
     {
       "id": 4,
       "content": "go shopping",
-      "completed": false
+      "completed": true
     },
     {
       "id": 5,

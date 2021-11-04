@@ -11,11 +11,13 @@ describe(TodoListItem, () => {
 
   it('should render successfully', () => {
     const handleTodoDeletionRequested = jest.fn();
+    const handleTodoUpdateRequested = jest.fn();
 
     const { baseElement } = render(
       <TodoListItem
         todo={todo}
         onTodoDeletionRequested={handleTodoDeletionRequested}
+        onTodoUpdateRequested={handleTodoUpdateRequested}
       />
     );
 
@@ -24,11 +26,13 @@ describe(TodoListItem, () => {
 
   it('should render the todo content', () => {
     const handleTodoDeletionRequested = jest.fn();
+    const handleTodoUpdateRequested = jest.fn();
 
     const { getByText } = render(
       <TodoListItem
         todo={todo}
         onTodoDeletionRequested={handleTodoDeletionRequested}
+        onTodoUpdateRequested={handleTodoUpdateRequested}
       />
     );
 

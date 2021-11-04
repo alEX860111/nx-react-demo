@@ -7,6 +7,6 @@ export interface PageState<C, R, D> {
   pageParams: PageParams;
   itemCreationData?: C;
   itemDeletiondata?: D;
-  numberOfCreatedItems: number;
-  numberOfDeletedItems: number;
+  itemUpdateData?: R;
+  refreshPage: number;
 }

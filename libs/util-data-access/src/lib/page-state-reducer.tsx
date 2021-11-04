@@ -1,7 +1,7 @@
 import { PageState } from './page-state';
 import { PageStateAction } from './page-state-action';
 
-export function pageStateReducer<C, R, D>(
+export function pageStateReducer<C, R, U, D>(
   state: PageState<C, R, D>,
   action: PageStateAction<C, R, D>
 ): PageState<C, R, D> {
@@ -62,7 +62,7 @@ export function pageStateReducer<C, R, D>(
           ...state.pageParams,
           index: 0,
         },
-        numberOfCreatedItems: state.numberOfCreatedItems + 1,
+        refreshPage: state.refreshPage + 1,
       };
     case 'ITEM_DELETION_REQUESTED':
       return {
@@ -80,7 +80,17 @@ export function pageStateReducer<C, R, D>(
               ? state.pageParams.index - 1
               : state.pageParams.index,
         },
-        numberOfDeletedItems: state.numberOfDeletedItems + 1,
+        refreshPage: state.refreshPage + 1,
+      };
+    case 'ITEM_UPDATE_REQUESTED':
+      return {
+        ...state,
+        itemUpdateData: action.itemUpdateData,
+      };
+    case 'REFRESH_PAGE':
+      return {
+        ...state,
+        refreshPage: state.refreshPage + 1,
       };
     default:
       throw new Error();

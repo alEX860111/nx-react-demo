@@ -25,7 +25,8 @@ export function useGetTodoPage(): [
   React.Dispatch<number>,
   React.Dispatch<number>,
   React.Dispatch<TodoCreationData>,
-  React.Dispatch<TodoDeletionData>
+  React.Dispatch<TodoDeletionData>,
+  React.Dispatch<Todo>
 ] {
   const initialState: TodoPageState = {
     loadablePage: {
@@ -40,8 +41,7 @@ export function useGetTodoPage(): [
       index: 0,
       size: 5,
     },
-    numberOfCreatedItems: 0,
-    numberOfDeletedItems: 0,
+    refreshPage: 0,
   };
 
   const [state, dispatch] = useReducer(
@@ -54,7 +54,42 @@ export function useGetTodoPage(): [
   useEffect(() => {
     let didCancel = false;
 
-    const callBackend = async () => {
+    const updateTodo = async () => {
+      if (!state.itemUpdateData) return;
+
+      try {
+        const result = await fetch(
+          `http://localhost:3000/todos/${state.itemUpdateData.id}`,
+          {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(state.itemUpdateData),
+          }
+        );
+
+        if (result.status !== 200) throw new Error();
+      } catch (error) {
+        const errorMessage = 'Failed to update todo';
+        enqueueSnackbar(errorMessage, {
+          variant: 'error',
+        });
+        if (!didCancel) {
+          dispatch({ type: 'REFRESH_PAGE' });
+        }
+      }
+    };
+
+    updateTodo();
+
+    return () => {
+      didCancel = true;
+    };
+  }, [state.itemUpdateData, enqueueSnackbar]);
+
+  useEffect(() => {
+    let didCancel = false;
+
+    const createTodo = async () => {
       if (!state.itemCreationData) return;
 
       try {
@@ -80,7 +115,7 @@ export function useGetTodoPage(): [
       }
     };
 
-    callBackend();
+    createTodo();
 
     return () => {
       didCancel = true;
@@ -90,7 +125,7 @@ export function useGetTodoPage(): [
   useEffect(() => {
     let didCancel = false;
 
-    const callBackend = async () => {
+    const getTodos = async () => {
       dispatch({ type: 'LOAD_INIT' });
 
       try {
@@ -128,7 +163,7 @@ export function useGetTodoPage(): [
       }
     };
 
-    callBackend();
+    getTodos();
 
     return () => {
       didCancel = true;
@@ -136,15 +171,14 @@ export function useGetTodoPage(): [
   }, [
     state.pageParams.index,
     state.pageParams.size,
-    state.numberOfCreatedItems,
-    state.numberOfDeletedItems,
+    state.refreshPage,
     enqueueSnackbar,
   ]);
 
   useEffect(() => {
     let didCancel = false;
 
-    const callBackend = async () => {
+    const deleteTodo = async () => {
       if (!state.itemDeletiondata) return;
 
       try {
@@ -171,7 +205,7 @@ export function useGetTodoPage(): [
       }
     };
 
-    callBackend();
+    deleteTodo();
 
     return () => {
       didCancel = true;
@@ -196,6 +230,9 @@ export function useGetTodoPage(): [
       itemDeletiondata: todoDeletionData,
     });
 
+  const updateTodo = (todo: Todo) =>
+    dispatch({ type: 'ITEM_UPDATE_REQUESTED', itemUpdateData: todo });
+
   return [
     state.loadablePage,
     state.pageParams,
@@ -203,5 +240,6 @@ export function useGetTodoPage(): [
     setPageSize,
     createTodo,
     deleteTodo,
+    updateTodo,
   ];
 }

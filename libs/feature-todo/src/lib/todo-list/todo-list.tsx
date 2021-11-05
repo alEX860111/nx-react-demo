@@ -1,21 +1,20 @@
 import List from '@mui/material/List';
 import TablePagination from '@mui/material/TablePagination';
-import { Todo, TodoDeletionData } from '@nx-react-demo/data-access-todo';
+import { Todo } from '@nx-react-demo/data-access-todo';
 import { Loadable, Page, PageParams } from '@nx-react-demo/util-data-access';
-import React from 'react';
+import React, { useContext } from 'react';
 import { SkeletonTodoListItem } from '../skeleton-todo-list-item/skeleton-todo-list-item';
+import { TodoDispatch } from '../todo-context';
 import { TodoListItem } from '../todo-list-item/todo-list-item';
 
 interface Props {
   loadablePage: Loadable<Page<Todo>>;
   pageParams: PageParams;
-  onTodoDeletionRequested: (todoDeletionData: TodoDeletionData) => void;
-  onTodoUpdateRequested: (todo: Todo) => void;
-  onPageIndexChange: (pageIndex: number) => void;
-  onPageSizeChange: (pageSize: number) => void;
 }
 
 export function TodoList(props: Props) {
+  const dispatch = useContext(TodoDispatch);
+
   const getSkeletons = () => {
     const indices = [...Array(props.pageParams.size).keys()];
     return (
@@ -29,16 +28,16 @@ export function TodoList(props: Props) {
 
   const handlePageChange = (
     _event: React.MouseEvent<HTMLButtonElement> | null,
-    page: number
-  ) => {
-    props.onPageIndexChange(page);
-  };
+    pageIndex: number
+  ) => dispatch({ type: 'PAGE_INDEX_CHANGE', pageIndex });
 
   const handleRowsPerPageChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    props.onPageSizeChange(parseInt(event.target.value, 10));
-  };
+  ) =>
+    dispatch({
+      type: 'PAGE_SIZE_CHANGE',
+      pageSize: parseInt(event.target.value, 10),
+    });
 
   return (
     <>
@@ -47,12 +46,7 @@ export function TodoList(props: Props) {
       ) : (
         <List>
           {props.loadablePage.data.items.map((todo) => (
-            <TodoListItem
-              key={todo.id}
-              todo={todo}
-              onTodoDeletionRequested={props.onTodoDeletionRequested}
-              onTodoUpdateRequested={props.onTodoUpdateRequested}
-            />
+            <TodoListItem key={todo.id} todo={todo} />
           ))}
         </List>
       )}

@@ -3,9 +3,9 @@ import { act, renderHook } from '@testing-library/react-hooks';
 import { SnackbarProvider } from 'notistack';
 import React, { ReactChildren } from 'react';
 import { Todo } from './todo';
-import { useGetTodoPage } from './use-get-todo-page';
+import { useTodoPage } from './use-todo-page';
 
-describe(useGetTodoPage, () => {
+describe(useTodoPage, () => {
   let fetchRef: typeof global.fetch;
 
   let fetchMock: jest.Mock;
@@ -35,14 +35,14 @@ describe(useGetTodoPage, () => {
         status: 200,
       } as jest.Mocked<Response>;
 
-      todos = [{ id: '1', content: 'foo', completed: false }];
+      todos = [{ id: 1, content: 'foo', completed: false }];
       response.json = jest.fn().mockResolvedValue(todos);
 
       fetchMock.mockResolvedValue(response);
     });
 
     it('should provide page and page params in loading state', async () => {
-      const { result, waitForNextUpdate } = renderHook(() => useGetTodoPage(), {
+      const { result, waitForNextUpdate } = renderHook(() => useTodoPage(), {
         wrapper,
       });
 
@@ -70,7 +70,7 @@ describe(useGetTodoPage, () => {
     });
 
     it('should provide page and page params in loaded state', async () => {
-      const { result, waitForNextUpdate } = renderHook(() => useGetTodoPage(), {
+      const { result, waitForNextUpdate } = renderHook(() => useTodoPage(), {
         wrapper,
       });
 
@@ -97,29 +97,24 @@ describe(useGetTodoPage, () => {
     });
 
     it('should fetch the data on page index change', async () => {
-      const { result, waitForNextUpdate } = renderHook(() => useGetTodoPage(), {
+      const { result, waitForNextUpdate } = renderHook(() => useTodoPage(), {
         wrapper,
       });
-      const [_loadablePage, _pageParams, setPageIndex] = result.current;
+      const [_loadablePage, _pageParams, dispatch] = result.current;
 
-      act(() => {
-        setPageIndex(1);
-      });
+      act(() => dispatch({ type: 'PAGE_INDEX_CHANGE', pageIndex: 1 }));
 
       await waitForNextUpdate();
       expect(fetchMock).toHaveBeenCalledTimes(2);
     });
 
     it('should fetch the data on page size change', async () => {
-      const { result, waitForNextUpdate } = renderHook(() => useGetTodoPage(), {
+      const { result, waitForNextUpdate } = renderHook(() => useTodoPage(), {
         wrapper,
       });
-      const [_loadablePage, _pageParams, _setPageIndex, setPageSize] =
-        result.current;
+      const [_loadablePage, _pageParams, dispatch] = result.current;
 
-      act(() => {
-        setPageSize(10);
-      });
+      act(() => dispatch({ type: 'PAGE_SIZE_CHANGE', pageSize: 10 }));
 
       await waitForNextUpdate();
       expect(fetchMock).toHaveBeenCalledTimes(2);

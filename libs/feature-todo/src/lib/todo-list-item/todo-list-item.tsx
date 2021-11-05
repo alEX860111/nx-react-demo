@@ -5,21 +5,24 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { Todo, TodoDeletionData } from '@nx-react-demo/data-access-todo';
-import { useState } from 'react';
+import { Todo } from '@nx-react-demo/data-access-todo';
+import { useContext, useState } from 'react';
+import { TodoDispatch } from '../todo-context';
 
 interface Props {
   todo: Todo;
-  onTodoDeletionRequested: (todoDeletionData: TodoDeletionData) => void;
-  onTodoUpdateRequested: (todo: Todo) => void;
 }
 
 export function TodoListItem(props: Props) {
+  const dispatch = useContext(TodoDispatch);
+
   const [completed, setCompleted] = useState(props.todo.completed);
 
-  const handleDelete = () => {
-    props.onTodoDeletionRequested({ id: props.todo.id });
-  };
+  const handleDelete = () =>
+    dispatch({
+      type: 'ITEM_DELETION_REQUESTED',
+      itemIdToDelete: props.todo.id,
+    });
 
   const handleCheckbox = () => {
     const updatedTodo: Todo = {
@@ -27,7 +30,7 @@ export function TodoListItem(props: Props) {
       completed: !completed,
     };
     setCompleted(updatedTodo.completed);
-    props.onTodoUpdateRequested(updatedTodo);
+    dispatch({ type: 'ITEM_UPDATE_REQUESTED', itemUpdateData: updatedTodo });
   };
 
   return (

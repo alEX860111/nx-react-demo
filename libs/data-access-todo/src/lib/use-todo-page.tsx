@@ -10,23 +10,18 @@ import { useSnackbar } from 'notistack';
 import React, { Reducer, useEffect, useReducer } from 'react';
 import { Todo } from './todo';
 import { TodoCreationData } from './todo-creation-data';
-import { TodoDeletionData } from './todo-deletion-data';
 
-type TodoPageState = PageState<TodoCreationData, Todo, TodoDeletionData>;
-type TodoPageStateAction = PageStateAction<
-  TodoCreationData,
+type TodoPageState = PageState<Todo, number, TodoCreationData>;
+export type TodoPageStateAction = PageStateAction<
   Todo,
-  TodoDeletionData
+  number,
+  TodoCreationData
 >;
 
-export function useGetTodoPage(): [
+export function useTodoPage(): [
   Loadable<Page<Todo>>,
   PageParams,
-  React.Dispatch<number>,
-  React.Dispatch<number>,
-  React.Dispatch<TodoCreationData>,
-  React.Dispatch<TodoDeletionData>,
-  React.Dispatch<Todo>
+  React.Dispatch<TodoPageStateAction>
 ] {
   const initialState: TodoPageState = {
     loadablePage: {
@@ -54,7 +49,7 @@ export function useGetTodoPage(): [
   useEffect(() => {
     let didCancel = false;
 
-    const updateTodo = async () => {
+    async function updateTodo() {
       if (!state.itemUpdateData) return;
 
       try {
@@ -77,7 +72,7 @@ export function useGetTodoPage(): [
           dispatch({ type: 'REFRESH_PAGE' });
         }
       }
-    };
+    }
 
     updateTodo();
 
@@ -89,7 +84,7 @@ export function useGetTodoPage(): [
   useEffect(() => {
     let didCancel = false;
 
-    const createTodo = async () => {
+    async function createTodo() {
       if (!state.itemCreationData) return;
 
       try {
@@ -109,11 +104,9 @@ export function useGetTodoPage(): [
         }
       } catch (error) {
         const errorMessage = 'Failed to create todo';
-        enqueueSnackbar(errorMessage, {
-          variant: 'error',
-        });
+        enqueueSnackbar(errorMessage, { variant: 'error' });
       }
-    };
+    }
 
     createTodo();
 
@@ -125,7 +118,7 @@ export function useGetTodoPage(): [
   useEffect(() => {
     let didCancel = false;
 
-    const getTodos = async () => {
+    async function getTodos() {
       dispatch({ type: 'LOAD_INIT' });
 
       try {
@@ -161,7 +154,7 @@ export function useGetTodoPage(): [
           });
         }
       }
-    };
+    }
 
     getTodos();
 
@@ -178,12 +171,12 @@ export function useGetTodoPage(): [
   useEffect(() => {
     let didCancel = false;
 
-    const deleteTodo = async () => {
-      if (!state.itemDeletiondata) return;
+    async function deleteTodo() {
+      if (state.itemIdToDelete === undefined) return;
 
       try {
         const result = await fetch(
-          `http://localhost:3000/todos/${state.itemDeletiondata.id}`,
+          `http://localhost:3000/todos/${state.itemIdToDelete}`,
           { method: 'DELETE' }
         );
 
@@ -193,53 +186,25 @@ export function useGetTodoPage(): [
           enqueueSnackbar('Successfully deleted todo.', {
             variant: 'success',
           });
-          dispatch({
-            type: 'ITEM_DELETION_SUCCESS',
-          });
+          dispatch({ type: 'ITEM_DELETION_SUCCESS' });
         }
       } catch (error) {
-        const errorMessage = 'Failed to delete todo';
-        enqueueSnackbar(errorMessage, {
-          variant: 'error',
-        });
+        if (!didCancel) {
+          dispatch({ type: 'ITEM_DELETION_ERROR' });
+          const errorMessage = 'Failed to delete todo';
+          enqueueSnackbar(errorMessage, {
+            variant: 'error',
+          });
+        }
       }
-    };
+    }
 
     deleteTodo();
 
     return () => {
       didCancel = true;
     };
-  }, [state.itemDeletiondata, enqueueSnackbar]);
+  }, [state.itemIdToDelete, enqueueSnackbar]);
 
-  const setPageIndex = (pageIndex: number) =>
-    dispatch({ type: 'PAGE_INDEX_CHANGE', pageIndex });
-
-  const setPageSize = (pageSize: number) =>
-    dispatch({ type: 'PAGE_SIZE_CHANGE', pageSize });
-
-  const createTodo = (todoCreationData: TodoCreationData) =>
-    dispatch({
-      type: 'ITEM_CREATION_REQUESTED',
-      itemCreationData: todoCreationData,
-    });
-
-  const deleteTodo = (todoDeletionData: TodoDeletionData) =>
-    dispatch({
-      type: 'ITEM_DELETION_REQUESTED',
-      itemDeletiondata: todoDeletionData,
-    });
-
-  const updateTodo = (todo: Todo) =>
-    dispatch({ type: 'ITEM_UPDATE_REQUESTED', itemUpdateData: todo });
-
-  return [
-    state.loadablePage,
-    state.pageParams,
-    setPageIndex,
-    setPageSize,
-    createTodo,
-    deleteTodo,
-    updateTodo,
-  ];
+  return [state.loadablePage, state.pageParams, dispatch];
 }

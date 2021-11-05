@@ -6,35 +6,17 @@ describe(TodoListItem, () => {
   let todo: Todo;
 
   beforeEach(() => {
-    todo = { id: '1', content: 'hello world', completed: false };
+    todo = { id: 1, content: 'hello world', completed: false };
   });
 
   it('should render successfully', () => {
-    const handleTodoDeletionRequested = jest.fn();
-    const handleTodoUpdateRequested = jest.fn();
-
-    const { baseElement } = render(
-      <TodoListItem
-        todo={todo}
-        onTodoDeletionRequested={handleTodoDeletionRequested}
-        onTodoUpdateRequested={handleTodoUpdateRequested}
-      />
-    );
+    const { baseElement } = render(<TodoListItem todo={todo} />);
 
     expect(baseElement).toBeTruthy();
   });
 
   it('should render the todo content', () => {
-    const handleTodoDeletionRequested = jest.fn();
-    const handleTodoUpdateRequested = jest.fn();
-
-    const { getByText } = render(
-      <TodoListItem
-        todo={todo}
-        onTodoDeletionRequested={handleTodoDeletionRequested}
-        onTodoUpdateRequested={handleTodoUpdateRequested}
-      />
-    );
+    const { getByText } = render(<TodoListItem todo={todo} />);
 
     expect(getByText(todo.content)).toBeTruthy();
   });

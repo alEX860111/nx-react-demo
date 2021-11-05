@@ -1,12 +1,13 @@
+import { Item } from './item';
 import { Loadable } from './loadable';
 import { Page } from './page';
 import { PageParams } from './page-params';
 
-export interface PageState<C, R, D> {
-  loadablePage: Loadable<Page<R>>;
+export interface PageState<T extends Item<ID>, ID, C> {
+  loadablePage: Loadable<Page<T>>;
   pageParams: PageParams;
   itemCreationData?: C;
-  itemDeletiondata?: D;
-  itemUpdateData?: R;
+  itemIdToDelete?: ID;
+  itemUpdateData?: T;
   refreshPage: number;
 }

@@ -1,25 +1,27 @@
+import { Item } from './item';
 import { Page } from './page';
 
-export type PageStateAction<C, R, D> =
+export type PageStateAction<T extends Item<ID>, ID, C> =
   | LoadInitAction
-  | LoadSuccessAction<R>
+  | LoadSuccessAction<T>
   | LoadErrorAction
   | PageIndexChangeAction
   | PageSizeChangeAction
   | ItemCreationRequestedAction<C>
   | ItemCreationSuccessAction
-  | ItemDeletionRequestedAction<D>
+  | ItemDeletionRequestedAction<ID>
   | ItemDeletionSuccessAction
-  | ItemUpdateRequestedAction<R>
+  | ItemDeletionErrorAction
+  | ItemUpdateRequestedAction<T>
   | RefreshPageAction;
 
 export interface LoadInitAction {
   readonly type: 'LOAD_INIT';
 }
 
-export interface LoadSuccessAction<R> {
+export interface LoadSuccessAction<T> {
   readonly type: 'LOAD_SUCCESS';
-  readonly page: Page<R>;
+  readonly page: Page<T>;
 }
 
 export interface LoadErrorAction {
@@ -37,27 +39,31 @@ export interface PageSizeChangeAction {
   readonly pageSize: number;
 }
 
-export interface ItemCreationRequestedAction<C> {
+export interface ItemCreationRequestedAction<T> {
   readonly type: 'ITEM_CREATION_REQUESTED';
-  readonly itemCreationData: C;
+  readonly itemCreationData: T;
 }
 
 export interface ItemCreationSuccessAction {
   readonly type: 'ITEM_CREATION_SUCCESS';
 }
 
-export interface ItemDeletionRequestedAction<D> {
+export interface ItemDeletionRequestedAction<T> {
   readonly type: 'ITEM_DELETION_REQUESTED';
-  readonly itemDeletiondata: D;
+  readonly itemIdToDelete: T;
 }
 
 export interface ItemDeletionSuccessAction {
   readonly type: 'ITEM_DELETION_SUCCESS';
 }
 
-export interface ItemUpdateRequestedAction<R> {
+export interface ItemDeletionErrorAction {
+  readonly type: 'ITEM_DELETION_ERROR';
+}
+
+export interface ItemUpdateRequestedAction<T> {
   readonly type: 'ITEM_UPDATE_REQUESTED';
-  readonly itemUpdateData: R;
+  readonly itemUpdateData: T;
 }
 
 export interface RefreshPageAction {

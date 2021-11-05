@@ -13,7 +13,7 @@ describe(TodoList, () => {
   let pageParams: PageParams;
 
   beforeEach(() => {
-    const todo: Todo = { id: '1', content: 'hello world', completed: false };
+    const todo: Todo = { id: 1, content: 'hello world', completed: false };
 
     loadablePage = {
       isLoading: false,
@@ -31,40 +31,16 @@ describe(TodoList, () => {
   });
 
   it('should render successfully', () => {
-    const handleTodoDeletionRequested = jest.fn();
-    const handlePageIndexChange = jest.fn();
-    const handlePageSizeChange = jest.fn();
-    const handleTodoUpdateRequested = jest.fn();
-
     const { baseElement } = render(
-      <TodoList
-        loadablePage={loadablePage}
-        pageParams={pageParams}
-        onTodoDeletionRequested={handleTodoDeletionRequested}
-        onTodoUpdateRequested={handleTodoUpdateRequested}
-        onPageIndexChange={handlePageIndexChange}
-        onPageSizeChange={handlePageSizeChange}
-      />
+      <TodoList loadablePage={loadablePage} pageParams={pageParams} />
     );
 
     expect(baseElement).toBeTruthy();
   });
 
   it('should render the list items', () => {
-    const handleTodoDeletionRequested = jest.fn();
-    const handlePageIndexChange = jest.fn();
-    const handlePageSizeChange = jest.fn();
-    const handleTodoUpdateRequested = jest.fn();
-
     const { getAllByTestId } = render(
-      <TodoList
-        loadablePage={loadablePage}
-        pageParams={pageParams}
-        onTodoDeletionRequested={handleTodoDeletionRequested}
-        onTodoUpdateRequested={handleTodoUpdateRequested}
-        onPageIndexChange={handlePageIndexChange}
-        onPageSizeChange={handlePageSizeChange}
-      />
+      <TodoList loadablePage={loadablePage} pageParams={pageParams} />
     );
 
     expect(getAllByTestId('todo-list-item').length).toEqual(1);

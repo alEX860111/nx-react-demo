@@ -1,12 +1,11 @@
 import TextField from '@mui/material/TextField';
 import { TodoCreationData } from '@nx-react-demo/data-access-todo';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { TodoDispatch } from '../todo-context';
 
-interface Props {
-  onTodoCreationRequested: (todoCreationData: TodoCreationData) => void;
-}
+export function TodoInput() {
+  const dispatch = useContext(TodoDispatch);
 
-export function TodoInput(props: Props) {
   const [value, setValue] = useState('');
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -19,15 +18,19 @@ export function TodoInput(props: Props) {
     const todoCreationData: TodoCreationData = {
       content: value,
     };
-    props.onTodoCreationRequested(todoCreationData);
 
     setValue('');
+
+    dispatch({
+      type: 'ITEM_CREATION_REQUESTED',
+      itemCreationData: todoCreationData,
+    });
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <TextField
-        data-testid="textfield"
+        id="todo-input"
         fullWidth
         autoFocus
         label="What needs to be done?"

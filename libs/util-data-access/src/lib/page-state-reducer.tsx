@@ -1,10 +1,11 @@
+import { Item } from './item';
 import { PageState } from './page-state';
 import { PageStateAction } from './page-state-action';
 
-export function pageStateReducer<C, R, U, D>(
-  state: PageState<C, R, D>,
-  action: PageStateAction<C, R, D>
-): PageState<C, R, D> {
+export function pageStateReducer<T extends Item<ID>, ID, C>(
+  state: PageState<T, ID, C>,
+  action: PageStateAction<T, ID, C>
+): PageState<T, ID, C> {
   switch (action.type) {
     case 'LOAD_INIT':
       return {
@@ -67,7 +68,11 @@ export function pageStateReducer<C, R, U, D>(
     case 'ITEM_DELETION_REQUESTED':
       return {
         ...state,
-        itemDeletiondata: action.itemDeletiondata,
+        loadablePage: {
+          ...state.loadablePage,
+          isLoading: true,
+        },
+        itemIdToDelete: action.itemIdToDelete,
       };
     case 'ITEM_DELETION_SUCCESS':
       return {
@@ -81,6 +86,14 @@ export function pageStateReducer<C, R, U, D>(
               : state.pageParams.index,
         },
         refreshPage: state.refreshPage + 1,
+      };
+    case 'ITEM_DELETION_ERROR':
+      return {
+        ...state,
+        loadablePage: {
+          ...state.loadablePage,
+          isLoading: false,
+        },
       };
     case 'ITEM_UPDATE_REQUESTED':
       return {

@@ -1,57 +1,73 @@
-import { TodoCreationData } from '@nx-react-demo/data-access-todo';
+import { TodoPageStateAction } from '@nx-react-demo/data-access-todo';
 import { fireEvent, render } from '@testing-library/react';
+import React from 'react';
+import { TodoDispatch } from '../todo-context';
 import { TodoInput } from './todo-input';
 
 describe(TodoInput, () => {
-  it('should render successfully', () => {
-    const handleTodoCreationRequested = jest.fn();
-    const { baseElement } = render(
-      <TodoInput onTodoCreationRequested={handleTodoCreationRequested} />
+  const label = 'What needs to be done?';
+
+  let dispatch: jest.Mock;
+
+  let wrapper: React.ComponentType;
+
+  beforeEach(() => {
+    dispatch = jest.fn();
+    wrapper = ({ children }) => (
+      <TodoDispatch.Provider value={dispatch}>{children}</TodoDispatch.Provider>
     );
+  });
+
+  it('should render successfully', () => {
+    const { baseElement } = render(<TodoInput />, { wrapper });
 
     expect(baseElement).toBeTruthy();
   });
 
-  it('should generate todo creation data on submit if input is not empty', () => {
-    const handleTodoCreationRequested = jest.fn();
+  describe('submit', () => {
+    it('should clear the input on submit', () => {
+      const { getByLabelText } = render(<TodoInput />, { wrapper });
 
-    const { getByTestId } = render(
-      <TodoInput onTodoCreationRequested={handleTodoCreationRequested} />
-    );
+      const input = getByLabelText(label) as HTMLInputElement;
 
-    const input = getByTestId('textfield').querySelector('input');
+      const value = 'hello world';
+      fireEvent.change(input, { target: { value } });
+      fireEvent.submit(input);
 
-    if (input === null) {
-      fail('input not found');
-    }
+      expect(input.value).toEqual('');
+    });
 
-    const value = 'hello world';
-    fireEvent.change(input, { target: { value } });
-    fireEvent.submit(input);
+    it('should generate todo creation data if input is not empty', () => {
+      const { getByLabelText } = render(<TodoInput />, { wrapper });
 
-    expect(handleTodoCreationRequested).toHaveBeenCalled();
+      const input = getByLabelText(label);
 
-    const todoCreationData: TodoCreationData =
-      handleTodoCreationRequested.mock.calls[0][0];
-    expect(todoCreationData.content).toEqual(value);
-  });
+      const value = 'hello world';
+      fireEvent.change(input, { target: { value } });
+      fireEvent.submit(input);
 
-  it('should not generate todo creation data on submit if input is empty', () => {
-    const handleTodoCreationRequested = jest.fn();
+      expect(dispatch).toHaveBeenCalled();
 
-    const { getByTestId } = render(
-      <TodoInput onTodoCreationRequested={handleTodoCreationRequested} />
-    );
+      const action: TodoPageStateAction = dispatch.mock.calls[0][0];
 
-    const input = getByTestId('textfield').querySelector('input');
+      const expectedAction: TodoPageStateAction = {
+        type: 'ITEM_CREATION_REQUESTED',
+        itemCreationData: { content: value },
+      };
 
-    if (input === null) {
-      fail('input not found');
-    }
-    const value = '';
-    fireEvent.change(input, { target: { value } });
-    fireEvent.submit(input);
+      expect(action).toEqual(expectedAction);
+    });
 
-    expect(handleTodoCreationRequested).not.toHaveBeenCalled();
+    it('should not generate todo creation data if input is empty', () => {
+      const { getByLabelText } = render(<TodoInput />, { wrapper });
+
+      const input = getByLabelText(label);
+
+      const value = '';
+      fireEvent.change(input, { target: { value } });
+      fireEvent.submit(input);
+
+      expect(dispatch).not.toHaveBeenCalled();
+    });
   });
 });

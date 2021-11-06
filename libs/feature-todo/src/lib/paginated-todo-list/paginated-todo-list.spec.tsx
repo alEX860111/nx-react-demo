@@ -37,12 +37,4 @@ describe(PaginatedTodoList, () => {
 
     expect(baseElement).toBeTruthy();
   });
-
-  it('should render the list items', () => {
-    const { getAllByTestId } = render(
-      <PaginatedTodoList loadablePage={loadablePage} pageParams={pageParams} />
-    );
-
-    expect(getAllByTestId('todo-list-item').length).toEqual(1);
-  });
 });

@@ -1,11 +1,10 @@
-import List from '@mui/material/List';
 import TablePagination from '@mui/material/TablePagination';
 import { Todo } from '@nx-react-demo/data-access-todo';
 import { Loadable, Page, PageParams } from '@nx-react-demo/util-data-access';
 import React, { useContext } from 'react';
-import { SkeletonTodoListItem } from '../skeleton-todo-list-item/skeleton-todo-list-item';
+import { SkeletonTodoList } from '../skeleton-todo-list/skeleton-todo-list';
 import { TodoDispatch } from '../todo-context';
-import { TodoListItem } from '../todo-list-item/todo-list-item';
+import { TodoList } from '../todo-list/todo-list';
 
 interface Props {
   loadablePage: Loadable<Page<Todo>>;
@@ -14,17 +13,6 @@ interface Props {
 
 export function PaginatedTodoList(props: Props) {
   const dispatch = useContext(TodoDispatch);
-
-  const getSkeletons = () => {
-    const indices = [...Array(props.pageParams.size).keys()];
-    return (
-      <List>
-        {indices.map((index) => (
-          <SkeletonTodoListItem key={index} />
-        ))}
-      </List>
-    );
-  };
 
   const handlePageChange = (
     _event: React.MouseEvent<HTMLButtonElement> | null,
@@ -42,13 +30,9 @@ export function PaginatedTodoList(props: Props) {
   return (
     <>
       {props.loadablePage.isLoading ? (
-        getSkeletons()
+        <SkeletonTodoList pageParams={props.pageParams} />
       ) : (
-        <List>
-          {props.loadablePage.data.items.map((todo) => (
-            <TodoListItem key={todo.id} todo={todo} />
-          ))}
-        </List>
+        <TodoList todos={props.loadablePage.data.items} />
       )}
       <TablePagination
         component="div"

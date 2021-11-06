@@ -1,13 +1,13 @@
 import { Todo } from '@nx-react-demo/data-access-todo';
 import { Loadable, Page, PageParams } from '@nx-react-demo/util-data-access';
 import { render } from '@testing-library/react';
-import { TodoList } from './todo-list';
+import { PaginatedTodoList } from './paginated-todo-list';
 
 jest.mock('../todo-list-item/todo-list-item', () => ({
   TodoListItem: () => <li data-testid="todo-list-item"></li>,
 }));
 
-describe(TodoList, () => {
+describe(PaginatedTodoList, () => {
   let loadablePage: Loadable<Page<Todo>>;
 
   let pageParams: PageParams;
@@ -32,7 +32,7 @@ describe(TodoList, () => {
 
   it('should render successfully', () => {
     const { baseElement } = render(
-      <TodoList loadablePage={loadablePage} pageParams={pageParams} />
+      <PaginatedTodoList loadablePage={loadablePage} pageParams={pageParams} />
     );
 
     expect(baseElement).toBeTruthy();
@@ -40,7 +40,7 @@ describe(TodoList, () => {
 
   it('should render the list items', () => {
     const { getAllByTestId } = render(
-      <TodoList loadablePage={loadablePage} pageParams={pageParams} />
+      <PaginatedTodoList loadablePage={loadablePage} pageParams={pageParams} />
     );
 
     expect(getAllByTestId('todo-list-item').length).toEqual(1);

@@ -12,7 +12,7 @@ interface Props {
   pageParams: PageParams;
 }
 
-export function TodoList(props: Props) {
+export function PaginatedTodoList(props: Props) {
   const dispatch = useContext(TodoDispatch);
 
   const getSkeletons = () => {

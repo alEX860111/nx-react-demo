@@ -43,6 +43,8 @@ export function PaginatedTodoList(props: Props) {
         onRowsPerPageChange={handleRowsPerPageChange}
         rowsPerPageOptions={[2, 5, 10]}
         labelRowsPerPage="todos per page"
+        showFirstButton={true}
+        showLastButton={true}
       />
     </>
   );

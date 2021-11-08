@@ -9,7 +9,7 @@ export function TodoWidget() {
 
   return (
     <Grid container justifyContent="center" alignItems="center">
-      <Grid item xs={12} md={6} lg={4}>
+      <Grid item xs={12} md={6} lg={5}>
         <h2>Todos</h2>
         <TodoDispatch.Provider value={dispatch}>
           <TodoInput />

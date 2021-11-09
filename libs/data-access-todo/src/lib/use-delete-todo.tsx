@@ -25,17 +25,17 @@ export function useDeleteTodo(
 
         if (!didCancel) {
           dispatch({ type: 'ITEM_DELETION_SUCCESS' });
-          snackbarContext.enqueueSnackbar('Successfully deleted todo.', {
-            variant: 'success',
-          });
         }
+        snackbarContext.enqueueSnackbar('Successfully deleted todo.', {
+          variant: 'success',
+        });
       } catch (error) {
         if (!didCancel) {
           dispatch({ type: 'ITEM_DELETION_ERROR' });
-          snackbarContext.enqueueSnackbar('Failed to delete todo', {
-            variant: 'error',
-          });
         }
+        snackbarContext.enqueueSnackbar('Failed to delete todo.', {
+          variant: 'error',
+        });
       }
     }
 

@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { ProviderContext } from 'notistack';
 import { TodoPageState } from './todo-page-state';
 import { TodoPageStateAction } from './todo-page-state-action';
-import { useDeleteTodo } from './use-delete-todo';
+import { useUpdateTodo } from './use-update-todo';
 
 const snackbar = {} as jest.Mocked<ProviderContext>;
 
@@ -11,7 +11,7 @@ jest.mock('notistack', () => ({
   useSnackbar: () => snackbar,
 }));
 
-describe(useDeleteTodo, () => {
+describe(useUpdateTodo, () => {
   let fetchRef: typeof global.fetch;
 
   let fetchMock: jest.Mock;
@@ -49,56 +49,44 @@ describe(useDeleteTodo, () => {
         size: 5,
       },
       refreshPage: 0,
-      itemIdToDelete: 1,
+      itemUpdateData: { id: 1, content: 'hello world', completed: true },
     };
 
     dispatch = jest.fn();
   });
 
-  it('should dispatch success action and enqueue success message if todo has been deleted', async () => {
+  it('should do nothing if todo has been updated', async () => {
     const response: Response = { status: 200 } as jest.Mocked<Response>;
 
     fetchMock.mockResolvedValue(response);
 
-    const { waitFor } = renderHook(() => useDeleteTodo(state, dispatch));
+    const { waitFor } = renderHook(() => useUpdateTodo(state, dispatch));
 
-    await waitFor(() => dispatch.mock.calls.length === 1);
+    await waitFor(() => fetchMock.mock.calls.length === 1);
 
     expect(fetchMock).toHaveBeenCalled();
-
-    expect(dispatch).toHaveBeenCalledTimes(1);
-    const action: TodoPageStateAction = {
-      type: 'ITEM_DELETION_SUCCESS',
-    };
-    expect(dispatch).toHaveBeenLastCalledWith(action);
-
-    expect(snackbar.enqueueSnackbar).toHaveBeenCalledTimes(1);
-    expect(snackbar.enqueueSnackbar).toHaveBeenCalledWith(
-      'Successfully deleted todo.',
-      { variant: 'success' }
-    );
   });
 
-  it('should dispatch error action and enqueue error message if todo could not be deleted', async () => {
+  it('should dispatch error action and enqueue error message if todo could not be updated', async () => {
     const response: Response = { status: 500 } as jest.Mocked<Response>;
 
     fetchMock.mockResolvedValue(response);
 
-    const { waitFor } = renderHook(() => useDeleteTodo(state, dispatch));
+    const { waitFor } = renderHook(() => useUpdateTodo(state, dispatch));
 
-    await waitFor(() => dispatch.mock.calls.length === 1);
+    await waitFor(() => snackbar.enqueueSnackbar.mock.calls.length === 1);
 
     expect(fetchMock).toHaveBeenCalled();
 
     expect(dispatch).toHaveBeenCalledTimes(1);
     const action: TodoPageStateAction = {
-      type: 'ITEM_DELETION_ERROR',
+      type: 'REFRESH_PAGE',
     };
     expect(dispatch).toHaveBeenLastCalledWith(action);
 
     expect(snackbar.enqueueSnackbar).toHaveBeenCalledTimes(1);
     expect(snackbar.enqueueSnackbar).toHaveBeenCalledWith(
-      'Failed to delete todo.',
+      'Failed to update todo.',
       { variant: 'error' }
     );
   });

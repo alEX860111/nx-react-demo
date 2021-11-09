@@ -21,6 +21,22 @@ describe(pageStateReducer, () => {
   const reducer: Reducer<PersonPageState, PersonPageStateAction> =
     pageStateReducer;
 
+  let initialState: PersonPageState;
+
+  beforeEach(() => {
+    initialState = {
+      loadablePage: {
+        isLoading: false,
+        data: { items: [], totalItems: 0, totalPages: 0 },
+      },
+      pageParams: {
+        index: 0,
+        size: 10,
+      },
+      refreshPage: 0,
+    };
+  });
+
   it('should erase the error and activate the loading state on LOAD_INIT action', () => {
     const state: PersonPageState = {
       loadablePage: {
@@ -160,6 +176,27 @@ describe(pageStateReducer, () => {
         size: 20,
       },
       refreshPage: 0,
+    };
+    expect(result).toEqual(expectedState);
+  });
+
+  it('should set the item creation data and active the loading state on ITEM_CREATION_REQUESTED action', () => {
+    const itemCreationData: PersonCreationData = { name: 'joe' };
+    const result = reducer(initialState, {
+      type: 'ITEM_CREATION_REQUESTED',
+      itemCreationData,
+    });
+    const expectedState: PersonPageState = {
+      loadablePage: {
+        isLoading: true,
+        data: { items: [], totalItems: 0, totalPages: 0 },
+      },
+      pageParams: {
+        index: 0,
+        size: 10,
+      },
+      refreshPage: 0,
+      itemCreationData,
     };
     expect(result).toEqual(expectedState);
   });

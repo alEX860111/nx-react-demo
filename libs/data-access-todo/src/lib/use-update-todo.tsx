@@ -27,13 +27,13 @@ export function useUpdateTodo(
 
         if (result.status !== 200) throw new Error();
       } catch (error) {
-        const errorMessage = 'Failed to update todo';
-        snackbarContext.enqueueSnackbar(errorMessage, {
-          variant: 'error',
-        });
         if (!didCancel) {
           dispatch({ type: 'REFRESH_PAGE' });
         }
+        const errorMessage = 'Failed to update todo.';
+        snackbarContext.enqueueSnackbar(errorMessage, {
+          variant: 'error',
+        });
       }
     }
 

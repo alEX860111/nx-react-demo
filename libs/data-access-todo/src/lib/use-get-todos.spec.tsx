@@ -1,16 +1,18 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { SnackbarProvider } from 'notistack';
-import { ReactChildren } from 'react';
+import { ProviderContext } from 'notistack';
 import { Todo } from './todo';
 import { TodoPageState } from './todo-page-state';
 import { TodoPageStateAction } from './todo-page-state-action';
 import { useGetTodos } from './use-get-todos';
 
-describe(useGetTodos, () => {
-  const wrapper = (props: { children: ReactChildren }) => (
-    <SnackbarProvider>{props.children}</SnackbarProvider>
-  );
+const snackbar = {} as jest.Mocked<ProviderContext>;
 
+jest.mock('notistack', () => ({
+  ...jest.requireActual('notistack'),
+  useSnackbar: () => snackbar,
+}));
+
+describe(useGetTodos, () => {
   let fetchRef: typeof global.fetch;
 
   let fetchMock: jest.Mock;
@@ -18,6 +20,10 @@ describe(useGetTodos, () => {
   let state: TodoPageState;
 
   let dispatch: jest.Mock;
+
+  beforeEach(() => {
+    snackbar.enqueueSnackbar = jest.fn();
+  });
 
   beforeEach(() => {
     fetchRef = global.fetch;
@@ -63,9 +69,7 @@ describe(useGetTodos, () => {
 
     fetchMock.mockResolvedValue(response);
 
-    const { waitFor } = renderHook(() => useGetTodos(state, dispatch), {
-      wrapper,
-    });
+    const { waitFor } = renderHook(() => useGetTodos(state, dispatch));
 
     await waitFor(() => dispatch.mock.calls.length === 1);
 
@@ -76,6 +80,7 @@ describe(useGetTodos, () => {
 
     expect(fetchMock).toHaveBeenCalled();
 
+    expect(dispatch).toHaveBeenCalledTimes(2);
     const loadSuccessAction: TodoPageStateAction = {
       type: 'LOAD_SUCCESS',
       page: {
@@ -86,19 +91,15 @@ describe(useGetTodos, () => {
     };
     expect(dispatch).toHaveBeenLastCalledWith(loadSuccessAction);
 
-    expect(dispatch).toHaveBeenCalledTimes(2);
+    expect(snackbar.enqueueSnackbar).not.toHaveBeenCalled();
   });
 
-  it('should dispatch error action if todos could not be loaded', async () => {
-    const response: Response = {
-      status: 500,
-    } as jest.Mocked<Response>;
+  it('should dispatch error action and enqueue error message if todos could not be loaded', async () => {
+    const response: Response = { status: 500 } as jest.Mocked<Response>;
 
     fetchMock.mockResolvedValue(response);
 
-    const { waitFor } = renderHook(() => useGetTodos(state, dispatch), {
-      wrapper,
-    });
+    const { waitFor } = renderHook(() => useGetTodos(state, dispatch));
 
     await waitFor(() => dispatch.mock.calls.length === 1);
 
@@ -109,12 +110,17 @@ describe(useGetTodos, () => {
 
     expect(fetchMock).toHaveBeenCalled();
 
+    expect(dispatch).toHaveBeenCalledTimes(2);
     const loadErrorAction: TodoPageStateAction = {
       type: 'LOAD_ERROR',
-      error: 'Failed to load todos',
+      error: 'Failed to load todos.',
     };
     expect(dispatch).toHaveBeenLastCalledWith(loadErrorAction);
 
-    expect(dispatch).toHaveBeenCalledTimes(2);
+    expect(snackbar.enqueueSnackbar).toHaveBeenCalledTimes(1);
+    expect(snackbar.enqueueSnackbar).toHaveBeenCalledWith(
+      'Failed to load todos.',
+      { variant: 'error' }
+    );
   });
 });

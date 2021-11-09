@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { ProviderContext } from 'notistack';
 import { TodoPageState } from './todo-page-state';
 import { TodoPageStateAction } from './todo-page-state-action';
-import { useDeleteTodo } from './use-delete-todo';
+import { useCreateTodo } from './use-create-todo';
 
 const snackbar = {} as jest.Mocked<ProviderContext>;
 
@@ -11,7 +11,7 @@ jest.mock('notistack', () => ({
   useSnackbar: () => snackbar,
 }));
 
-describe(useDeleteTodo, () => {
+describe(useCreateTodo, () => {
   let fetchRef: typeof global.fetch;
 
   let fetchMock: jest.Mock;
@@ -39,9 +39,9 @@ describe(useDeleteTodo, () => {
       loadablePage: {
         isLoading: false,
         data: {
-          items: [{ id: 1, content: 'hello world', completed: false }],
-          totalItems: 1,
-          totalPages: 1,
+          items: [],
+          totalItems: 0,
+          totalPages: 0,
         },
       },
       pageParams: {
@@ -49,18 +49,18 @@ describe(useDeleteTodo, () => {
         size: 5,
       },
       refreshPage: 0,
-      itemIdToDelete: 1,
+      itemCreationData: { content: 'hello world' },
     };
 
     dispatch = jest.fn();
   });
 
-  it('should dispatch success action and enqueue success message if todo has been deleted', async () => {
-    const response: Response = { status: 200 } as jest.Mocked<Response>;
+  it('should dispatch success action and enqueue success message if todo has been created', async () => {
+    const response: Response = { status: 201 } as jest.Mocked<Response>;
 
     fetchMock.mockResolvedValue(response);
 
-    const { waitFor } = renderHook(() => useDeleteTodo(state, dispatch));
+    const { waitFor } = renderHook(() => useCreateTodo(state, dispatch));
 
     await waitFor(() => dispatch.mock.calls.length === 1);
 
@@ -68,37 +68,37 @@ describe(useDeleteTodo, () => {
 
     expect(dispatch).toHaveBeenCalledTimes(1);
     const action: TodoPageStateAction = {
-      type: 'ITEM_DELETION_SUCCESS',
+      type: 'ITEM_CREATION_SUCCESS',
     };
     expect(dispatch).toHaveBeenLastCalledWith(action);
 
     expect(snackbar.enqueueSnackbar).toHaveBeenCalledTimes(1);
     expect(snackbar.enqueueSnackbar).toHaveBeenCalledWith(
-      'Successfully deleted todo.',
+      'Successfully created todo.',
       { variant: 'success' }
     );
   });
 
-  it('should dispatch error action and enqueue error message if todo could not be deleted', async () => {
+  it('should dispatch error action and enqueue error message if todo could not be created', async () => {
     const response: Response = { status: 500 } as jest.Mocked<Response>;
 
     fetchMock.mockResolvedValue(response);
 
-    const { waitFor } = renderHook(() => useDeleteTodo(state, dispatch));
+    const { waitFor } = renderHook(() => useCreateTodo(state, dispatch));
 
-    await waitFor(() => dispatch.mock.calls.length === 1);
+    await waitFor(() => snackbar.enqueueSnackbar.mock.calls.length === 1);
 
     expect(fetchMock).toHaveBeenCalled();
 
     expect(dispatch).toHaveBeenCalledTimes(1);
     const action: TodoPageStateAction = {
-      type: 'ITEM_DELETION_ERROR',
+      type: 'ITEM_CREATION_ERROR',
     };
     expect(dispatch).toHaveBeenLastCalledWith(action);
 
     expect(snackbar.enqueueSnackbar).toHaveBeenCalledTimes(1);
     expect(snackbar.enqueueSnackbar).toHaveBeenCalledWith(
-      'Failed to delete todo.',
+      'Failed to create todo.',
       { variant: 'error' }
     );
   });

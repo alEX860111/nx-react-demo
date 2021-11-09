@@ -25,13 +25,16 @@ export function useCreateTodo(
         if (result.status !== 201) throw new Error();
 
         if (!didCancel) {
-          snackbarContext.enqueueSnackbar('Successfully created todo.', {
-            variant: 'success',
-          });
           dispatch({ type: 'ITEM_CREATION_SUCCESS' });
         }
+        snackbarContext.enqueueSnackbar('Successfully created todo.', {
+          variant: 'success',
+        });
       } catch (error) {
-        const errorMessage = 'Failed to create todo';
+        if (!didCancel) {
+          dispatch({ type: 'ITEM_CREATION_ERROR' });
+        }
+        const errorMessage = 'Failed to create todo.';
         snackbarContext.enqueueSnackbar(errorMessage, { variant: 'error' });
       }
     }

@@ -38,16 +38,16 @@ export function useGetTodos(
           dispatch({ type: 'LOAD_SUCCESS', page });
         }
       } catch (error) {
+        const errorMessage = 'Failed to load todos.';
         if (!didCancel) {
-          const errorMessage = 'Failed to load todos';
           dispatch({
             type: 'LOAD_ERROR',
             error: errorMessage,
           });
-          snackbarContext.enqueueSnackbar(errorMessage, {
-            variant: 'error',
-          });
         }
+        snackbarContext.enqueueSnackbar(errorMessage, {
+          variant: 'error',
+        });
       }
     }
 

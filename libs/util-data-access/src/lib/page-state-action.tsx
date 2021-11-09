@@ -9,6 +9,7 @@ export type PageStateAction<T extends Item<ID>, ID, C> =
   | PageSizeChangeAction
   | ItemCreationRequestedAction<C>
   | ItemCreationSuccessAction
+  | ItemCreationErrorAction
   | ItemDeletionRequestedAction<ID>
   | ItemDeletionSuccessAction
   | ItemDeletionErrorAction
@@ -46,6 +47,10 @@ export interface ItemCreationRequestedAction<T> {
 
 export interface ItemCreationSuccessAction {
   readonly type: 'ITEM_CREATION_SUCCESS';
+}
+
+export interface ItemCreationErrorAction {
+  readonly type: 'ITEM_CREATION_ERROR';
 }
 
 export interface ItemDeletionRequestedAction<T> {

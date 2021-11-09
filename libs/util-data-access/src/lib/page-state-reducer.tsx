@@ -54,6 +54,10 @@ export function pageStateReducer<T extends Item<ID>, ID, C>(
     case 'ITEM_CREATION_REQUESTED':
       return {
         ...state,
+        loadablePage: {
+          ...state.loadablePage,
+          isLoading: true,
+        },
         itemCreationData: action.itemCreationData,
       };
     case 'ITEM_CREATION_SUCCESS':
@@ -64,6 +68,14 @@ export function pageStateReducer<T extends Item<ID>, ID, C>(
           index: 0,
         },
         refreshPage: state.refreshPage + 1,
+      };
+    case 'ITEM_CREATION_ERROR':
+      return {
+        ...state,
+        loadablePage: {
+          ...state.loadablePage,
+          isLoading: false,
+        },
       };
     case 'ITEM_DELETION_REQUESTED':
       return {

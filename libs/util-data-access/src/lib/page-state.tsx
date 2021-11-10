@@ -10,4 +10,5 @@ export interface PageState<T extends Item<ID>, ID, C> {
   itemIdToDelete?: ID;
   itemUpdateData?: T;
   refreshPage: number;
+  filter?: Partial<T>;
 }

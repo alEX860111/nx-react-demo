@@ -14,7 +14,8 @@ export type PageStateAction<T extends Item<ID>, ID, C> =
   | ItemDeletionSuccessAction
   | ItemDeletionErrorAction
   | ItemUpdateRequestedAction<T>
-  | RefreshPageAction;
+  | RefreshPageAction
+  | ItemFilterRequestedAction<T>;
 
 export interface LoadInitAction {
   readonly type: 'LOAD_INIT';
@@ -73,4 +74,9 @@ export interface ItemUpdateRequestedAction<T> {
 
 export interface RefreshPageAction {
   readonly type: 'REFRESH_PAGE';
+}
+
+export interface ItemFilterRequestedAction<T> {
+  readonly type: 'ITEM_FILTER_REQUESTED';
+  readonly filter: Partial<T>;
 }

@@ -17,10 +17,14 @@ export function useGetTodos(
       dispatch({ type: 'LOAD_INIT' });
 
       try {
+        const filter = Object.entries(state.filter || {})
+          .map(([key, value]) => `${key}=${value}`)
+          .reduce((prev, current) => `${prev}&${current}`, '');
+
         const result = await fetch(
           `http://localhost:3000/todos?_page=${
             state.pageParams.index + 1
-          }&_limit=${state.pageParams.size}&_sort=id&_order=desc`
+          }&_limit=${state.pageParams.size}&_sort=id&_order=desc${filter}`
         );
 
         if (result.status !== 200) throw new Error();
@@ -61,6 +65,7 @@ export function useGetTodos(
     snackbarContext,
     state.pageParams.index,
     state.pageParams.size,
+    state.filter,
     state.refreshPage,
   ]);
 }

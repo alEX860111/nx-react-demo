@@ -93,7 +93,7 @@ export function pageStateReducer<T extends Item<ID>, ID, C>(
           ...state.pageParams,
           index:
             state.loadablePage.data.items.length === 1 &&
-            state.loadablePage.data.totalPages > 0
+            state.pageParams.index > 0
               ? state.pageParams.index - 1
               : state.pageParams.index,
         },
@@ -116,6 +116,19 @@ export function pageStateReducer<T extends Item<ID>, ID, C>(
       return {
         ...state,
         refreshPage: state.refreshPage + 1,
+      };
+    case 'ITEM_FILTER_REQUESTED':
+      return {
+        ...state,
+        loadablePage: {
+          ...state.loadablePage,
+          isLoading: true,
+        },
+        pageParams: {
+          ...state.pageParams,
+          index: 0,
+        },
+        filter: action.filter,
       };
     default:
       throw new Error();

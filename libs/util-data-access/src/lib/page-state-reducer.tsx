@@ -1,6 +1,20 @@
 import { Item } from './item';
 import { PageState } from './page-state';
 import { PageStateAction } from './page-state-action';
+import { itemCreationErrorReducer } from './reducer/item-creation/item-creation-error-reducer';
+import { itemCreationRequestedReducer } from './reducer/item-creation/item-creation-requested-reducer';
+import { itemCreationSuccessReducer } from './reducer/item-creation/item-creation-success-reducer';
+import { itemDeletionErrorReducer } from './reducer/item-deletion/item-deletion-error-reducer';
+import { itemDeletionRequestedReducer } from './reducer/item-deletion/item-deletion-requested-reducer';
+import { itemDeletionSuccessReducer } from './reducer/item-deletion/item-deletion-success-reducer';
+import { itemUpdateRequestedReducer } from './reducer/item-update/item-update-requested-reducer';
+import { refreshPageReducer } from './reducer/item-update/refresh-page-reducer';
+import { itemFilterRequestedReducer } from './reducer/items-filter/item-filter-requested-reducer';
+import { loadErrorReducer } from './reducer/items-load/load-error-reducer';
+import { loadInitReducer } from './reducer/items-load/load-init-reducer';
+import { loadSuccessReducer } from './reducer/items-load/load-success-reducer';
+import { pageIndexChangeReducer } from './reducer/pagination/page-index-change-reducer';
+import { pageSizeChangeReducer } from './reducer/pagination/page-size-change-reducer';
 
 export function pageStateReducer<T extends Item<ID>, ID, C>(
   state: PageState<T, ID, C>,
@@ -8,128 +22,33 @@ export function pageStateReducer<T extends Item<ID>, ID, C>(
 ): PageState<T, ID, C> {
   switch (action.type) {
     case 'LOAD_INIT':
-      return {
-        ...state,
-        loadablePage: {
-          ...state.loadablePage,
-          isLoading: true,
-          error: undefined,
-        },
-      };
+      return loadInitReducer(state, action);
     case 'LOAD_SUCCESS':
-      return {
-        ...state,
-        loadablePage: {
-          isLoading: false,
-          error: undefined,
-          data: action.page,
-        },
-      };
+      return loadSuccessReducer(state, action);
     case 'LOAD_ERROR':
-      return {
-        ...state,
-        loadablePage: {
-          ...state.loadablePage,
-          isLoading: false,
-          error: action.error,
-        },
-      };
+      return loadErrorReducer(state, action);
     case 'PAGE_INDEX_CHANGE':
-      return {
-        ...state,
-        pageParams: {
-          ...state.pageParams,
-          index: action.pageIndex,
-        },
-      };
+      return pageIndexChangeReducer(state, action);
     case 'PAGE_SIZE_CHANGE':
-      return {
-        ...state,
-        pageParams: {
-          ...state.pageParams,
-          size: action.pageSize,
-          index: 0,
-        },
-      };
+      return pageSizeChangeReducer(state, action);
     case 'ITEM_CREATION_REQUESTED':
-      return {
-        ...state,
-        loadablePage: {
-          ...state.loadablePage,
-          isLoading: true,
-        },
-        itemCreationData: action.itemCreationData,
-      };
+      return itemCreationRequestedReducer(state, action);
     case 'ITEM_CREATION_SUCCESS':
-      return {
-        ...state,
-        pageParams: {
-          ...state.pageParams,
-          index: 0,
-        },
-        refreshPage: state.refreshPage + 1,
-      };
+      return itemCreationSuccessReducer(state, action);
     case 'ITEM_CREATION_ERROR':
-      return {
-        ...state,
-        loadablePage: {
-          ...state.loadablePage,
-          isLoading: false,
-        },
-      };
+      return itemCreationErrorReducer(state, action);
     case 'ITEM_DELETION_REQUESTED':
-      return {
-        ...state,
-        loadablePage: {
-          ...state.loadablePage,
-          isLoading: true,
-        },
-        itemIdToDelete: action.itemIdToDelete,
-      };
+      return itemDeletionRequestedReducer(state, action);
     case 'ITEM_DELETION_SUCCESS':
-      return {
-        ...state,
-        pageParams: {
-          ...state.pageParams,
-          index:
-            state.loadablePage.data.items.length === 1 &&
-            state.pageParams.index > 0
-              ? state.pageParams.index - 1
-              : state.pageParams.index,
-        },
-        refreshPage: state.refreshPage + 1,
-      };
+      return itemDeletionSuccessReducer(state, action);
     case 'ITEM_DELETION_ERROR':
-      return {
-        ...state,
-        loadablePage: {
-          ...state.loadablePage,
-          isLoading: false,
-        },
-      };
+      return itemDeletionErrorReducer(state, action);
     case 'ITEM_UPDATE_REQUESTED':
-      return {
-        ...state,
-        itemUpdateData: action.itemUpdateData,
-      };
+      return itemUpdateRequestedReducer(state, action);
     case 'REFRESH_PAGE':
-      return {
-        ...state,
-        refreshPage: state.refreshPage + 1,
-      };
+      return refreshPageReducer(state, action);
     case 'ITEM_FILTER_REQUESTED':
-      return {
-        ...state,
-        loadablePage: {
-          ...state.loadablePage,
-          isLoading: true,
-        },
-        pageParams: {
-          ...state.pageParams,
-          index: 0,
-        },
-        filter: action.filter,
-      };
+      return itemFilterRequestedReducer(state, action);
     default:
       throw new Error();
   }

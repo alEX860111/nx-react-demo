@@ -10,7 +10,14 @@ interface Person {
 
 type PersonCreationData = Pick<Person, 'name'>;
 
-type PersonPageState = PageState<Person, number, PersonCreationData>;
+type PersonFilter = Partial<Pick<Person, 'name'>>;
+
+type PersonPageState = PageState<
+  Person,
+  number,
+  PersonCreationData,
+  PersonFilter
+>;
 
 describe(loadErrorReducer, () => {
   const reducer: Reducer<PersonPageState, LoadErrorAction> = loadErrorReducer;
@@ -26,6 +33,7 @@ describe(loadErrorReducer, () => {
         size: 10,
       },
       refreshPage: 0,
+      filter: {},
     };
     const result = reducer(state, { type: 'LOAD_ERROR', error: 'oops' });
     const expectedState: PersonPageState = {
@@ -39,6 +47,7 @@ describe(loadErrorReducer, () => {
         size: 10,
       },
       refreshPage: 0,
+      filter: {},
     };
     expect(result).toEqual(expectedState);
   });

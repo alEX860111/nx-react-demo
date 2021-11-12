@@ -1,4 +1,4 @@
-import { Page } from '@nx-react-demo/util-data-access';
+import { flattenObject, Page } from '@nx-react-demo/util-data-access';
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { Todo } from './todo';
@@ -17,7 +17,7 @@ export function useGetTodos(
       dispatch({ type: 'LOAD_INIT' });
 
       try {
-        const filter = Object.entries(state.filter || {})
+        const filter = Object.entries(flattenObject(state.filter))
           .map(([key, value]) => `${key}=${value}`)
           .reduce((prev, current) => `${prev}&${current}`, '');
 

@@ -8,7 +8,14 @@ interface Person {
 
 type PersonCreationData = Pick<Person, 'name'>;
 
-type PersonPageState = PageState<Person, number, PersonCreationData>;
+type PersonFilter = Partial<Pick<Person, 'name'>>;
+
+type PersonPageState = PageState<
+  Person,
+  number,
+  PersonCreationData,
+  PersonFilter
+>;
 
 describe(itemUpdateRequestedReducer, () => {
   it('ITEM_UPDATE_REQUESTED should set the item update data', () => {
@@ -26,10 +33,13 @@ describe(itemUpdateRequestedReducer, () => {
         size: 10,
       },
       refreshPage: 0,
+      filter: {},
     };
+    const previousItem: Person = { id: 1, name: 'joe' };
     const itemUpdateData: Person = { id: 1, name: 'joe (new)' };
     const result = itemUpdateRequestedReducer(state, {
       type: 'ITEM_UPDATE_REQUESTED',
+      previousItem,
       itemUpdateData,
     });
     const expectedState: PersonPageState = {
@@ -46,7 +56,8 @@ describe(itemUpdateRequestedReducer, () => {
         size: 10,
       },
       refreshPage: 0,
-      itemUpdateData,
+      itemUpdateData: { item: itemUpdateData, requiresPageRefresh: false },
+      filter: {},
     };
     expect(result).toEqual(expectedState);
   });

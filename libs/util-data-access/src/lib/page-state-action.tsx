@@ -1,7 +1,7 @@
 import { Item } from './item';
 import { Page } from './page';
 
-export type PageStateAction<T extends Item<ID>, ID, C> =
+export type PageStateAction<T extends Item<ID>, ID, C, F> =
   | LoadInitAction
   | LoadSuccessAction<T>
   | LoadErrorAction
@@ -14,8 +14,9 @@ export type PageStateAction<T extends Item<ID>, ID, C> =
   | ItemDeletionSuccessAction
   | ItemDeletionErrorAction
   | ItemUpdateRequestedAction<T>
-  | RefreshPageAction
-  | ItemFilterRequestedAction<T>;
+  | ItemUpdateSuccessAction
+  | ItemUpdateErrorAction
+  | ItemFilterRequestedAction<F>;
 
 export interface LoadInitAction {
   readonly type: 'LOAD_INIT';
@@ -69,14 +70,20 @@ export interface ItemDeletionErrorAction {
 
 export interface ItemUpdateRequestedAction<T> {
   readonly type: 'ITEM_UPDATE_REQUESTED';
+  readonly previousItem: T;
   readonly itemUpdateData: T;
 }
 
-export interface RefreshPageAction {
-  readonly type: 'REFRESH_PAGE';
+export interface ItemUpdateSuccessAction {
+  readonly type: 'ITEM_UPDATE_SUCCESS';
+  readonly requiresPageRefresh: boolean;
+}
+
+export interface ItemUpdateErrorAction {
+  readonly type: 'ITEM_UPDATE_ERROR';
 }
 
 export interface ItemFilterRequestedAction<T> {
   readonly type: 'ITEM_FILTER_REQUESTED';
-  readonly filter: Partial<T>;
+  readonly filter: T;
 }

@@ -8,7 +8,14 @@ interface Person {
 
 type PersonCreationData = Pick<Person, 'name'>;
 
-type PersonPageState = PageState<Person, number, PersonCreationData>;
+type PersonFilter = Partial<Pick<Person, 'name'>>;
+
+type PersonPageState = PageState<
+  Person,
+  number,
+  PersonCreationData,
+  PersonFilter
+>;
 
 describe(itemDeletionSuccessReducer, () => {
   it('ITEM_DELETION_SUCCESS should increment the refresh counter', () => {
@@ -27,6 +34,7 @@ describe(itemDeletionSuccessReducer, () => {
       },
       refreshPage: 0,
       itemIdToDelete: 1,
+      filter: {},
     };
     const result = itemDeletionSuccessReducer(state, {
       type: 'ITEM_DELETION_SUCCESS',
@@ -46,6 +54,7 @@ describe(itemDeletionSuccessReducer, () => {
       },
       refreshPage: 1,
       itemIdToDelete: 1,
+      filter: {},
     };
     expect(result).toEqual(expectedState);
   });
@@ -66,6 +75,7 @@ describe(itemDeletionSuccessReducer, () => {
       },
       refreshPage: 0,
       itemIdToDelete: 1,
+      filter: {},
     };
     const result = itemDeletionSuccessReducer(state, {
       type: 'ITEM_DELETION_SUCCESS',
@@ -85,6 +95,7 @@ describe(itemDeletionSuccessReducer, () => {
       },
       refreshPage: 1,
       itemIdToDelete: 1,
+      filter: {},
     };
     expect(result).toEqual(expectedState);
   });

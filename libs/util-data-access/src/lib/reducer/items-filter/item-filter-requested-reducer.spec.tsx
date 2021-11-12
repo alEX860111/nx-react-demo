@@ -8,7 +8,14 @@ interface Person {
 
 type PersonCreationData = Pick<Person, 'name'>;
 
-type PersonPageState = PageState<Person, number, PersonCreationData>;
+type PersonFilter = Partial<Pick<Person, 'name'>>;
+
+type PersonPageState = PageState<
+  Person,
+  number,
+  PersonCreationData,
+  PersonFilter
+>;
 
 describe(itemFilterRequestedReducer, () => {
   it('should activate the loading state, reset the page index and set the filter', () => {
@@ -26,6 +33,7 @@ describe(itemFilterRequestedReducer, () => {
         size: 2,
       },
       refreshPage: 0,
+      filter: {},
     };
     const filter: Partial<Person> = { name: 'zoe' };
     const result = itemFilterRequestedReducer(state, {

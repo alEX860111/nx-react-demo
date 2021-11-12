@@ -50,6 +50,7 @@ describe(useCreateTodo, () => {
       },
       refreshPage: 0,
       itemCreationData: { content: 'hello world' },
+      filter: {},
     };
 
     dispatch = jest.fn();

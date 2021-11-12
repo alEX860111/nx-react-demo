@@ -2,10 +2,10 @@ import { Item } from '../../item';
 import { PageState } from '../../page-state';
 import { ItemDeletionSuccessAction } from '../../page-state-action';
 
-export function itemDeletionSuccessReducer<T extends Item<ID>, ID, C>(
-  state: PageState<T, ID, C>,
+export function itemDeletionSuccessReducer<T extends Item<ID>, ID, C, F>(
+  state: PageState<T, ID, C, F>,
   _action: ItemDeletionSuccessAction
-): PageState<T, ID, C> {
+): PageState<T, ID, C, F> {
   return {
     ...state,
     pageParams: {

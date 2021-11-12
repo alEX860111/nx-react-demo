@@ -1,5 +1,5 @@
 import { PageState } from '../../page-state';
-import { refreshPageReducer } from './refresh-page-reducer';
+import { itemUpdateErrorReducer } from './item-update-error-reducer';
 
 interface Person {
   id: number;
@@ -8,9 +8,16 @@ interface Person {
 
 type PersonCreationData = Pick<Person, 'name'>;
 
-type PersonPageState = PageState<Person, number, PersonCreationData>;
+type PersonFilter = Partial<Pick<Person, 'name'>>;
 
-describe(refreshPageReducer, () => {
+type PersonPageState = PageState<
+  Person,
+  number,
+  PersonCreationData,
+  PersonFilter
+>;
+
+describe(itemUpdateErrorReducer, () => {
   it('should increment the refresh counter', () => {
     const state: PersonPageState = {
       loadablePage: {
@@ -26,9 +33,13 @@ describe(refreshPageReducer, () => {
         size: 10,
       },
       refreshPage: 0,
-      itemUpdateData: { id: 1, name: 'joe (new)' },
+      itemUpdateData: {
+        item: { id: 1, name: 'joe (new)' },
+        requiresPageRefresh: false,
+      },
+      filter: {},
     };
-    const result = refreshPageReducer(state, { type: 'REFRESH_PAGE' });
+    const result = itemUpdateErrorReducer(state, { type: 'ITEM_UPDATE_ERROR' });
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: false,
@@ -43,7 +54,11 @@ describe(refreshPageReducer, () => {
         size: 10,
       },
       refreshPage: 1,
-      itemUpdateData: { id: 1, name: 'joe (new)' },
+      itemUpdateData: {
+        item: { id: 1, name: 'joe (new)' },
+        requiresPageRefresh: false,
+      },
+      filter: {},
     };
     expect(result).toEqual(expectedState);
   });

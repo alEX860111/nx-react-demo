@@ -8,7 +8,14 @@ interface Person {
 
 type PersonCreationData = Pick<Person, 'name'>;
 
-type PersonPageState = PageState<Person, number, PersonCreationData>;
+type PersonFilter = Partial<Pick<Person, 'name'>>;
+
+type PersonPageState = PageState<
+  Person,
+  number,
+  PersonCreationData,
+  PersonFilter
+>;
 
 describe(pageSizeChangeReducer, () => {
   it('PAGE_SIZE_CHANGE should set the page size and reset the page index', () => {
@@ -26,6 +33,7 @@ describe(pageSizeChangeReducer, () => {
         size: 1,
       },
       refreshPage: 0,
+      filter: {},
     };
     const result = pageSizeChangeReducer(state, {
       type: 'PAGE_SIZE_CHANGE',
@@ -45,6 +53,7 @@ describe(pageSizeChangeReducer, () => {
         size: 10,
       },
       refreshPage: 0,
+      filter: {},
     };
     expect(result).toEqual(expectedState);
   });

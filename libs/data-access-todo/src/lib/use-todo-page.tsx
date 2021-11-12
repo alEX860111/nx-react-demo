@@ -32,6 +32,7 @@ export function useTodoPage(): [
       size: 5,
     },
     refreshPage: 0,
+    filter: {},
   };
 
   const [state, dispatch] = useReducer(

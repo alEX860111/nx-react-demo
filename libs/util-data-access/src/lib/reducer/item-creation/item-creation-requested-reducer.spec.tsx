@@ -8,7 +8,14 @@ interface Person {
 
 type PersonCreationData = Pick<Person, 'name'>;
 
-type PersonPageState = PageState<Person, number, PersonCreationData>;
+type PersonFilter = Partial<Pick<Person, 'name'>>;
+
+type PersonPageState = PageState<
+  Person,
+  number,
+  PersonCreationData,
+  PersonFilter
+>;
 
 describe(itemCreationRequestedReducer, () => {
   it('should set the item creation data and activate the loading state', () => {
@@ -22,6 +29,7 @@ describe(itemCreationRequestedReducer, () => {
         size: 10,
       },
       refreshPage: 0,
+      filter: {},
     };
     const itemCreationData: PersonCreationData = { name: 'joe' };
     const result = itemCreationRequestedReducer(state, {
@@ -38,6 +46,7 @@ describe(itemCreationRequestedReducer, () => {
         size: 10,
       },
       refreshPage: 0,
+      filter: {},
       itemCreationData,
     };
     expect(result).toEqual(expectedState);

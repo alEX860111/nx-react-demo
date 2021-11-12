@@ -30,7 +30,11 @@ export function TodoListItem(props: Props) {
       completed: !completed,
     };
     setCompleted(updatedTodo.completed);
-    dispatch({ type: 'ITEM_UPDATE_REQUESTED', itemUpdateData: updatedTodo });
+    dispatch({
+      type: 'ITEM_UPDATE_REQUESTED',
+      previousItem: props.todo,
+      itemUpdateData: updatedTodo,
+    });
   };
 
   return (

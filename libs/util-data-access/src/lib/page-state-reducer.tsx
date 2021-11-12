@@ -7,8 +7,9 @@ import { itemCreationSuccessReducer } from './reducer/item-creation/item-creatio
 import { itemDeletionErrorReducer } from './reducer/item-deletion/item-deletion-error-reducer';
 import { itemDeletionRequestedReducer } from './reducer/item-deletion/item-deletion-requested-reducer';
 import { itemDeletionSuccessReducer } from './reducer/item-deletion/item-deletion-success-reducer';
+import { itemUpdateErrorReducer } from './reducer/item-update/item-update-error-reducer';
 import { itemUpdateRequestedReducer } from './reducer/item-update/item-update-requested-reducer';
-import { refreshPageReducer } from './reducer/item-update/refresh-page-reducer';
+import { itemUpdateSuccessReducer } from './reducer/item-update/item-update-success-reducer';
 import { itemFilterRequestedReducer } from './reducer/items-filter/item-filter-requested-reducer';
 import { loadErrorReducer } from './reducer/items-load/load-error-reducer';
 import { loadInitReducer } from './reducer/items-load/load-init-reducer';
@@ -16,10 +17,10 @@ import { loadSuccessReducer } from './reducer/items-load/load-success-reducer';
 import { pageIndexChangeReducer } from './reducer/pagination/page-index-change-reducer';
 import { pageSizeChangeReducer } from './reducer/pagination/page-size-change-reducer';
 
-export function pageStateReducer<T extends Item<ID>, ID, C>(
-  state: PageState<T, ID, C>,
-  action: PageStateAction<T, ID, C>
-): PageState<T, ID, C> {
+export function pageStateReducer<T extends Item<ID>, ID, C, F>(
+  state: PageState<T, ID, C, F>,
+  action: PageStateAction<T, ID, C, F>
+): PageState<T, ID, C, F> {
   switch (action.type) {
     case 'LOAD_INIT':
       return loadInitReducer(state, action);
@@ -45,8 +46,10 @@ export function pageStateReducer<T extends Item<ID>, ID, C>(
       return itemDeletionErrorReducer(state, action);
     case 'ITEM_UPDATE_REQUESTED':
       return itemUpdateRequestedReducer(state, action);
-    case 'REFRESH_PAGE':
-      return refreshPageReducer(state, action);
+    case 'ITEM_UPDATE_SUCCESS':
+      return itemUpdateSuccessReducer(state, action);
+    case 'ITEM_UPDATE_ERROR':
+      return itemUpdateErrorReducer(state, action);
     case 'ITEM_FILTER_REQUESTED':
       return itemFilterRequestedReducer(state, action);
     default:

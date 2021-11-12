@@ -50,6 +50,7 @@ describe(useDeleteTodo, () => {
       },
       refreshPage: 0,
       itemIdToDelete: 1,
+      filter: {},
     };
 
     dispatch = jest.fn();

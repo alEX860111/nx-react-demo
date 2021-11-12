@@ -50,6 +50,7 @@ describe(useGetTodos, () => {
         size: 5,
       },
       refreshPage: 0,
+      filter: {},
     };
 
     dispatch = jest.fn();

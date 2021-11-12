@@ -17,21 +17,30 @@ export function useUpdateTodo(
 
       try {
         const result = await fetch(
-          `http://localhost:3000/todos/${state.itemUpdateData.id}`,
+          `http://localhost:3000/todos/${state.itemUpdateData.item.id}`,
           {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(state.itemUpdateData),
+            body: JSON.stringify(state.itemUpdateData.item),
           }
         );
 
         if (result.status !== 200) throw new Error();
+
+        if (!didCancel) {
+          dispatch({
+            type: 'ITEM_UPDATE_SUCCESS',
+            requiresPageRefresh: state.itemUpdateData.requiresPageRefresh,
+          });
+        }
+        snackbarContext.enqueueSnackbar('Successfully updated todo.', {
+          variant: 'success',
+        });
       } catch (error) {
         if (!didCancel) {
-          dispatch({ type: 'REFRESH_PAGE' });
+          dispatch({ type: 'ITEM_UPDATE_ERROR' });
         }
-        const errorMessage = 'Failed to update todo.';
-        snackbarContext.enqueueSnackbar(errorMessage, {
+        snackbarContext.enqueueSnackbar('Failed to update todo.', {
           variant: 'error',
         });
       }

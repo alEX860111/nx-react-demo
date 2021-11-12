@@ -8,7 +8,14 @@ interface Person {
 
 type PersonCreationData = Pick<Person, 'name'>;
 
-type PersonPageState = PageState<Person, number, PersonCreationData>;
+type PersonFilter = Partial<Pick<Person, 'name'>>;
+
+type PersonPageState = PageState<
+  Person,
+  number,
+  PersonCreationData,
+  PersonFilter
+>;
 
 describe(loadSuccessReducer, () => {
   it('should erase the error, deactivate the loading state and set the page', () => {
@@ -23,6 +30,7 @@ describe(loadSuccessReducer, () => {
         size: 10,
       },
       refreshPage: 0,
+      filter: {},
     };
     const result = loadSuccessReducer(state, {
       type: 'LOAD_SUCCESS',
@@ -43,6 +51,7 @@ describe(loadSuccessReducer, () => {
         size: 10,
       },
       refreshPage: 0,
+      filter: {},
     };
     expect(result).toEqual(expectedState);
   });

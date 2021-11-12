@@ -4,3 +4,4 @@ export * from './lib/page-params';
 export * from './lib/page-state';
 export * from './lib/page-state-action';
 export * from './lib/page-state-reducer';
+export * from './lib/util/flatten-object';

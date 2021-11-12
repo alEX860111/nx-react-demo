@@ -8,7 +8,14 @@ interface Person {
 
 type PersonCreationData = Pick<Person, 'name'>;
 
-type PersonPageState = PageState<Person, number, PersonCreationData>;
+type PersonFilter = Partial<Pick<Person, 'name'>>;
+
+type PersonPageState = PageState<
+  Person,
+  number,
+  PersonCreationData,
+  PersonFilter
+>;
 
 describe(pageIndexChangeReducer, () => {
   it('should set the page index', () => {
@@ -26,6 +33,7 @@ describe(pageIndexChangeReducer, () => {
         size: 1,
       },
       refreshPage: 0,
+      filter: {},
     };
     const result = pageIndexChangeReducer(state, {
       type: 'PAGE_INDEX_CHANGE',
@@ -45,6 +53,7 @@ describe(pageIndexChangeReducer, () => {
         size: 1,
       },
       refreshPage: 0,
+      filter: {},
     };
     expect(result).toEqual(expectedState);
   });

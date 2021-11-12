@@ -8,7 +8,14 @@ interface Person {
 
 type PersonCreationData = Pick<Person, 'name'>;
 
-type PersonPageState = PageState<Person, number, PersonCreationData>;
+type PersonFilter = Partial<Pick<Person, 'name'>>;
+
+type PersonPageState = PageState<
+  Person,
+  number,
+  PersonCreationData,
+  PersonFilter
+>;
 
 describe(itemDeletionRequestedReducer, () => {
   it('should set the item id to delete and activate the loading state', () => {
@@ -26,6 +33,7 @@ describe(itemDeletionRequestedReducer, () => {
         size: 10,
       },
       refreshPage: 0,
+      filter: {},
     };
     const itemIdToDelete = 1;
     const result = itemDeletionRequestedReducer(state, {
@@ -47,6 +55,7 @@ describe(itemDeletionRequestedReducer, () => {
       },
       refreshPage: 0,
       itemIdToDelete,
+      filter: {},
     };
     expect(result).toEqual(expectedState);
   });

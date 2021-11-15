@@ -5,7 +5,7 @@ import App from './app/app';
 
 ReactDOM.render(
   <StrictMode>
-    <SnackbarProvider maxSnack={3}>
+    <SnackbarProvider maxSnack={3} autoHideDuration={2000}>
       <App />
     </SnackbarProvider>
   </StrictMode>,

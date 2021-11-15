@@ -65,7 +65,11 @@ describe(useCreateTodo, () => {
 
     await waitFor(() => dispatch.mock.calls.length === 1);
 
-    expect(fetchMock).toHaveBeenCalled();
+    expect(fetchMock).toHaveBeenCalledWith('http://localhost:3000/todos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(state.itemCreationData),
+    });
 
     expect(dispatch).toHaveBeenCalledTimes(1);
     const action: TodoPageStateAction = {
@@ -89,7 +93,11 @@ describe(useCreateTodo, () => {
 
     await waitFor(() => snackbar.enqueueSnackbar.mock.calls.length === 1);
 
-    expect(fetchMock).toHaveBeenCalled();
+    expect(fetchMock).toHaveBeenCalledWith('http://localhost:3000/todos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(state.itemCreationData),
+    });
 
     expect(dispatch).toHaveBeenCalledTimes(1);
     const action: TodoPageStateAction = {

@@ -1,4 +1,4 @@
-import { flattenObject, Page } from '@nx-react-demo/util-data-access';
+import { Page } from '@nx-react-demo/util-data-access';
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
 import { Todo } from './todo';
@@ -17,14 +17,20 @@ export function useGetTodos(
       dispatch({ type: 'LOAD_INIT' });
 
       try {
-        const filter = Object.entries(flattenObject(state.filter))
+        const params = new Map<string, string>();
+        params.set('_page', String(state.pageParams.index + 1));
+        params.set('_limit', String(state.pageParams.size));
+        params.set('_sort', 'id');
+        params.set('_order', 'desc');
+        if (state.filter.completed !== undefined) {
+          params.set('completed', String(state.filter.completed));
+        }
+        const formattedParams = Array.from(params.entries())
           .map(([key, value]) => `${key}=${value}`)
-          .reduce((prev, current) => `${prev}&${current}`, '');
+          .join('&');
 
         const result = await fetch(
-          `http://localhost:3000/todos?_page=${
-            state.pageParams.index + 1
-          }&_limit=${state.pageParams.size}&_sort=id&_order=desc${filter}`
+          `http://localhost:3000/todos?${formattedParams}`
         );
 
         if (result.status !== 200) throw new Error();
@@ -32,6 +38,20 @@ export function useGetTodos(
         const totalItems = Number(result.headers.get('X-Total-Count'));
 
         const todos: Todo[] = await result.json();
+
+        if (
+          totalItems > 0 &&
+          todos.length === 0 &&
+          state.pageParams.index > 0 &&
+          !didCancel
+        ) {
+          dispatch({
+            type: 'PAGE_INDEX_CHANGE',
+            pageIndex: state.pageParams.index - 1,
+          });
+          return;
+        }
+
         const page: Page<Todo> = {
           items: todos,
           totalItems: totalItems,

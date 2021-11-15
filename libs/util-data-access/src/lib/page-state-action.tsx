@@ -76,7 +76,6 @@ export interface ItemUpdateRequestedAction<T> {
 
 export interface ItemUpdateSuccessAction {
   readonly type: 'ITEM_UPDATE_SUCCESS';
-  readonly requiresPageRefresh: boolean;
 }
 
 export interface ItemUpdateErrorAction {

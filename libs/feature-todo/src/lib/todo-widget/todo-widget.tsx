@@ -7,19 +7,19 @@ import { TodoInput } from '../todo-input/todo-input';
 import styles from './todo-widget.module.scss';
 
 export function TodoWidget() {
-  const [loadablePage, pageParams, dispatch] = useTodoPage();
+  const [state, dispatch] = useTodoPage();
 
   return (
     <TodoDispatch.Provider value={dispatch}>
       <Grid container justifyContent="center" alignItems="center">
         <Grid item xs={12} md={6} lg={5}>
           <div className={styles.todoHeading}>
-            <h2>Todos</h2> <TodoFilter />
+            <h2>Todos</h2> <TodoFilter filter={state.filter} />
           </div>
           <TodoInput />
           <PaginatedTodoList
-            loadablePage={loadablePage}
-            pageParams={pageParams}
+            loadablePage={state.loadablePage}
+            pageParams={state.pageParams}
           />
         </Grid>
       </Grid>

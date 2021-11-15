@@ -49,10 +49,7 @@ describe(useUpdateTodo, () => {
         size: 5,
       },
       refreshPage: 0,
-      itemUpdateData: {
-        item: { id: 1, content: 'hello world', completed: true },
-        requiresPageRefresh: false,
-      },
+      itemUpdateData: { id: 1, content: 'hello world', completed: true },
       filter: {},
     };
 
@@ -68,13 +65,14 @@ describe(useUpdateTodo, () => {
 
     await waitFor(() => dispatch.mock.calls.length === 1);
 
-    expect(fetchMock).toHaveBeenCalled();
+    expect(fetchMock).toHaveBeenCalledWith('http://localhost:3000/todos/1', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(state.itemUpdateData),
+    });
 
     expect(dispatch).toHaveBeenCalledTimes(1);
-    const action: TodoPageStateAction = {
-      type: 'ITEM_UPDATE_SUCCESS',
-      requiresPageRefresh: false,
-    };
+    const action: TodoPageStateAction = { type: 'ITEM_UPDATE_SUCCESS' };
     expect(dispatch).toHaveBeenLastCalledWith(action);
 
     expect(snackbar.enqueueSnackbar).toHaveBeenCalledTimes(1);
@@ -93,7 +91,11 @@ describe(useUpdateTodo, () => {
 
     await waitFor(() => snackbar.enqueueSnackbar.mock.calls.length === 1);
 
-    expect(fetchMock).toHaveBeenCalled();
+    expect(fetchMock).toHaveBeenCalledWith('http://localhost:3000/todos/1', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(state.itemUpdateData),
+    });
 
     expect(dispatch).toHaveBeenCalledTimes(1);
     const action: TodoPageStateAction = {

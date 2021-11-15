@@ -8,10 +8,7 @@ export interface PageState<T extends Item<ID>, ID, C, F> {
   pageParams: PageParams;
   itemCreationData?: C;
   itemIdToDelete?: ID;
-  itemUpdateData?: {
-    item: T;
-    requiresPageRefresh: boolean;
-  };
+  itemUpdateData?: T;
   refreshPage: number;
   filter: F;
 }

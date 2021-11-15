@@ -37,7 +37,7 @@ describe(TodoInput, () => {
       expect(input.value).toEqual('');
     });
 
-    it('should generate todo creation data if input is not empty', () => {
+    it('should dispatch action on submit if input is not empty', () => {
       const { getByLabelText } = render(<TodoInput />, { wrapper });
 
       const input = getByLabelText(label);
@@ -58,7 +58,7 @@ describe(TodoInput, () => {
       expect(action).toEqual(expectedAction);
     });
 
-    it('should not generate todo creation data if input is empty', () => {
+    it('should not dispatch action on submit if input is empty', () => {
       const { getByLabelText } = render(<TodoInput />, { wrapper });
 
       const input = getByLabelText(label);

@@ -18,7 +18,7 @@ type PersonPageState = PageState<
 >;
 
 describe(itemUpdateRequestedReducer, () => {
-  it('ITEM_UPDATE_REQUESTED should set the item update data', () => {
+  it('ITEM_UPDATE_REQUESTED should set the item update data and activate the loading state', () => {
     const state: PersonPageState = {
       loadablePage: {
         isLoading: false,
@@ -44,7 +44,7 @@ describe(itemUpdateRequestedReducer, () => {
     });
     const expectedState: PersonPageState = {
       loadablePage: {
-        isLoading: false,
+        isLoading: true,
         data: {
           items: [{ id: 1, name: 'joe' }],
           totalItems: 1,
@@ -56,7 +56,7 @@ describe(itemUpdateRequestedReducer, () => {
         size: 10,
       },
       refreshPage: 0,
-      itemUpdateData: { item: itemUpdateData, requiresPageRefresh: false },
+      itemUpdateData,
       filter: {},
     };
     expect(result).toEqual(expectedState);

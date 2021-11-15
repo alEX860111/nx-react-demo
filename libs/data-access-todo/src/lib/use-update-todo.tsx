@@ -17,21 +17,18 @@ export function useUpdateTodo(
 
       try {
         const result = await fetch(
-          `http://localhost:3000/todos/${state.itemUpdateData.item.id}`,
+          `http://localhost:3000/todos/${state.itemUpdateData.id}`,
           {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(state.itemUpdateData.item),
+            body: JSON.stringify(state.itemUpdateData),
           }
         );
 
         if (result.status !== 200) throw new Error();
 
         if (!didCancel) {
-          dispatch({
-            type: 'ITEM_UPDATE_SUCCESS',
-            requiresPageRefresh: state.itemUpdateData.requiresPageRefresh,
-          });
+          dispatch({ type: 'ITEM_UPDATE_SUCCESS' });
         }
         snackbarContext.enqueueSnackbar('Successfully updated todo.', {
           variant: 'success',

@@ -65,7 +65,9 @@ describe(useDeleteTodo, () => {
 
     await waitFor(() => dispatch.mock.calls.length === 1);
 
-    expect(fetchMock).toHaveBeenCalled();
+    expect(fetchMock).toHaveBeenCalledWith('http://localhost:3000/todos/1', {
+      method: 'DELETE',
+    });
 
     expect(dispatch).toHaveBeenCalledTimes(1);
     const action: TodoPageStateAction = {
@@ -89,7 +91,9 @@ describe(useDeleteTodo, () => {
 
     await waitFor(() => dispatch.mock.calls.length === 1);
 
-    expect(fetchMock).toHaveBeenCalled();
+    expect(fetchMock).toHaveBeenCalledWith('http://localhost:3000/todos/1', {
+      method: 'DELETE',
+    });
 
     expect(dispatch).toHaveBeenCalledTimes(1);
     const action: TodoPageStateAction = {

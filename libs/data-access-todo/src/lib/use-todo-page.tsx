@@ -1,11 +1,5 @@
-import {
-  Loadable,
-  Page,
-  PageParams,
-  pageStateReducer,
-} from '@nx-react-demo/util-data-access';
+import { pageStateReducer } from '@nx-react-demo/util-data-access';
 import React, { Reducer, useReducer } from 'react';
-import { Todo } from './todo';
 import { TodoPageState } from './todo-page-state';
 import { TodoPageStateAction } from './todo-page-state-action';
 import { useCreateTodo } from './use-create-todo';
@@ -14,8 +8,7 @@ import { useGetTodos } from './use-get-todos';
 import { useUpdateTodo } from './use-update-todo';
 
 export function useTodoPage(): [
-  Loadable<Page<Todo>>,
-  PageParams,
+  TodoPageState,
   React.Dispatch<TodoPageStateAction>
 ] {
   const initialState: TodoPageState = {
@@ -45,5 +38,5 @@ export function useTodoPage(): [
   useCreateTodo(state, dispatch);
   useDeleteTodo(state, dispatch);
 
-  return [state.loadablePage, state.pageParams, dispatch];
+  return [state, dispatch];
 }

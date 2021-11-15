@@ -1,5 +1,5 @@
 import { PageState } from '../../page-state';
-import { itemUpdateErrorReducer } from './item-update-error-reducer';
+import { itemUpdateSuccessReducer } from './item-update-success-reducer';
 
 interface Person {
   id: number;
@@ -17,7 +17,7 @@ type PersonPageState = PageState<
   PersonFilter
 >;
 
-describe(itemUpdateErrorReducer, () => {
+describe(itemUpdateSuccessReducer, () => {
   it('should increment the refresh counter', () => {
     const state: PersonPageState = {
       loadablePage: {
@@ -36,7 +36,9 @@ describe(itemUpdateErrorReducer, () => {
       itemUpdateData: { id: 1, name: 'joe (new)' },
       filter: {},
     };
-    const result = itemUpdateErrorReducer(state, { type: 'ITEM_UPDATE_ERROR' });
+    const result = itemUpdateSuccessReducer(state, {
+      type: 'ITEM_UPDATE_SUCCESS',
+    });
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: true,

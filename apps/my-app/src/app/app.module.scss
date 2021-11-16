@@ -1,11 +1,16 @@
 .content {
-  padding: 0 10px;
+  padding: 0 32px;
 }
 
-.navItem {
-  margin: 0 10px;
+.toolbar {
+  display: flex;
+  justify-content: space-between;
 }
 
-.active {
+.activeLightMode {
   background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.activeDarkMode {
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }

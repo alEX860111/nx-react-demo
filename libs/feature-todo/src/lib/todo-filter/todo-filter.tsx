@@ -41,9 +41,11 @@ export function TodoFilter(props: Props) {
     _event: React.MouseEvent<HTMLElement>,
     filterValue: FilterValue
   ) => {
-    setFilterValue(filterValue);
-    const filter: TodoFilterData = getTodoFilterData(filterValue);
-    dispatch({ type: 'ITEM_FILTER_REQUESTED', filter });
+    if (filterValue) {
+      setFilterValue(filterValue);
+      const filter: TodoFilterData = getTodoFilterData(filterValue);
+      dispatch({ type: 'ITEM_FILTER_REQUESTED', filter });
+    }
   };
 
   return (

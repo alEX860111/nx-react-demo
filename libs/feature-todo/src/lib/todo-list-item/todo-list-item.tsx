@@ -5,6 +5,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Tooltip from '@mui/material/Tooltip';
 import { Todo } from '@nx-react-demo/data-access-todo';
 import { useContext, useState } from 'react';
 import { TodoDispatch } from '../todo-context';
@@ -40,9 +41,11 @@ export function TodoListItem(props: Props) {
   return (
     <ListItem
       secondaryAction={
-        <IconButton edge="end" onClick={handleDelete}>
-          <DeleteIcon />
-        </IconButton>
+        <Tooltip title="Delete">
+          <IconButton edge="end" onClick={handleDelete}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
       }
     >
       <ListItemButton onClick={handleCheckbox} dense>

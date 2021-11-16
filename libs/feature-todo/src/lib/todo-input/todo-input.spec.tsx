@@ -52,7 +52,7 @@ describe(TodoInput, () => {
 
       const expectedAction: TodoPageStateAction = {
         type: 'ITEM_CREATION_REQUESTED',
-        itemCreationData: { content: value },
+        itemCreationData: { content: value, completed: false },
       };
 
       expect(action).toEqual(expectedAction);

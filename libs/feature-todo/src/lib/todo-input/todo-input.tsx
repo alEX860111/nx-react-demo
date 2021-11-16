@@ -17,6 +17,7 @@ export function TodoInput() {
 
     const todoCreationData: TodoCreationData = {
       content: value,
+      completed: false,
     };
 
     setValue('');

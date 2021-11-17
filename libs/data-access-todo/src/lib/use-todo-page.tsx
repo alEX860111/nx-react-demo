@@ -1,5 +1,6 @@
 import { pageStateReducer } from '@nx-react-demo/util-data-access';
 import React, { Reducer, useReducer } from 'react';
+import { TodoFilterData } from './todo-filter-data';
 import { TodoPageState } from './todo-page-state';
 import { TodoPageStateAction } from './todo-page-state-action';
 import { useCreateTodo } from './use-create-todo';
@@ -7,10 +8,9 @@ import { useDeleteTodo } from './use-delete-todo';
 import { useGetTodos } from './use-get-todos';
 import { useUpdateTodo } from './use-update-todo';
 
-export function useTodoPage(): [
-  TodoPageState,
-  React.Dispatch<TodoPageStateAction>
-] {
+export function useTodoPage(
+  filter: TodoFilterData = {}
+): [TodoPageState, React.Dispatch<TodoPageStateAction>] {
   const initialState: TodoPageState = {
     loadablePage: {
       isLoading: false,
@@ -25,7 +25,7 @@ export function useTodoPage(): [
       size: 5,
     },
     refreshPage: 0,
-    filter: {},
+    filter,
   };
 
   const [state, dispatch] = useReducer(

@@ -1,3 +1,4 @@
+import Typography from '@mui/material/Typography';
 import { useTodoPage } from '@nx-react-demo/data-access-todo';
 import { PaginatedTodoList } from '../paginated-todo-list/paginated-todo-list';
 import { TodoDispatch } from '../todo-context';
@@ -11,7 +12,8 @@ export function TodoWidget() {
   return (
     <TodoDispatch.Provider value={dispatch}>
       <div className={styles.todoHeading}>
-        <h2>Todos</h2> <TodoFilter filter={state.filter} />
+        <Typography variant="h4">Todos</Typography>
+        <TodoFilter filter={state.filter} />
       </div>
       <TodoInput />
       <PaginatedTodoList

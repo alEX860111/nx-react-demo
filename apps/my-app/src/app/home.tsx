@@ -1,3 +1,13 @@
+import Typography from '@mui/material/Typography';
+import { TodoInfoCard } from '@nx-react-demo/feature-todo';
+
 export function Home() {
-  return <h2>Home</h2>;
+  return (
+    <>
+      <Typography variant="h4" gutterBottom>
+        Welcome
+      </Typography>
+      <TodoInfoCard />
+    </>
+  );
 }

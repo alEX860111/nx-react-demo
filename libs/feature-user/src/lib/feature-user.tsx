@@ -1,5 +1,7 @@
+import Typography from '@mui/material/Typography';
+
 export function FeatureUser() {
-  return <h2>Users</h2>;
+  return <Typography variant="h4">Users</Typography>;
 }
 
 export default FeatureUser;

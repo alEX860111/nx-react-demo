@@ -20,6 +20,7 @@
       "@nx-react-demo/data-access-user": ["libs/data-access-user/src/index.ts"],
       "@nx-react-demo/feature-todo": ["libs/feature-todo/src/index.ts"],
       "@nx-react-demo/feature-user": ["libs/feature-user/src/index.ts"],
+      "@nx-react-demo/ui-application": ["libs/ui-application/src/index.ts"],
       "@nx-react-demo/util-data-access": ["libs/util-data-access/src/index.ts"]
     }
   },

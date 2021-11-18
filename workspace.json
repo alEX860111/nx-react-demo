@@ -184,6 +184,27 @@
         }
       }
     },
+    "ui-application": {
+      "root": "libs/ui-application",
+      "sourceRoot": "libs/ui-application/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/ui-application/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui-application"],
+          "options": {
+            "jestConfig": "libs/ui-application/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "util-data-access": {
       "root": "libs/util-data-access",
       "sourceRoot": "libs/util-data-access/src",

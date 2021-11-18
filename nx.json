@@ -43,8 +43,11 @@
       "tags": ["type:app"]
     },
     "my-app-e2e": {
-      "tags": [],
+      "tags": ["type:app"],
       "implicitDependencies": ["my-app"]
+    },
+    "ui-application": {
+      "tags": ["type:ui"]
     },
     "util-data-access": {
       "tags": ["type:util"]

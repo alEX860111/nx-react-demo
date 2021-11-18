@@ -1,11 +1,10 @@
-import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import { useTodoPage } from '@nx-react-demo/data-access-todo';
-import { NavLink } from 'react-router-dom';
+import { NavigationButton } from '@nx-react-demo/ui-application';
 
 export function TodoInfoCard() {
   const [state] = useTodoPage({ completed: false });
@@ -31,9 +30,7 @@ export function TodoInfoCard() {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button component={NavLink} exact to={'/todos'}>
-          Open Todos
-        </Button>
+        <NavigationButton path="/todos" label="Open Todos" />
       </CardActions>
     </Card>
   );

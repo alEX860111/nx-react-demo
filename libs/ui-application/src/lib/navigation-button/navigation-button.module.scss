@@ -1,0 +1,14 @@
+.activeLightMode {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.activeDarkMode {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.navigationButton {
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 4px;
+  color: inherit;
+}

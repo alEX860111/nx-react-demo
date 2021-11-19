@@ -1,26 +1,29 @@
+import { Button } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import { useTodoPage } from '@nx-react-demo/data-access-todo';
-import { NavigationButton } from '@nx-react-demo/ui-application';
+import { NavLink } from 'react-router-dom';
 
 export function TodoInfoCard() {
-  const [state] = useTodoPage({ completed: false });
+  const [state] = useTodoPage('open');
 
-  const getText = (openTodosCount: number) => {
-    return openTodosCount > 0
+  const getText = (openTodosCount: number) =>
+    openTodosCount > 0
       ? `You have ${openTodosCount} open todos`
       : 'You have no open todos';
-  };
+
+  const getButtonLabel = (openTodosCount: number) =>
+    openTodosCount > 0 ? 'Show open todos' : 'Create todo';
+
+  const getButtonLink = (openTodosCount: number) =>
+    openTodosCount > 0 ? '/todos?show=open' : '/todos?show=all';
 
   return (
     <Card>
       <CardContent>
-        <Typography variant="h5" gutterBottom>
-          Todos
-        </Typography>
         <Typography variant="body1">
           {state.loadablePage.isLoading ? (
             <Skeleton />
@@ -30,7 +33,13 @@ export function TodoInfoCard() {
         </Typography>
       </CardContent>
       <CardActions>
-        <NavigationButton path="/todos" label="Open Todos" />
+        <Button
+          component={NavLink}
+          end
+          to={getButtonLink(state.loadablePage.data.totalItems)}
+        >
+          {getButtonLabel(state.loadablePage.data.totalItems)}
+        </Button>{' '}
       </CardActions>
     </Card>
   );

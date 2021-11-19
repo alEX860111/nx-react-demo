@@ -17,12 +17,21 @@ jest.mock('@nx-react-demo/data-access-todo', () => {
       size: 5,
     },
     refreshPage: 0,
-    filter: {},
+    filter: 'all',
   };
 
   const dispatch = jest.fn();
   return {
+    ...jest.requireActual('@nx-react-demo/data-access-todo'),
     useTodoPage: () => [state, dispatch],
+  };
+});
+
+jest.mock('react-router-dom', () => {
+  const searchParams = new URLSearchParams();
+  const setSearchParams = jest.fn();
+  return {
+    useSearchParams: () => [searchParams, setSearchParams],
   };
 });
 

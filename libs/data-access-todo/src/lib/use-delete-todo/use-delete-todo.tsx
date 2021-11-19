@@ -1,7 +1,7 @@
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
-import { TodoPageState } from './todo-page-state';
-import { TodoPageStateAction } from './todo-page-state-action';
+import { TodoPageState } from '../todo-page-state';
+import { TodoPageStateAction } from '../todo-page-state-action';
 
 export function useDeleteTodo(
   state: TodoPageState,
@@ -10,7 +10,7 @@ export function useDeleteTodo(
   const snackbarContext = useSnackbar();
 
   useEffect(() => {
-    let didCancel = false;
+    const abortController = new AbortController();
 
     async function deleteTodo() {
       if (state.itemIdToDelete === undefined) return;
@@ -18,19 +18,19 @@ export function useDeleteTodo(
       try {
         const result = await fetch(
           `http://localhost:3000/todos/${state.itemIdToDelete}`,
-          { method: 'DELETE' }
+          { method: 'DELETE', signal: abortController.signal }
         );
 
         if (result.status !== 200) throw new Error();
 
-        if (!didCancel) {
+        if (!abortController.signal.aborted) {
           dispatch({ type: 'ITEM_DELETION_SUCCESS' });
         }
         snackbarContext.enqueueSnackbar('Successfully deleted todo.', {
           variant: 'success',
         });
       } catch (error) {
-        if (!didCancel) {
+        if (!abortController.signal.aborted) {
           dispatch({ type: 'ITEM_DELETION_ERROR' });
         }
         snackbarContext.enqueueSnackbar('Failed to delete todo.', {
@@ -41,8 +41,6 @@ export function useDeleteTodo(
 
     deleteTodo();
 
-    return () => {
-      didCancel = true;
-    };
+    return () => abortController.abort();
   }, [dispatch, snackbarContext, state.itemIdToDelete]);
 }

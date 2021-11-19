@@ -1,7 +1,7 @@
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
-import { TodoPageState } from './todo-page-state';
-import { TodoPageStateAction } from './todo-page-state-action';
+import { TodoPageState } from '../todo-page-state';
+import { TodoPageStateAction } from '../todo-page-state-action';
 
 export function useUpdateTodo(
   state: TodoPageState,
@@ -10,7 +10,7 @@ export function useUpdateTodo(
   const snackbarContext = useSnackbar();
 
   useEffect(() => {
-    let didCancel = false;
+    const abortController = new AbortController();
 
     async function updateTodo() {
       if (!state.itemUpdateData) return;
@@ -22,19 +22,20 @@ export function useUpdateTodo(
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(state.itemUpdateData),
+            signal: abortController.signal,
           }
         );
 
         if (result.status !== 200) throw new Error();
 
-        if (!didCancel) {
+        if (!abortController.signal.aborted) {
           dispatch({ type: 'ITEM_UPDATE_SUCCESS' });
         }
         snackbarContext.enqueueSnackbar('Successfully updated todo.', {
           variant: 'success',
         });
       } catch (error) {
-        if (!didCancel) {
+        if (!abortController.signal.aborted) {
           dispatch({ type: 'ITEM_UPDATE_ERROR' });
         }
         snackbarContext.enqueueSnackbar('Failed to update todo.', {
@@ -45,8 +46,6 @@ export function useUpdateTodo(
 
     updateTodo();
 
-    return () => {
-      didCancel = true;
-    };
+    return () => abortController.abort();
   }, [dispatch, snackbarContext, state.itemUpdateData]);
 }

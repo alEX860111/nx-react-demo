@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { ProviderContext } from 'notistack';
-import { Todo } from './todo';
-import { TodoPageState } from './todo-page-state';
-import { TodoPageStateAction } from './todo-page-state-action';
+import { Todo } from '../todo';
+import { TodoPageState } from '../todo-page-state';
+import { TodoPageStateAction } from '../todo-page-state-action';
 import { useGetTodos } from './use-get-todos';
 
 const snackbar = {} as jest.Mocked<ProviderContext>;
@@ -50,7 +50,7 @@ describe(useGetTodos, () => {
         size: 5,
       },
       refreshPage: 0,
-      filter: {},
+      filter: 'all',
     };
 
     dispatch = jest.fn();
@@ -79,9 +79,13 @@ describe(useGetTodos, () => {
 
     await waitFor(() => dispatch.mock.calls.length === 2);
 
-    expect(fetchMock).toHaveBeenCalledWith(
+    expect(fetchMock).toHaveBeenCalled();
+    expect(fetchMock.mock.calls[0][0]).toEqual(
       'http://localhost:3000/todos?_page=1&_limit=5&_sort=id&_order=desc'
     );
+    expect(fetchMock.mock.calls[0][1]).toMatchObject({
+      signal: expect.any(AbortSignal),
+    });
 
     expect(dispatch).toHaveBeenCalledTimes(2);
     const loadSuccessAction: TodoPageStateAction = {
@@ -121,9 +125,13 @@ describe(useGetTodos, () => {
 
     await waitFor(() => dispatch.mock.calls.length === 2);
 
-    expect(fetchMock).toHaveBeenCalledWith(
+    expect(fetchMock).toHaveBeenCalled();
+    expect(fetchMock.mock.calls[0][0]).toEqual(
       'http://localhost:3000/todos?_page=2&_limit=5&_sort=id&_order=desc'
     );
+    expect(fetchMock.mock.calls[0][1]).toMatchObject({
+      signal: expect.any(AbortSignal),
+    });
 
     expect(dispatch).toHaveBeenCalledTimes(2);
     const pageIndexChangeAction: TodoPageStateAction = {
@@ -149,9 +157,13 @@ describe(useGetTodos, () => {
 
     await waitFor(() => dispatch.mock.calls.length === 2);
 
-    expect(fetchMock).toHaveBeenCalledWith(
+    expect(fetchMock).toHaveBeenCalled();
+    expect(fetchMock.mock.calls[0][0]).toEqual(
       'http://localhost:3000/todos?_page=1&_limit=5&_sort=id&_order=desc'
     );
+    expect(fetchMock.mock.calls[0][1]).toMatchObject({
+      signal: expect.any(AbortSignal),
+    });
 
     expect(dispatch).toHaveBeenCalledTimes(2);
     const loadErrorAction: TodoPageStateAction = {

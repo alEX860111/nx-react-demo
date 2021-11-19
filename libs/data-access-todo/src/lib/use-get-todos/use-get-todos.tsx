@@ -1,9 +1,9 @@
 import { Page } from '@nx-react-demo/util-data-access';
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
-import { Todo } from './todo';
-import { TodoPageState } from './todo-page-state';
-import { TodoPageStateAction } from './todo-page-state-action';
+import { Todo } from '../todo';
+import { TodoPageState } from '../todo-page-state';
+import { TodoPageStateAction } from '../todo-page-state-action';
 
 export function useGetTodos(
   state: TodoPageState,
@@ -11,7 +11,7 @@ export function useGetTodos(
 ) {
   const snackbarContext = useSnackbar();
   useEffect(() => {
-    let didCancel = false;
+    const abortController = new AbortController();
 
     async function getTodos() {
       dispatch({ type: 'LOAD_INIT' });
@@ -22,48 +22,47 @@ export function useGetTodos(
         params.set('_limit', String(state.pageParams.size));
         params.set('_sort', 'id');
         params.set('_order', 'desc');
-        if (state.filter.completed !== undefined) {
-          params.set('completed', String(state.filter.completed));
+        if (state.filter === 'completed') {
+          params.set('completed', 'true');
+        } else if (state.filter === 'open') {
+          params.set('completed', 'false');
         }
         const formattedParams = Array.from(params.entries())
           .map(([key, value]) => `${key}=${value}`)
           .join('&');
 
         const result = await fetch(
-          `http://localhost:3000/todos?${formattedParams}`
+          `http://localhost:3000/todos?${formattedParams}`,
+          { signal: abortController.signal }
         );
 
         if (result.status !== 200) throw new Error();
 
         const totalItems = Number(result.headers.get('X-Total-Count'));
 
-        const todos: Todo[] = await result.json();
-
-        if (
-          totalItems > 0 &&
-          todos.length === 0 &&
-          state.pageParams.index > 0 &&
-          !didCancel
-        ) {
-          dispatch({
-            type: 'PAGE_INDEX_CHANGE',
-            pageIndex: state.pageParams.index - 1,
-          });
-          return;
-        }
-
-        const page: Page<Todo> = {
-          items: todos,
-          totalItems: totalItems,
-          totalPages: Math.ceil(totalItems / state.pageParams.size),
-        };
-
-        if (!didCancel) {
-          dispatch({ type: 'LOAD_SUCCESS', page });
+        if (!abortController.signal.aborted) {
+          const todos: Todo[] = await result.json();
+          if (
+            totalItems > 0 &&
+            todos.length === 0 &&
+            state.pageParams.index > 0
+          ) {
+            dispatch({
+              type: 'PAGE_INDEX_CHANGE',
+              pageIndex: state.pageParams.index - 1,
+            });
+          } else {
+            const page: Page<Todo> = {
+              items: todos,
+              totalItems: totalItems,
+              totalPages: Math.ceil(totalItems / state.pageParams.size),
+            };
+            dispatch({ type: 'LOAD_SUCCESS', page });
+          }
         }
       } catch (error) {
         const errorMessage = 'Failed to load todos.';
-        if (!didCancel) {
+        if (!abortController.signal.aborted) {
           dispatch({
             type: 'LOAD_ERROR',
             error: errorMessage,
@@ -77,9 +76,7 @@ export function useGetTodos(
 
     getTodos();
 
-    return () => {
-      didCancel = true;
-    };
+    return () => abortController.abort();
   }, [
     dispatch,
     snackbarContext,

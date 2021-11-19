@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { ProviderContext } from 'notistack';
-import { TodoPageState } from './todo-page-state';
-import { TodoPageStateAction } from './todo-page-state-action';
-import { useCreateTodo } from './use-create-todo';
+import { TodoPageState } from '../todo-page-state';
+import { TodoPageStateAction } from '../todo-page-state-action';
+import { useUpdateTodo } from './use-update-todo';
 
 const snackbar = {} as jest.Mocked<ProviderContext>;
 
@@ -11,7 +11,7 @@ jest.mock('notistack', () => ({
   useSnackbar: () => snackbar,
 }));
 
-describe(useCreateTodo, () => {
+describe(useUpdateTodo, () => {
   let fetchRef: typeof global.fetch;
 
   let fetchMock: jest.Mock;
@@ -39,9 +39,9 @@ describe(useCreateTodo, () => {
       loadablePage: {
         isLoading: false,
         data: {
-          items: [],
-          totalItems: 0,
-          totalPages: 0,
+          items: [{ id: 1, content: 'hello world', completed: false }],
+          totalItems: 1,
+          totalPages: 1,
         },
       },
       pageParams: {
@@ -49,65 +49,69 @@ describe(useCreateTodo, () => {
         size: 5,
       },
       refreshPage: 0,
-      itemCreationData: { content: 'hello world' },
-      filter: {},
+      itemUpdateData: { id: 1, content: 'hello world', completed: true },
+      filter: 'all',
     };
 
     dispatch = jest.fn();
   });
 
-  it('should dispatch success action and enqueue success message if todo has been created', async () => {
-    const response: Response = { status: 201 } as jest.Mocked<Response>;
+  it('should dispatch success action and enqueue success message if todo has been updated', async () => {
+    const response: Response = { status: 200 } as jest.Mocked<Response>;
 
     fetchMock.mockResolvedValue(response);
 
-    const { waitFor } = renderHook(() => useCreateTodo(state, dispatch));
+    const { waitFor } = renderHook(() => useUpdateTodo(state, dispatch));
 
     await waitFor(() => dispatch.mock.calls.length === 1);
 
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:3000/todos', {
-      method: 'POST',
+    expect(fetchMock).toHaveBeenCalled();
+    expect(fetchMock.mock.calls[0][0]).toEqual('http://localhost:3000/todos/1');
+    expect(fetchMock.mock.calls[0][1]).toMatchObject({
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(state.itemCreationData),
+      body: JSON.stringify(state.itemUpdateData),
+      signal: expect.any(AbortSignal),
     });
 
     expect(dispatch).toHaveBeenCalledTimes(1);
-    const action: TodoPageStateAction = {
-      type: 'ITEM_CREATION_SUCCESS',
-    };
+    const action: TodoPageStateAction = { type: 'ITEM_UPDATE_SUCCESS' };
     expect(dispatch).toHaveBeenLastCalledWith(action);
 
     expect(snackbar.enqueueSnackbar).toHaveBeenCalledTimes(1);
     expect(snackbar.enqueueSnackbar).toHaveBeenCalledWith(
-      'Successfully created todo.',
+      'Successfully updated todo.',
       { variant: 'success' }
     );
   });
 
-  it('should dispatch error action and enqueue error message if todo could not be created', async () => {
+  it('should dispatch error action and enqueue error message if todo could not be updated', async () => {
     const response: Response = { status: 500 } as jest.Mocked<Response>;
 
     fetchMock.mockResolvedValue(response);
 
-    const { waitFor } = renderHook(() => useCreateTodo(state, dispatch));
+    const { waitFor } = renderHook(() => useUpdateTodo(state, dispatch));
 
     await waitFor(() => snackbar.enqueueSnackbar.mock.calls.length === 1);
 
-    expect(fetchMock).toHaveBeenCalledWith('http://localhost:3000/todos', {
-      method: 'POST',
+    expect(fetchMock).toHaveBeenCalled();
+    expect(fetchMock.mock.calls[0][0]).toEqual('http://localhost:3000/todos/1');
+    expect(fetchMock.mock.calls[0][1]).toMatchObject({
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(state.itemCreationData),
+      body: JSON.stringify(state.itemUpdateData),
+      signal: expect.any(AbortSignal),
     });
 
     expect(dispatch).toHaveBeenCalledTimes(1);
     const action: TodoPageStateAction = {
-      type: 'ITEM_CREATION_ERROR',
+      type: 'ITEM_UPDATE_ERROR',
     };
     expect(dispatch).toHaveBeenLastCalledWith(action);
 
     expect(snackbar.enqueueSnackbar).toHaveBeenCalledTimes(1);
     expect(snackbar.enqueueSnackbar).toHaveBeenCalledWith(
-      'Failed to create todo.',
+      'Failed to update todo.',
       { variant: 'error' }
     );
   });

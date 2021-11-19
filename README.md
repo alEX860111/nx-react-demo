@@ -13,6 +13,7 @@ The backend is provided by a simple [json-server](https://www.npmjs.com/package/
 - complete todos
 - delete todos
 - filter todos
+- open todos page with query parameter
 - snackbar notifications
 - skeleton loaders
 - error handling

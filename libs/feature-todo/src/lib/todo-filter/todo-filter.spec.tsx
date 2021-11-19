@@ -1,7 +1,4 @@
-import {
-  TodoFilterData,
-  TodoPageStateAction,
-} from '@nx-react-demo/data-access-todo';
+import { TodoPageStateAction } from '@nx-react-demo/data-access-todo';
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import { TodoDispatch } from '../todo-context';
@@ -20,14 +17,13 @@ describe(TodoFilter, () => {
   });
 
   it('should render successfully', () => {
-    const filter: TodoFilterData = {};
-    const { baseElement } = render(<TodoFilter filter={filter} />, { wrapper });
+    const { baseElement } = render(<TodoFilter filter="all" />, { wrapper });
 
     expect(baseElement).toBeTruthy();
   });
 
   it('should render the filter all button in selected state if filter is empty', () => {
-    const { getByText } = render(<TodoFilter filter={{}} />, {
+    const { getByText } = render(<TodoFilter filter="all" />, {
       wrapper,
     });
 
@@ -36,7 +32,7 @@ describe(TodoFilter, () => {
   });
 
   it('should render the filter completed button in selected state if filter has completed set to true', () => {
-    const { getByText } = render(<TodoFilter filter={{ completed: true }} />, {
+    const { getByText } = render(<TodoFilter filter={'completed'} />, {
       wrapper,
     });
 
@@ -45,7 +41,7 @@ describe(TodoFilter, () => {
   });
 
   it('should render the filter open button in selected state if filter has completed set to false', () => {
-    const { getByText } = render(<TodoFilter filter={{ completed: false }} />, {
+    const { getByText } = render(<TodoFilter filter="open" />, {
       wrapper,
     });
 
@@ -54,7 +50,7 @@ describe(TodoFilter, () => {
   });
 
   it('should dispatch action on filter button click', () => {
-    const { getByText } = render(<TodoFilter filter={{}} />, {
+    const { getByText } = render(<TodoFilter filter="all" />, {
       wrapper,
     });
 
@@ -62,10 +58,9 @@ describe(TodoFilter, () => {
 
     fireEvent.click(button);
 
-    const filter: TodoFilterData = { completed: true };
     const action: TodoPageStateAction = {
       type: 'ITEM_FILTER_REQUESTED',
-      filter,
+      filter: 'completed',
     };
     expect(dispatch).toHaveBeenCalledWith(action);
   });

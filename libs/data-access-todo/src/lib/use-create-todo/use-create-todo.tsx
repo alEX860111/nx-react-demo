@@ -1,7 +1,7 @@
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
-import { TodoPageState } from './todo-page-state';
-import { TodoPageStateAction } from './todo-page-state-action';
+import { TodoPageState } from '../todo-page-state';
+import { TodoPageStateAction } from '../todo-page-state-action';
 
 export function useCreateTodo(
   state: TodoPageState,
@@ -10,7 +10,7 @@ export function useCreateTodo(
   const snackbarContext = useSnackbar();
 
   useEffect(() => {
-    let didCancel = false;
+    const abortController = new AbortController();
 
     async function createTodo() {
       if (!state.itemCreationData) return;
@@ -20,29 +20,29 @@ export function useCreateTodo(
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(state.itemCreationData),
+          signal: abortController.signal,
         });
 
         if (result.status !== 201) throw new Error();
 
-        if (!didCancel) {
+        if (!abortController.signal.aborted) {
           dispatch({ type: 'ITEM_CREATION_SUCCESS' });
         }
         snackbarContext.enqueueSnackbar('Successfully created todo.', {
           variant: 'success',
         });
       } catch (error) {
-        if (!didCancel) {
+        if (!abortController.signal.aborted) {
           dispatch({ type: 'ITEM_CREATION_ERROR' });
         }
-        const errorMessage = 'Failed to create todo.';
-        snackbarContext.enqueueSnackbar(errorMessage, { variant: 'error' });
+        snackbarContext.enqueueSnackbar('Failed to create todo.', {
+          variant: 'error',
+        });
       }
     }
 
     createTodo();
 
-    return () => {
-      didCancel = true;
-    };
+    return () => abortController.abort();
   }, [dispatch, snackbarContext, state.itemCreationData]);
 }

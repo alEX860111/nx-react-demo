@@ -10,7 +10,7 @@ export function itemUpdateRequestedReducer<T extends Item<ID>, ID, C, F>(
     ...state,
     loadablePage: {
       ...state.loadablePage,
-      isLoading: true,
+      isLoading: action.refreshPage ? true : state.loadablePage.isLoading,
     },
     itemUpdateData: action.itemUpdateData,
   };

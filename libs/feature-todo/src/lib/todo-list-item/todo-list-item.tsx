@@ -6,12 +6,13 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
-import { Todo } from '@nx-react-demo/data-access-todo';
+import { Todo, TodoStateFilter } from '@nx-react-demo/data-access-todo';
 import { useContext, useState } from 'react';
 import { TodoDispatch } from '../todo-context';
 
 interface Props {
   todo: Todo;
+  filter: TodoStateFilter;
 }
 
 export function TodoListItem(props: Props) {
@@ -33,7 +34,7 @@ export function TodoListItem(props: Props) {
     setCompleted(updatedTodo.completed);
     dispatch({
       type: 'ITEM_UPDATE_REQUESTED',
-      previousItem: props.todo,
+      refreshPage: props.filter !== 'all',
       itemUpdateData: updatedTodo,
     });
   };

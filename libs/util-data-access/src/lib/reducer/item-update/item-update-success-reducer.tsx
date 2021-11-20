@@ -8,6 +8,8 @@ export function itemUpdateSuccessReducer<T extends Item<ID>, ID, C, F>(
 ): PageState<T, ID, C, F> {
   return {
     ...state,
-    refreshPage: state.refreshPage + 1,
+    refreshPage: state.loadablePage.isLoading
+      ? state.refreshPage + 1
+      : state.refreshPage,
   };
 }

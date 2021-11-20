@@ -1,4 +1,4 @@
-import { Todo } from '@nx-react-demo/data-access-todo';
+import { Todo, TodoStateFilter } from '@nx-react-demo/data-access-todo';
 import { Loadable, Page, PageParams } from '@nx-react-demo/util-data-access';
 import { render } from '@testing-library/react';
 import { PaginatedTodoList } from './paginated-todo-list';
@@ -11,6 +11,8 @@ describe(PaginatedTodoList, () => {
   let loadablePage: Loadable<Page<Todo>>;
 
   let pageParams: PageParams;
+
+  let filter: TodoStateFilter;
 
   beforeEach(() => {
     const todo: Todo = { id: 1, content: 'hello world', completed: false };
@@ -28,11 +30,17 @@ describe(PaginatedTodoList, () => {
       index: 0,
       size: 10,
     };
+
+    filter = 'all';
   });
 
   it('should render successfully', () => {
     const { baseElement } = render(
-      <PaginatedTodoList loadablePage={loadablePage} pageParams={pageParams} />
+      <PaginatedTodoList
+        loadablePage={loadablePage}
+        pageParams={pageParams}
+        filter={filter}
+      />
     );
 
     expect(baseElement).toBeTruthy();

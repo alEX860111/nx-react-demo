@@ -70,7 +70,7 @@ export interface ItemDeletionErrorAction {
 
 export interface ItemUpdateRequestedAction<T> {
   readonly type: 'ITEM_UPDATE_REQUESTED';
-  readonly previousItem: T;
+  readonly refreshPage: boolean;
   readonly itemUpdateData: T;
 }
 

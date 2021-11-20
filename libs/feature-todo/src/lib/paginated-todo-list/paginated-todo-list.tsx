@@ -1,5 +1,5 @@
 import TablePagination from '@mui/material/TablePagination';
-import { Todo } from '@nx-react-demo/data-access-todo';
+import { Todo, TodoStateFilter } from '@nx-react-demo/data-access-todo';
 import { Loadable, Page, PageParams } from '@nx-react-demo/util-data-access';
 import React, { useContext } from 'react';
 import { SkeletonTodoList } from '../skeleton-todo-list/skeleton-todo-list';
@@ -9,6 +9,7 @@ import { TodoList } from '../todo-list/todo-list';
 interface Props {
   loadablePage: Loadable<Page<Todo>>;
   pageParams: PageParams;
+  filter: TodoStateFilter;
 }
 
 export function PaginatedTodoList(props: Props) {
@@ -32,7 +33,7 @@ export function PaginatedTodoList(props: Props) {
       {props.loadablePage.isLoading ? (
         <SkeletonTodoList pageParams={props.pageParams} />
       ) : (
-        <TodoList todos={props.loadablePage.data.items} />
+        <TodoList todos={props.loadablePage.data.items} filter={props.filter} />
       )}
       <TablePagination
         component="div"

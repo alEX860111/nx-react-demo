@@ -10,13 +10,13 @@ describe(TodoListItem, () => {
   });
 
   it('should render successfully', () => {
-    const { baseElement } = render(<TodoListItem todo={todo} />);
+    const { baseElement } = render(<TodoListItem todo={todo} filter="all" />);
 
     expect(baseElement).toBeTruthy();
   });
 
   it('should render the todo content', () => {
-    const { getByText } = render(<TodoListItem todo={todo} />);
+    const { getByText } = render(<TodoListItem todo={todo} filter="all" />);
 
     expect(getByText(todo.content)).toBeTruthy();
   });

@@ -35,6 +35,7 @@ export function TodoWidget() {
       <PaginatedTodoList
         loadablePage={state.loadablePage}
         pageParams={state.pageParams}
+        filter={state.filter}
       />
     </TodoDispatch.Provider>
   );

@@ -58,4 +58,45 @@ describe(itemUpdateSuccessReducer, () => {
     };
     expect(result).toEqual(expectedState);
   });
+
+  it('should not increment the refresh counter', () => {
+    const state: PersonPageState = {
+      loadablePage: {
+        isLoading: false,
+        data: {
+          items: [{ id: 1, name: 'joe' }],
+          totalItems: 1,
+          totalPages: 1,
+        },
+      },
+      pageParams: {
+        index: 0,
+        size: 10,
+      },
+      refreshPage: 0,
+      itemUpdateData: { id: 1, name: 'joe (new)' },
+      filter: {},
+    };
+    const result = itemUpdateSuccessReducer(state, {
+      type: 'ITEM_UPDATE_SUCCESS',
+    });
+    const expectedState: PersonPageState = {
+      loadablePage: {
+        isLoading: false,
+        data: {
+          items: [{ id: 1, name: 'joe' }],
+          totalItems: 1,
+          totalPages: 1,
+        },
+      },
+      pageParams: {
+        index: 0,
+        size: 10,
+      },
+      refreshPage: 0,
+      itemUpdateData: { id: 1, name: 'joe (new)' },
+      filter: {},
+    };
+    expect(result).toEqual(expectedState);
+  });
 });

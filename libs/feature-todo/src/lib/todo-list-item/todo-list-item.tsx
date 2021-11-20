@@ -43,7 +43,11 @@ export function TodoListItem(props: Props) {
     <ListItem
       secondaryAction={
         <Tooltip title="Delete">
-          <IconButton edge="end" onClick={handleDelete}>
+          <IconButton
+            data-testid="delete-button"
+            edge="end"
+            onClick={handleDelete}
+          >
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -51,7 +55,12 @@ export function TodoListItem(props: Props) {
     >
       <ListItemButton onClick={handleCheckbox} dense>
         <ListItemIcon>
-          <Checkbox edge="start" checked={completed} disableRipple />
+          <Checkbox
+            data-testid="toggle-complete-checkbox"
+            edge="start"
+            checked={completed}
+            disableRipple
+          />
         </ListItemIcon>
         <ListItemText primary={props.todo.content} />
       </ListItemButton>

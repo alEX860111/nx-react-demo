@@ -8,7 +8,6 @@ import { useGetTodos } from './use-get-todos';
 const snackbar = {} as jest.Mocked<ProviderContext>;
 
 jest.mock('notistack', () => ({
-  ...jest.requireActual('notistack'),
   useSnackbar: () => snackbar,
 }));
 

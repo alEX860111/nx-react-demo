@@ -1,6 +1,7 @@
 import { TodoPageState } from '@nx-react-demo/data-access-todo';
 import { render } from '@testing-library/react';
-import { TodoWidget } from './todo-widget';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { TodoInfoCard } from './todo-info-card';
 
 jest.mock('@nx-react-demo/data-access-todo', () => {
   const state: TodoPageState = {
@@ -22,20 +23,19 @@ jest.mock('@nx-react-demo/data-access-todo', () => {
 
   const dispatch = jest.fn();
   return {
-    useParameterizedTodoPage: () => [state, dispatch],
+    useTodoPage: () => [state, dispatch],
   };
 });
 
-describe(TodoWidget, () => {
-  it('should render successfully', () => {
-    const { baseElement } = render(<TodoWidget />);
+describe(TodoInfoCard, () => {
+  let wrapper: React.ComponentType;
 
-    expect(baseElement).toBeTruthy();
+  beforeEach(() => {
+    wrapper = ({ children }) => <Router>{children}</Router>;
   });
 
-  it('should render the title', () => {
-    const { getByText } = render(<TodoWidget />);
-
-    expect(getByText('Todos')).toBeTruthy();
+  it('should render successfully', () => {
+    const { baseElement } = render(<TodoInfoCard />, { wrapper });
+    expect(baseElement).toBeTruthy();
   });
 });

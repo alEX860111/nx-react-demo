@@ -7,7 +7,6 @@ import { useUpdateTodo } from './use-update-todo';
 const snackbar = {} as jest.Mocked<ProviderContext>;
 
 jest.mock('notistack', () => ({
-  ...jest.requireActual('notistack'),
   useSnackbar: () => snackbar,
 }));
 

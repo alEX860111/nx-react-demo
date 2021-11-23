@@ -13,7 +13,7 @@ jest.mock('@nx-react-demo/feature-user', () => ({
   FeatureUser: () => <div>FeatureUser</div>,
 }));
 
-describe('App', () => {
+describe(App, () => {
   it('should render successfully', () => {
     const { baseElement } = render(<App />);
 

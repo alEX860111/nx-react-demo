@@ -1,10 +1,10 @@
 import InfoIcon from '@mui/icons-material/Info';
-import { Button, Skeleton } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardHeader from '@mui/material/CardHeader';
 import { useTodoPage } from '@nx-react-demo/data-access-todo';
-import { NavLink } from 'react-router-dom';
+import { NavigationButton } from '@nx-react-demo/ui-application';
 
 export function TodoInfoCard() {
   const [state] = useTodoPage('open');
@@ -42,13 +42,11 @@ export function TodoInfoCard() {
         {state.loadablePage.isLoading ? (
           <Skeleton width={150} height={36} />
         ) : (
-          <Button
-            component={NavLink}
-            end
+          <NavigationButton
             to={getButtonLink(state.loadablePage.data.totalItems)}
-          >
-            {getButtonLabel(state.loadablePage.data.totalItems)}
-          </Button>
+            label={getButtonLabel(state.loadablePage.data.totalItems)}
+            color="primary"
+          />
         )}
       </CardActions>
     </Card>

@@ -1,4 +1,4 @@
-import { Button, PaletteMode, ThemeProvider } from '@mui/material';
+import { PaletteMode, ThemeProvider } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
@@ -7,16 +7,12 @@ import Toolbar from '@mui/material/Toolbar';
 import { TodoWidget } from '@nx-react-demo/feature-todo';
 import { FeatureUser } from '@nx-react-demo/feature-user';
 import {
+  NavigationButton,
   ThemeModeContext,
   ThemeModeSwitcher,
 } from '@nx-react-demo/ui-application';
 import { useState } from 'react';
-import {
-  BrowserRouter as Router,
-  NavLink,
-  Route,
-  Routes,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import styles from './app.module.scss';
 import { Home } from './home';
 
@@ -24,13 +20,6 @@ export function App() {
   const [themeMode, setThemeMode] = useState<PaletteMode>('dark');
 
   const theme = createTheme({ palette: { mode: themeMode } });
-
-  const themeActiveClassName =
-    themeMode === 'dark' ? styles.activeDarkMode : styles.activeLightMode;
-
-  const getClassName = (params: { isActive: boolean }) =>
-    params.isActive ? themeActiveClassName : '';
-  const className = getClassName as unknown as string;
 
   return (
     <ThemeModeContext.Provider value={{ themeMode, setThemeMode }}>
@@ -40,33 +29,24 @@ export function App() {
           <AppBar position="static">
             <Toolbar className={styles.toolbar}>
               <div>
-                <Button
-                  color="inherit"
-                  component={NavLink}
-                  className={className}
-                  end
+                <NavigationButton
                   to="/"
-                >
-                  Home
-                </Button>
-                <Button
+                  label="Home"
+                  highlightActive={true}
                   color="inherit"
-                  component={NavLink}
-                  className={className}
-                  end
+                />
+                <NavigationButton
                   to="/users"
-                >
-                  Users
-                </Button>
-                <Button
+                  label="Users"
+                  highlightActive={true}
                   color="inherit"
-                  component={NavLink}
-                  className={className}
-                  end
+                />
+                <NavigationButton
                   to="/todos"
-                >
-                  Todos
-                </Button>
+                  label="Todos"
+                  highlightActive={true}
+                  color="inherit"
+                />
               </div>
               <ThemeModeSwitcher />
             </Toolbar>

@@ -21,7 +21,7 @@ export function NavigationButton(props: Props) {
       themeMode === 'dark' ? styles.activeDarkMode : styles.activeLightMode;
 
     return props.highlightActive && params.isActive
-      ? styles.navigationButton + ' ' + themeActiveClassName
+      ? `${styles.navigationButton} ${themeActiveClassName}`
       : styles.navigationButton;
   };
 

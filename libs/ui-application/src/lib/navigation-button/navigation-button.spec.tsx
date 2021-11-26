@@ -18,7 +18,7 @@ describe(NavigationButton, () => {
     expect(baseElement).toBeTruthy();
   });
 
-  it('should render the button link without active route highlighting', () => {
+  it('should not be active if highlighting is disabled', () => {
     const { baseElement } = render(<NavigationButton to="/foo" label="Foo" />, {
       wrapper,
     });
@@ -29,7 +29,7 @@ describe(NavigationButton, () => {
     expect(link.className).not.toContain('activeDarkMode');
   });
 
-  it('should render the button link with active route highlighting', () => {
+  it('should be active if highlighting is enabled and routes match', () => {
     const { baseElement } = render(
       <NavigationButton to="/foo" label="Foo" highlightActive={true} />,
       { wrapper }
@@ -39,5 +39,17 @@ describe(NavigationButton, () => {
     if (link === null) fail();
 
     expect(link.className).toContain('activeDarkMode');
+  });
+
+  it('should not be active if highlighting is enabled but routes do not match', () => {
+    const { baseElement } = render(
+      <NavigationButton to="/bar" label="Bar" highlightActive={true} />,
+      { wrapper }
+    );
+
+    const link = baseElement.querySelector('a');
+    if (link === null) fail();
+
+    expect(link.className).not.toContain('activeDarkMode');
   });
 });

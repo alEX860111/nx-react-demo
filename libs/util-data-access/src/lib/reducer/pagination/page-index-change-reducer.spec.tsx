@@ -35,10 +35,12 @@ describe(pageIndexChangeReducer, () => {
       refreshPage: 0,
       filter: {},
     };
+
     const result = pageIndexChangeReducer(state, {
       type: 'PAGE_INDEX_CHANGE',
       pageIndex: 1,
     });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: false,

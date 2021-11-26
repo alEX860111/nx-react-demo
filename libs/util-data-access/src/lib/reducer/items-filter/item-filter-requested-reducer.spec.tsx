@@ -35,11 +35,13 @@ describe(itemFilterRequestedReducer, () => {
       refreshPage: 0,
       filter: {},
     };
+
     const filter: Partial<Person> = { name: 'zoe' };
     const result = itemFilterRequestedReducer(state, {
       type: 'ITEM_FILTER_REQUESTED',
       filter,
     });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: true,

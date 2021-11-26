@@ -36,9 +36,11 @@ describe(itemDeletionErrorReducer, () => {
       itemIdToDelete: 1,
       filter: {},
     };
+
     const result = itemDeletionErrorReducer(state, {
       type: 'ITEM_DELETION_ERROR',
     });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: false,

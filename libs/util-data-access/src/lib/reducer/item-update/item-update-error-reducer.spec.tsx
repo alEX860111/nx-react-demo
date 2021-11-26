@@ -36,7 +36,9 @@ describe(itemUpdateErrorReducer, () => {
       itemUpdateData: { id: 1, name: 'joe (new)' },
       filter: {},
     };
+
     const result = itemUpdateErrorReducer(state, { type: 'ITEM_UPDATE_ERROR' });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: true,

@@ -32,7 +32,9 @@ describe(loadInitReducer, () => {
       refreshPage: 0,
       filter: {},
     };
+
     const result = loadInitReducer(state, { type: 'LOAD_INIT' });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         error: undefined,

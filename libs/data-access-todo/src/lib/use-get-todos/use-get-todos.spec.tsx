@@ -100,48 +100,6 @@ describe(useGetTodos, () => {
     expect(snackbar.enqueueSnackbar).not.toHaveBeenCalled();
   });
 
-  it('should dispatch page index change action if empty list has been loaded but total count is greater than zero', async () => {
-    state.pageParams.index = 1;
-
-    const headers = new Headers();
-    headers.set('X-Total-Count', '5');
-
-    const response: Response = {
-      headers,
-      status: 200,
-    } as jest.Mocked<Response>;
-
-    response.json = jest.fn().mockResolvedValue([]);
-
-    fetchMock.mockResolvedValue(response);
-
-    const { waitFor } = renderHook(() => useGetTodos(state, dispatch));
-
-    await waitFor(() => dispatch.mock.calls.length === 1);
-
-    const loadInitAction: TodoPageStateAction = { type: 'LOAD_INIT' };
-    expect(dispatch).toHaveBeenLastCalledWith(loadInitAction);
-
-    await waitFor(() => dispatch.mock.calls.length === 2);
-
-    expect(fetchMock).toHaveBeenCalled();
-    expect(fetchMock.mock.calls[0][0]).toEqual(
-      'http://localhost:3000/todos?_page=2&_limit=5&_sort=id&_order=desc'
-    );
-    expect(fetchMock.mock.calls[0][1]).toMatchObject({
-      signal: expect.any(AbortSignal),
-    });
-
-    expect(dispatch).toHaveBeenCalledTimes(2);
-    const pageIndexChangeAction: TodoPageStateAction = {
-      type: 'PAGE_INDEX_CHANGE',
-      pageIndex: 0,
-    };
-    expect(dispatch).toHaveBeenLastCalledWith(pageIndexChangeAction);
-
-    expect(snackbar.enqueueSnackbar).not.toHaveBeenCalled();
-  });
-
   it('should dispatch error action and enqueue error message if todos could not be loaded', async () => {
     const response: Response = { status: 500 } as jest.Mocked<Response>;
 

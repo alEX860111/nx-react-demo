@@ -35,10 +35,12 @@ describe(pageSizeChangeReducer, () => {
       refreshPage: 0,
       filter: {},
     };
+
     const result = pageSizeChangeReducer(state, {
       type: 'PAGE_SIZE_CHANGE',
       pageSize: 10,
     });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: false,

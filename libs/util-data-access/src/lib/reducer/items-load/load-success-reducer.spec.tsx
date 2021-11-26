@@ -32,10 +32,12 @@ describe(loadSuccessReducer, () => {
       refreshPage: 0,
       filter: {},
     };
+
     const result = loadSuccessReducer(state, {
       type: 'LOAD_SUCCESS',
       page: { items: [{ id: 1, name: 'joe' }], totalItems: 1, totalPages: 1 },
     });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         error: undefined,

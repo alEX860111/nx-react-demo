@@ -36,9 +36,11 @@ describe(itemCreationSuccessReducer, () => {
       itemCreationData: { name: 'joe' },
       filter: {},
     };
+
     const result = itemCreationSuccessReducer(state, {
       type: 'ITEM_CREATION_SUCCESS',
     });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: true,

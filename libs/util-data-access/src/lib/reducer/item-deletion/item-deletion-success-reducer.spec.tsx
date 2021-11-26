@@ -36,9 +36,11 @@ describe(itemDeletionSuccessReducer, () => {
       itemIdToDelete: 1,
       filter: {},
     };
+
     const result = itemDeletionSuccessReducer(state, {
       type: 'ITEM_DELETION_SUCCESS',
     });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: true,
@@ -77,9 +79,11 @@ describe(itemDeletionSuccessReducer, () => {
       itemIdToDelete: 1,
       filter: {},
     };
+
     const result = itemDeletionSuccessReducer(state, {
       type: 'ITEM_DELETION_SUCCESS',
     });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: true,

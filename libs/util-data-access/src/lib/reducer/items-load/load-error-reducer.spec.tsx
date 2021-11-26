@@ -35,7 +35,9 @@ describe(loadErrorReducer, () => {
       refreshPage: 0,
       filter: {},
     };
+
     const result = reducer(state, { type: 'LOAD_ERROR', error: 'oops' });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         error: 'oops',

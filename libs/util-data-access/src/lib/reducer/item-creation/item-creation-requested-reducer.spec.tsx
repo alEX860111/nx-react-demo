@@ -31,11 +31,13 @@ describe(itemCreationRequestedReducer, () => {
       refreshPage: 0,
       filter: {},
     };
+
     const itemCreationData: PersonCreationData = { name: 'joe' };
     const result = itemCreationRequestedReducer(state, {
       type: 'ITEM_CREATION_REQUESTED',
       itemCreationData,
     });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: true,

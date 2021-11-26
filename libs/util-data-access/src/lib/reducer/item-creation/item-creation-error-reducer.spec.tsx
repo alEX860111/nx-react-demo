@@ -32,9 +32,11 @@ describe(itemCreationErrorReducer, () => {
       itemCreationData: { name: 'joe' },
       filter: {},
     };
+
     const result = itemCreationErrorReducer(state, {
       type: 'ITEM_CREATION_ERROR',
     });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: false,

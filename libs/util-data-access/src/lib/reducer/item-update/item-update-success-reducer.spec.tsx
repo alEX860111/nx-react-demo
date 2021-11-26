@@ -18,7 +18,7 @@ type PersonPageState = PageState<
 >;
 
 describe(itemUpdateSuccessReducer, () => {
-  it('should increment the refresh counter', () => {
+  it('should increment the refresh counter if page is in loading state', () => {
     const state: PersonPageState = {
       loadablePage: {
         isLoading: true,
@@ -36,9 +36,11 @@ describe(itemUpdateSuccessReducer, () => {
       itemUpdateData: { id: 1, name: 'joe (new)' },
       filter: {},
     };
+
     const result = itemUpdateSuccessReducer(state, {
       type: 'ITEM_UPDATE_SUCCESS',
     });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: true,
@@ -59,7 +61,50 @@ describe(itemUpdateSuccessReducer, () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should not increment the refresh counter', () => {
+  it('should increment the refresh counter and decrement the page index if page is in loading state', () => {
+    const state: PersonPageState = {
+      loadablePage: {
+        isLoading: true,
+        data: {
+          items: [{ id: 1, name: 'joe' }],
+          totalItems: 2,
+          totalPages: 2,
+        },
+      },
+      pageParams: {
+        index: 1,
+        size: 1,
+      },
+      refreshPage: 0,
+      itemUpdateData: { id: 1, name: 'joe (new)' },
+      filter: {},
+    };
+
+    const result = itemUpdateSuccessReducer(state, {
+      type: 'ITEM_UPDATE_SUCCESS',
+    });
+
+    const expectedState: PersonPageState = {
+      loadablePage: {
+        isLoading: true,
+        data: {
+          items: [{ id: 1, name: 'joe' }],
+          totalItems: 2,
+          totalPages: 2,
+        },
+      },
+      pageParams: {
+        index: 0,
+        size: 1,
+      },
+      refreshPage: 1,
+      itemUpdateData: { id: 1, name: 'joe (new)' },
+      filter: {},
+    };
+    expect(result).toEqual(expectedState);
+  });
+
+  it('should not increment the refresh counter if page is not in loading state', () => {
     const state: PersonPageState = {
       loadablePage: {
         isLoading: false,
@@ -77,9 +122,11 @@ describe(itemUpdateSuccessReducer, () => {
       itemUpdateData: { id: 1, name: 'joe (new)' },
       filter: {},
     };
+
     const result = itemUpdateSuccessReducer(state, {
       type: 'ITEM_UPDATE_SUCCESS',
     });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: false,

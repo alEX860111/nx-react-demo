@@ -35,11 +35,13 @@ describe(itemDeletionRequestedReducer, () => {
       refreshPage: 0,
       filter: {},
     };
+
     const itemIdToDelete = 1;
     const result = itemDeletionRequestedReducer(state, {
       type: 'ITEM_DELETION_REQUESTED',
       itemIdToDelete,
     });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: true,

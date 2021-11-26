@@ -35,12 +35,14 @@ describe(itemUpdateRequestedReducer, () => {
       refreshPage: 0,
       filter: {},
     };
+
     const itemUpdateData: Person = { id: 1, name: 'joe (new)' };
     const result = itemUpdateRequestedReducer(state, {
       type: 'ITEM_UPDATE_REQUESTED',
       refreshPage: true,
       itemUpdateData,
     });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: true,
@@ -78,12 +80,14 @@ describe(itemUpdateRequestedReducer, () => {
       refreshPage: 0,
       filter: {},
     };
+
     const itemUpdateData: Person = { id: 1, name: 'joe (new)' };
     const result = itemUpdateRequestedReducer(state, {
       type: 'ITEM_UPDATE_REQUESTED',
       refreshPage: false,
       itemUpdateData,
     });
+
     const expectedState: PersonPageState = {
       loadablePage: {
         isLoading: false,

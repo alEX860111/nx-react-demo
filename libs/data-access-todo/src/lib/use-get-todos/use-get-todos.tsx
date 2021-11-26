@@ -10,6 +10,7 @@ export function useGetTodos(
   dispatch: React.Dispatch<TodoPageStateAction>
 ) {
   const snackbarContext = useSnackbar();
+
   useEffect(() => {
     const abortController = new AbortController();
 
@@ -42,23 +43,12 @@ export function useGetTodos(
 
         if (!abortController.signal.aborted) {
           const todos: Todo[] = await result.json();
-          if (
-            totalItems > 0 &&
-            todos.length === 0 &&
-            state.pageParams.index > 0
-          ) {
-            dispatch({
-              type: 'PAGE_INDEX_CHANGE',
-              pageIndex: state.pageParams.index - 1,
-            });
-          } else {
-            const page: Page<Todo> = {
-              items: todos,
-              totalItems: totalItems,
-              totalPages: Math.ceil(totalItems / state.pageParams.size),
-            };
-            dispatch({ type: 'LOAD_SUCCESS', page });
-          }
+          const page: Page<Todo> = {
+            items: todos,
+            totalItems: totalItems,
+            totalPages: Math.ceil(totalItems / state.pageParams.size),
+          };
+          dispatch({ type: 'LOAD_SUCCESS', page });
         }
       } catch (error) {
         const errorMessage = 'Failed to load todos.';

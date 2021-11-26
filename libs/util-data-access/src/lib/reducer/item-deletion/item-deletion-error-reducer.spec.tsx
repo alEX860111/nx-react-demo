@@ -8,7 +8,7 @@ interface Person {
 
 type PersonCreationData = Pick<Person, 'name'>;
 
-type PersonFilter = Partial<Pick<Person, 'name'>>;
+type PersonFilter = 'all' | 'validated' | 'unvalidated';
 
 type PersonPageState = PageState<
   Person,
@@ -34,7 +34,8 @@ describe(itemDeletionErrorReducer, () => {
       },
       refreshPage: 0,
       itemIdToDelete: 1,
-      filter: {},
+      filter: 'all',
+      initialFilter: 'all',
     };
 
     const result = itemDeletionErrorReducer(state, {
@@ -56,7 +57,8 @@ describe(itemDeletionErrorReducer, () => {
       },
       refreshPage: 0,
       itemIdToDelete: 1,
-      filter: {},
+      filter: 'all',
+      initialFilter: 'all',
     };
     expect(result).toEqual(expectedState);
   });

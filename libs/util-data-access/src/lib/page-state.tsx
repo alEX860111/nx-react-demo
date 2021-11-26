@@ -11,4 +11,5 @@ export interface PageState<T extends Item<ID>, ID, C, F> {
   itemUpdateData?: T;
   refreshPage: number;
   filter: F;
+  initialFilter: F;
 }

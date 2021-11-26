@@ -8,7 +8,7 @@ interface Person {
 
 type PersonCreationData = Pick<Person, 'name'>;
 
-type PersonFilter = Partial<Pick<Person, 'name'>>;
+type PersonFilter = 'all' | 'validated' | 'unvalidated';
 
 type PersonPageState = PageState<
   Person,
@@ -18,7 +18,7 @@ type PersonPageState = PageState<
 >;
 
 describe(itemCreationSuccessReducer, () => {
-  it('should reset the page index and increment the refresh counter', () => {
+  it('should reset the page index and filter and increment the refresh counter', () => {
     const state: PersonPageState = {
       loadablePage: {
         isLoading: true,
@@ -34,7 +34,8 @@ describe(itemCreationSuccessReducer, () => {
       },
       refreshPage: 0,
       itemCreationData: { name: 'joe' },
-      filter: {},
+      filter: 'validated',
+      initialFilter: 'all',
     };
 
     const result = itemCreationSuccessReducer(state, {
@@ -56,7 +57,8 @@ describe(itemCreationSuccessReducer, () => {
       },
       refreshPage: 1,
       itemCreationData: { name: 'joe' },
-      filter: {},
+      filter: 'all',
+      initialFilter: 'all',
     };
     expect(result).toEqual(expectedState);
   });

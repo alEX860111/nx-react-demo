@@ -8,7 +8,7 @@ interface Person {
 
 type PersonCreationData = Pick<Person, 'name'>;
 
-type PersonFilter = Partial<Pick<Person, 'name'>>;
+type PersonFilter = 'all' | 'validated' | 'unvalidated';
 
 type PersonPageState = PageState<
   Person,
@@ -34,7 +34,8 @@ describe(itemUpdateSuccessReducer, () => {
       },
       refreshPage: 0,
       itemUpdateData: { id: 1, name: 'joe (new)' },
-      filter: {},
+      filter: 'all',
+      initialFilter: 'all',
     };
 
     const result = itemUpdateSuccessReducer(state, {
@@ -56,7 +57,8 @@ describe(itemUpdateSuccessReducer, () => {
       },
       refreshPage: 1,
       itemUpdateData: { id: 1, name: 'joe (new)' },
-      filter: {},
+      filter: 'all',
+      initialFilter: 'all',
     };
     expect(result).toEqual(expectedState);
   });
@@ -77,7 +79,8 @@ describe(itemUpdateSuccessReducer, () => {
       },
       refreshPage: 0,
       itemUpdateData: { id: 1, name: 'joe (new)' },
-      filter: {},
+      filter: 'all',
+      initialFilter: 'all',
     };
 
     const result = itemUpdateSuccessReducer(state, {
@@ -99,7 +102,8 @@ describe(itemUpdateSuccessReducer, () => {
       },
       refreshPage: 1,
       itemUpdateData: { id: 1, name: 'joe (new)' },
-      filter: {},
+      filter: 'all',
+      initialFilter: 'all',
     };
     expect(result).toEqual(expectedState);
   });
@@ -120,7 +124,8 @@ describe(itemUpdateSuccessReducer, () => {
       },
       refreshPage: 0,
       itemUpdateData: { id: 1, name: 'joe (new)' },
-      filter: {},
+      filter: 'all',
+      initialFilter: 'all',
     };
 
     const result = itemUpdateSuccessReducer(state, {
@@ -142,7 +147,8 @@ describe(itemUpdateSuccessReducer, () => {
       },
       refreshPage: 0,
       itemUpdateData: { id: 1, name: 'joe (new)' },
-      filter: {},
+      filter: 'all',
+      initialFilter: 'all',
     };
     expect(result).toEqual(expectedState);
   });

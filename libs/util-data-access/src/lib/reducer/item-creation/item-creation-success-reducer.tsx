@@ -13,5 +13,6 @@ export function itemCreationSuccessReducer<T extends Item<ID>, ID, C, F>(
       index: 0,
     },
     refreshPage: state.refreshPage + 1,
+    filter: state.initialFilter,
   };
 }

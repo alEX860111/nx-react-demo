@@ -10,7 +10,7 @@ interface Person {
 
 type PersonCreationData = Pick<Person, 'name'>;
 
-type PersonFilter = Partial<Pick<Person, 'name'>>;
+type PersonFilter = 'all' | 'validated' | 'unvalidated';
 
 type PersonPageState = PageState<
   Person,
@@ -33,7 +33,8 @@ describe(loadErrorReducer, () => {
         size: 10,
       },
       refreshPage: 0,
-      filter: {},
+      filter: 'all',
+      initialFilter: 'all',
     };
 
     const result = reducer(state, { type: 'LOAD_ERROR', error: 'oops' });
@@ -49,7 +50,8 @@ describe(loadErrorReducer, () => {
         size: 10,
       },
       refreshPage: 0,
-      filter: {},
+      filter: 'all',
+      initialFilter: 'all',
     };
     expect(result).toEqual(expectedState);
   });

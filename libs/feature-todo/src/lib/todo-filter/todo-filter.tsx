@@ -1,7 +1,7 @@
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { TodoStateFilter } from '@nx-react-demo/data-access-todo';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { TodoDispatch } from '../todo-context';
 
 interface Props {
@@ -16,6 +16,8 @@ export function TodoFilter(props: Props) {
   const dispatch = useContext(TodoDispatch);
 
   const [filter, setFilter] = useState<TodoStateFilter>(props.filter);
+
+  useEffect(() => setFilter(props.filter), [props.filter]);
 
   const handleChange = (
     _event: React.MouseEvent<HTMLElement>,

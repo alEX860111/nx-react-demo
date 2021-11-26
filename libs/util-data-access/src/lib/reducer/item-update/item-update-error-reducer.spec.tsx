@@ -8,7 +8,7 @@ interface Person {
 
 type PersonCreationData = Pick<Person, 'name'>;
 
-type PersonFilter = Partial<Pick<Person, 'name'>>;
+type PersonFilter = 'all' | 'validated' | 'unvalidated';
 
 type PersonPageState = PageState<
   Person,
@@ -34,7 +34,8 @@ describe(itemUpdateErrorReducer, () => {
       },
       refreshPage: 0,
       itemUpdateData: { id: 1, name: 'joe (new)' },
-      filter: {},
+      filter: 'all',
+      initialFilter: 'all',
     };
 
     const result = itemUpdateErrorReducer(state, { type: 'ITEM_UPDATE_ERROR' });
@@ -54,7 +55,8 @@ describe(itemUpdateErrorReducer, () => {
       },
       refreshPage: 1,
       itemUpdateData: { id: 1, name: 'joe (new)' },
-      filter: {},
+      filter: 'all',
+      initialFilter: 'all',
     };
     expect(result).toEqual(expectedState);
   });

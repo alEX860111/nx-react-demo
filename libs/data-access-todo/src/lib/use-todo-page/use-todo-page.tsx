@@ -26,6 +26,7 @@ export function useTodoPage(
     },
     refreshPage: 0,
     filter,
+    initialFilter: filter,
   };
 
   const [state, dispatch] = useReducer(todoPageStateReducer, initialState);
